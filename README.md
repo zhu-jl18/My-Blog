@@ -25,6 +25,18 @@ Hexo的主要特性：
 ├── themes/              # 主题文件
 └── scripts/             # 自定义脚本
 ```
+注意到本地文件中，还存在：
+```
+.
+├── .gitignore           # hexo初始化项目所创建的（里边内容即为下列）
+├── .DS_Store
+├── Thumbs.db
+├── db.json
+├── *.log
+├── node_modules/        # npm install自动生成
+├── public/              # hexo g 自动生成
+└── .deploy*/            # hexo d 自动生成
+```
 
 ## Git仓库机制
 
