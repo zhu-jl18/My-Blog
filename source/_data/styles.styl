@@ -1,0 +1,228 @@
+/* source/_data/styles.styl */
+
+/* post content */
+// 正确示例
+.post-content {
+  padding: 2.5em !important;
+}
+
+
+// 图片最大化处理
+.site-meta .custom-logo-image {
+  display: block !important;
+  max-height: 180px !important;
+  height: auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 15px auto 0 !important; // 居中显示
+  transition: transform 0.3s ease !important;
+  
+  &:hover {
+    transform: scale(1.07) !important; // 悬停放大效果
+  }
+}
+
+// 文字元素优化
+.site-meta {
+  .brand {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    
+    .site-title {
+      margin: 0 !important;
+      font-size: 2em !important; // 增大标题
+    }
+  }
+  
+  .site-subtitle {
+    margin: 5px 0 0 !important;
+    font-size: 1.2em !important; // 增大副标题
+    opacity: 0.9 !important;
+  }
+}
+
+// 导航栏调整
+.site-nav {
+  margin-top: 5px !important;
+  
+  .menu-item {
+    padding: 5px 10px !important;
+  }
+}
+
+
+/* ----------------------------*/
+
+
+
+
+
+// 自定义侧边栏标志样式
+.cc-license
+  text-align: center
+  margin: 10px 0
+  
+  img
+    transition: all 0.3s ease
+    margin: 0 10px
+    
+    &:hover
+      transform: scale(1.1)
+      opacity: 0.8
+
+
+/* 在移动设备上隐藏侧边栏 */
+
++tablet-mobile() {
+  .sidebar-toggle, .sidebar {
+    display: none;
+  }
+}
+
+
+
+
+
+/* 全局美化 */
+body {
+  background: #f8f9fa;
+  line-height: 1.6;
+}
+
+
+
+/* 时间线紧凑布局 */
+
+.posts-collapse .post-content .collection-year {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 42px 0 -12px;
+    position: relative;
+}
+
+
+
+/* 侧边栏样式 */
+.sidebar {
+  position: sticky !important;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+  }
+  
+  .menu {
+    .menu-item {
+      margin: 0.6rem 0 !important;
+      
+      a {
+        padding: 0.4rem 0 !important;
+        transition: all 0.3s ease;
+        display: block;
+        border-radius: 4px;
+        
+        &:hover {
+          background: rgba(66,133,244,0.08);
+          color: #4285f4;
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+}
+
+/* 主内容区高度匹配 */
+.main-inner {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+/* 文章标题装饰 */
+.post-title {
+  position: relative;
+  padding-left: 15px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 4px;
+    height: 80%;
+    background: #4285f4;
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* 其他原有样式 */
+.menu-item {
+  a {
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+}
+
+.post-body {
+  font-size: 1.0125em !important;
+}
+
+p {
+  line-height: 1.6;
+  margin: 7px 0 7px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.5;
+  margin: 1px 0 6px;
+}
+
+mjx-c {
+  font-size: 85%;
+}
+
+.menu .menu-item a {
+  font-family: '等距更纱黑体 SC' !important;
+}
+
+ul {
+  margin: 0 0 7px 0;
+}
+
+ol {
+  margin: 4px 0;
+}
+
+img {
+  box-shadow: 0rem 0.4rem 0.8rem rgba(116, 95, 181, 0.1);
+  border-radius: 5px;
+}
+
+.post-body h1::before, .post-body h2::before, .post-body h3::before, .post-body h4::before, .post-body h5::before {
+  content: '#';
+  padding-right: 10px;
+  color: #a4b0be;
+}
