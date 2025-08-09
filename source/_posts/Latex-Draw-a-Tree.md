@@ -44,19 +44,19 @@ Here is a forest version of the code for the tree showed above:
      [Det
        [\textit{the}]
      ]
-     [N$'$
+     [N\('\)
        [N
          [\textit{package}]
        ]
      ]
     ]
-    [I$'$
+    [I\('\)
       [I
         [\textsc{3sg.Pres}
         ]
       ]
       [VP
-        [V$'$
+        [V\('\)
           [V
             [\textit{is}]
           ]
@@ -64,7 +64,7 @@ Here is a forest version of the code for the tree showed above:
             [Deg
               [\textit{extremely}]
             ]
-            [A$'$
+            [A\('\)
               [A
                 [\textit{straightforward}]
               ]

@@ -139,7 +139,7 @@ Expressions and vocabulary learned from the film.
 
 - **foul temper** `臭脾气，暴脾气`
 
-- **cast sb/sth $\leftrightarrow$ aside**  `to get rid of somebody/something because you no longer want or need them`
+- **cast sb/sth \(\leftrightarrow\) aside**  `to get rid of somebody/something because you no longer want or need them`
 
 - **buggered** *`adj.`*  `broken, or damaged too badly to repair`
 
@@ -155,7 +155,7 @@ Expressions and vocabulary learned from the film.
 
 - **accredited** *`adj.`* `officially recognized or approved`
   
-- **round sb/sth $\leftrightarrow$ up** `to gather or organize a group of people or things together`
+- **round sb/sth \(\leftrightarrow\) up** `to gather or organize a group of people or things together`
 
 - **graphic** `生动的，鲜明的` 
 

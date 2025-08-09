@@ -43,7 +43,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object
 用这个命令能看到位置`(Get-Command oh-my-posh).Source`
 
 - <b>themes</b> - The latest Oh My Posh themes 
-用这个命令能看到位置`$env:POSH_THEMES_PATH`，具体的样式去官网看，也可以`Get-PoshThemes`。
+用这个命令能看到位置`\(env:POSH_THEMES_PATH`，具体的样式去官网看，也可以`Get-PoshThemes`。
 
 再装一个`posh-git`
 ```powershell
@@ -52,22 +52,22 @@ Install-Module posh-git -Scope CurrentUser
 
 然后还需要在官网里再下载一个字体，以便支持众多表情符号
 
-配置 PowerShell init profile，用记事本打开`notepad $PROFILE`写入：
+配置 PowerShell init profile，用记事本打开`notepad \)PROFILE`写入：
 ```powershell
 Import-Module posh-git
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "\(env:POSH_THEMES_PATH\paradox.omp.json" | Invoke-Expression
 ```
 这个配好就成功一半了
 ### Windows Terminal美化
 
-**Reference**:
+\*\*Reference\*\*:
 - [简单配置与美化Powershell和Terminal](https://zhuanlan.zhihu.com/p/104720872)
 
 根据自己审美，我的方法是老的settings.json和最近又通过图形界面改了，注意把字体改成`oh-my-posh`官网里下的那个，最终的配置文件如下：
 
 ```json
 {
-    "$help": "https://aka.ms/terminal-documentation",
+    "\)help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
     "actions": 
     [

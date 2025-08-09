@@ -16,4 +16,4 @@ tags:
 
 $\displaystyle \sigma \int \alpha$ 
 
-$ \sigma \int \alpha$ 
+$\sigma \int \alpha$ 

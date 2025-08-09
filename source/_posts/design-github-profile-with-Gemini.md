@@ -132,7 +132,7 @@ GitHub Profile 的本质是一个名为 `README.md` 的 Markdown 文件。除了
  feed_list: "https://zhu-jl18.github.io/atom.xml" # 我的博客 Feed 地址
  max_post_count: 5 # 显示 5 篇
  # 这是我们最终确定的、最简洁可靠的模板
- template: '<p align="center"><a href="$url" style="text-decoration: none; color: #20B2AA;">$title</a></p>'
+ template: '<p align="center"><a href="\(url" style="text-decoration: none; color: #20B2AA;">\)title</a></p>'
  ```
 
 #### Workflow 2: "贪吃蛇"贡献图
@@ -189,7 +189,7 @@ GitHub Profile 的本质是一个名为 `README.md` 的 Markdown 文件。除了
 > Gemini 理解到，问题的关键不在于 CSS 的华丽，而在于**兼容性**。它立刻放弃了复杂的 `div` 方案，回归到了最原始、但最有效的 HTML 属性上。它给出了最终的、完美的模板：
 >
 > ```html
-> '<p align="center"><a href="$url" style="...">$title</a></p>'
+> '<p align="center"><a href="\(url" style="...">\)title</a></p>'
 > ```
 >
 > 使用 `<p align="center">` 这个看似“过时”但对 GitHub 渲染器极度友好的标签，一举解决了所有问题。
