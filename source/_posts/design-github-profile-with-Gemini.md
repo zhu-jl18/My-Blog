@@ -1,55 +1,56 @@
 ---
-title: 如何与大模型协作，打造一个动态更新的 GitHub Profile 个人主页
+title: 和AI一起折腾：我的GitHub Profile进化史
 categories:
-  - []
+  - 技术折腾
+  - AI协作
 date: 2025-08-08 18:41:03
 tags:
+  - GitHub
+  - AI协作
+  - 自动化
+  - 前端
 ---
 
-> 作者：makoMako & Gemini Pro
->
-> 摘要：本文记录了如何从零开始，利用 Markdown、HTML、GitHub Actions 以及与大语言模型（LLM）的高效协作，构建一个既能展示个人信息，又能自动更新博客列表和贡献图的现代化 GitHub 个人主页。
+> 摘要：记录了一次有趣的"人机协作"经历——和Gemini一起从零开始，打造了一个让我非常满意的Github Profile。
 
 <!--more-->
 ----
+## 🎯 先看效果，再聊过程
 
-<!--`"https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/year-month/name" style= "width: 40% "`-->
+我的GitHub Profile现在长这样：
 
-## 最终效果预览
+- **个人简介**：简洁的自我介绍）
+- **技术栈展示**：用图标展示我会的编程语言（虽然有些可能已经忘得差不多了😅）
+- **数学卡片**：高斯绝妙定理--数学之美！
+- **动态博客列表**：自动更新我最新写的文章
+- **贪吃蛇贡献图**：把GitHub的贡献日历变成动画，单纯好玩
 
-我的 GitHub Profile 主页 (`github.com/zhu-jl18`) 最终集成了以下几个核心模块：
+一开始我就是想要个好看的Profile
 
-1. **个人简介 (About Me)**：简洁地展示我的教育背景和兴趣爱好。
-2. **特色卡片 (Featured Card)**：一个精心设计的、包含图片、文本和 LaTeX 数学公式的卡片。
-3. **技术栈 (Tech Stack)**：清晰地展示我掌握的编程语言和工具。
-4. **动态内容 (Dynamic Content)**：
- * **博客列表**：自动从我的个人博客拉取最新的文章标题和链接。
- * **贡献图动画**：将 GitHub 的贡献日历渲染成一个有趣的“贪吃蛇”动画。
+![最终效果预览](https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/year-month/name)
 
-这不仅是一个静态的展示页面，更是一个能自我更新的、充满活力的个人名片。
+## 🛠️ 技术实现：从简单到复杂
 
-!最终效果 [^1]
+### 1. 基础部分：Markdown + HTML
 
-## 构建步骤与核心技术
+GitHub Profile本质上就是一个`README.md`文件。Markdown -> HTML 懂了吧。
 
-### 1. 基础结构：Markdown 与内联 HTML
+> 💡 **踩雷记录**：GitHub Profile的README.md文件有特殊的渲染规则，支持HTML但不支持所有CSS属性，比如坑爹的超链接！
 
-GitHub Profile 的本质是一个名为 `README.md` 的 Markdown 文件。除了标准的 Markdown 语法，它还支持内嵌 HTML 代码，这为我们实现更丰富的布局提供了可能。
-
-#### 个人信息与技术栈
-
-这部分相对简单，主要使用 Markdown 标题和列表。对于“About Me”部分，为了更好地控制布局，我使用了一个 `<div>` 标签来包裹文本：
+#### 个人介绍：简洁清爽
 
 ```html
 ### 👨‍💻 About Me
 <div style="text-align: left; display: inline-block;">
- 🎓 毕业于 **清华大学 (THU)**.
- 🌱 目前就读于 **中国科学院大学 (UCAS)**.
- <!-- ... more text ... -->
+ 🎓 毕业于 **清华大学 (THU)**
+ 🌱 目前就读于 **中国科学院大学 (UCAS)**
 </div>
 ```
 
-技术栈部分则调用了 [^2] 提供的服务，通过一个简单的图片链接来展示：
+#### 技术栈：用现成的
+
+用[skillicons.dev](https://skillicons.dev)，一行代码即可。
+> 🎯 **为什么选择这个服务？** 完全免费，部署简单，"懒人"福音
 
 ```html
 <p align="center">
@@ -61,145 +62,175 @@ GitHub Profile 的本质是一个名为 `README.md` 的 Markdown 文件。除了
 
 #### 特色卡片：数学之美
 
-这是我个人主页的点睛之笔。它完全由 HTML 构建，展示了高斯绝妙定理（Theorema Egregium）。
+我最喜欢的数学家——高斯和他都觉得妙的——高斯绝妙定理：
 
-**核心技术点**：
-
-* **卡片布局**：使用一个带边框、圆角和内边距的 `div` 作为容器。
-* **Flexbox 对齐**：通过 `display: flex;` 让高斯素描图和右侧的文本并排显示。
-* **动态 LaTeX 公式**：
- * 利用 `latex.codecogs.com` 服务将 LaTeX 代码实时渲染成 SVG 图片。
- * 使用 `<picture>` 标签，根据用户系统的**亮色/暗色模式**，加载不同颜色的公式图片，提升了视觉体验。
+> 🧮 **高斯绝妙定理** 这个定理告诉say： 曲面的高斯曲率是内蕴几何量，不依赖于曲面在空间中的嵌入方式。
 
 ```html
-<!-- Theorema Egregium Card -->
-<div style="border: 1px solid #d0d7de; ...">
-    <!-- Image Column -->
+<div style="border: 1px solid #d0d7de; border-radius: 6px; padding: 16px; margin: 16px 0;">
+  <div style="display: flex; align-items: center; gap: 16px;">
+    <img src="path/to/Gauss.png" width="120" style="border-radius: 6px;">
     <div>
-      <img src=".../Gauss.png" width="120" ...>
+      <h3>Theorema Egregium</h3>
+      <p>高斯绝妙定理：曲面的高斯曲率K是内蕴几何量</p>
+      <a href="https://en.wikipedia.org/wiki/Theorema_Egregium">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://latex.codecogs.com/svg.latex?\color{white}\Large&space;K=\kappa_1\kappa_2">
+          <source media="(prefers-color-scheme: light)" srcset="https://latex.codecogs.com/svg.latex?\color{black}\Large&space;K=\kappa_1\kappa_2">
+          <img src="https://latex.codecogs.com/svg.latex?\color{black}\Large&space;K=\kappa_1\kappa_2">
+        </picture>
+      </a>
     </div>
-    <!-- Text Column -->
-    <div>
-        <!-- ... Theorem Text ... -->
-        <a href="...">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="https://latex.codecogs.com/svg.latex?\color{white}\Large&space;K=\kappa_1\kappa_2">
-            <source media="(prefers-color-scheme: light)" srcset="https://latex.codecogs.com/svg.latex?\color{black}\Large&space;K=\kappa_1\kappa_2">
-            <img src="...">
-          </picture>
-        </a>
-        <!-- ... more text ... -->
-    </div>
+  </div>
 </div>
 ```
 
-### 2. 自动化核心：GitHub Actions
+### 2. 自动化：Profile"活"了
 
-这部分是让 Profile “活”起来的关键。我使用了两个免部署、配置简单的 GitHub Actions。
+这部分是让Profile真正"活"起来的关键。通过GitHub Actions，实现自动更新，让Profile不再是静态的展示页面。
 
-#### Workflow 1: 自动更新的博客列表
+#### 自动更新博客列表
 
-* **目标**：每隔一段时间，自动抓取我博客的 Atom/RSS Feed，并将最新的几篇文章展示在 Profile 上。
-* **Action**：gautamkrishnar/blog-post-workflow [^3]
+用`gautamkrishnar/blog-post-workflow`这个Action，配置简单，每次发布新博客，Profile就会自动更新，无需手动维护：
 
-**工作流程**：
-1. **在 `README.md` 中设置占位符**：Action 需要知道在哪里插入内容。
- ```html
- ### 📝 Recent Blog Posts
- <div style="border: 1px solid #d0d7de; ...">
- <!-- BLOG-POST-LIST:START --><!-- BLOG-POST-LIST:END -->
- </div>
- ```
+> 🔄 **自动化原理**：这个Action会定期抓取博客RSS Feed，然后自动更新README.md文件中的博客列表。
 
-2. **配置 `.github/workflows/blog-post-workflow.yml` 文件**：这是 Action 的配置文件，其中最关键的是 `template` 参数，它定义了每条博客的输出格式。
+```yaml
+name: Latest blog post workflow
+on:
+  schedule:
+    - cron: '0 * * * *'  # 每小时运行一次
+  workflow_dispatch:
 
- ```yml
- name: Latest blog post workflow
- on:
- schedule:
- - cron: '0 * * * *' # 每小时运行一次
- workflow_dispatch:
+jobs:
+  update-readme-with-blog:
+    name: Update this repo's README with latest blog posts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          disable_cache: true
+          feed_list: "https://zhu-jl18.github.io/atom.xml"
+          max_post_count: 5
+          template: '<p align="center"><a href="\(url" style="text-decoration: none; color: #20B2AA;">\)title</a></p>'
+```
 
- jobs:
- update-readme-with-blog:
- name: Update this repo's README with latest blog posts
- runs-on: ubuntu-latest
- steps:
- - uses: actions/checkout@v2
- - uses: gautamkrishnar/blog-post-workflow@v1
- with:
- disable_cache: true
- feed_list: "https://zhu-jl18.github.io/atom.xml" # 我的博客 Feed 地址
- max_post_count: 5 # 显示 5 篇
- # 这是我们最终确定的、最简洁可靠的模板
- template: '<p align="center"><a href="\(url" style="text-decoration: none; color: #20B2AA;">\)title</a></p>'
- ```
+在README中设置占位符：
 
-#### Workflow 2: "贪吃蛇"贡献图
+```html
+### 📝 Recent Blog Posts
+<div style="border: 1px solid #d0d7de; border-radius: 6px; padding: 16px;">
+<!-- BLOG-POST-LIST:START --><!-- BLOG-POST-LIST:END -->
+</div>
+```
 
-* **目标**：将我的年度 GitHub 贡献图生成一个动态的 SVG 动画。
-* **Action**：Platane/snk [^4]
+#### 贪吃蛇贡献图
 
-**工作流程**：
-1. Action 自动运行，读取我的贡献数据。
-2. 生成两个 SVG 文件：一个亮色模式 (`github-snake.svg`) 和一个暗色模式 (`github-snake-dark.svg`)。
-3. 将这两个文件推送到本仓库的 `output` 分支。
-4. **在 `README.md` 中引用**：同样使用 `<picture>` 标签来做亮暗模式的适配。
- ```html
- <div align="center">
- <picture>
- <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/output/github-snake-dark.svg" />
- <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/output/github-snake.svg" />
- <img alt="github snake animation" src="..." />
- </picture>
- </div>
- ```
+用`Platane/snk`这个Action，自动生成动画版的贡献图。这个功能纯粹是为了好玩：
 
-### 3. 如何与大模型(LLM)协作：对话式编程
+> 🐍 **"贪吃蛇"？！** 因为这个动画看起来就像一条蛇在吃贡献点，从年初吃到年末。虽然没什么实际用途，因为我基本不贡献。
 
-在这个项目中，我没有把 Gemini 当作一个简单的代码生成器，而是把它看作一个**结对编程的伙伴**。我们的协作经历了几个阶段：
+```yaml
+name: generate animation
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 每天运行一次
+  workflow_dispatch:
 
-**第一阶段：提出初步想法，获取基础方案**
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Platane/snk@v3
+        id: snake-gif
+        with:
+          github_user_name: zhu-jl18
+          svg_out_path: dist/github-snake.svg
+          snake_color: 'blue'
+      - uses: crazy-max/ghaction-github-pages@v2.1.3
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
 
-> **我的 Prompt**：
-> "你好，你是一位精通电脑的专家，精通Latex，vscode，Windows Terminal 等软件的配置。我需要你的帮助完成一些软件和插件的配置工作。"
->
-> **交互与结果**：我想要在 GitHub Profile 上展示我的博客列表，Gemini 迅速给出了 `blog-post-workflow` 这个 Action 的基础用法和配置。
+然后在README中引用：
 
-**第二阶段：需求细化与样式迭代（试错与修正）**
+```html
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/output/github-snake-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/output/github-snake.svg" />
+    <img alt="github snake animation" src="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/output/github-snake.svg" />
+  </picture>
+</div>
+```
 
-我发现默认的列表样式 (`<ul><li>`) 与我的页面风格不符。于是我提出了更具体的要求。
+## 🤖 人机协作实录
 
-> **我的 Prompt**：
-> "这是 Action 生成的东西 `... (贴出有问题的HTML) ...` 为什么它不起作用？我想让它更好看，比如用卡片式布局，并且居中。"
->
-> **交互与结果**：
-> 1. Gemini 提出了一个基于 `div` 和 `flex` 的复杂 HTML 模板方案。
-> 2. **实践是检验真理的唯一标准**：我将新方案部署后，发现 GitHub 的渲染引擎对复杂的 CSS `style` 属性支持不佳，**居中效果失效了**。
-> 3. 我把这个失败的结果反馈给 Gemini。
+此部分记录了与Gemini共同实现Profile的过程。我负责设计思路与整体规划，Gemini负责具体代码实现。
 
-**第三阶段：回归本质，直击痛点**
+> 🤖 **协作原则**：大模型不是万能的，它虽然懂得很多，但是你得让他明白你到底要他干什么~
 
-这次的反馈非常直接，这也是人机协作中非常关键的一步：**提供清晰的、负面的、最终的约束条件**。
+### 协作过程
 
-> **我的 Prompt**：
-> "GitHub 不支持这些复杂的样式，还是都在左边。我不要日期了，字体大小也改不了，就让它简单的居中就行。"
->
-> **交互与结果**：
-> Gemini 理解到，问题的关键不在于 CSS 的华丽，而在于**兼容性**。它立刻放弃了复杂的 `div` 方案，回归到了最原始、但最有效的 HTML 属性上。它给出了最终的、完美的模板：
->
-> ```html
-> '<p align="center"><a href="\(url" style="...">\)title</a></p>'
-> ```
->
-> 使用 `<p align="center">` 这个看似“过时”但对 GitHub 渲染器极度友好的标签，一举解决了所有问题。
+**我**：我想在GitHub Profile上展示我的博客列表，有什么好办法吗？
 
-**协作心得**：
-与 LLM 高效协作的关键在于：
-* **明确初始目标**：想清楚你要什么。
-* **小步快跑，快速迭代**：尝试一个方案，立即测试，然后带着测试结果（无论是成功还是失败）进行下一轮沟通。
-* **提供精确的负反馈**：不要只说“不行”，要说“哪里不行”、“为什么不行”（例如：居中没生效），并给出新的、更简化的约束（例如：不要日期，只要居中）。
+**Gemini**：可以用`blog-post-workflow`这个Action，配置很简单...
 
-## 总结
+**结果**：基础功能实现了，但样式很丑。典型的"能用就行"状态。
 
-通过这次实践，我不仅拥有了一个满意的个人主页，更体验了一次高效的人机协作编程。从复杂的 HTML/CSS 探索，到最终回归简洁有效的方案，这个过程本身就充满了学习的乐趣。希望这份记录能对你有所启发。
+### 第二轮：样式优化
+
+**我**：这个列表样式不好看，我想要卡片式布局，并且居中显示。
+
+**Gemini**：可以用复杂的HTML+CSS来实现...
+
+**结果**：GitHub不支持复杂的CSS样式，居中效果失效了。这就是典型的"过度设计"问题。
+
+### 第三轮：回归本质
+
+**我**：GitHub不支持这些复杂样式，还是都在左边。我不要日期了，字体大小也改不了，就让它简单的居中就行。
+
+**Gemini**：那就用最简单的`<p align="center">`标签吧。
+
+**结果**：完美！有时候最简单的方案就是最好的方案。这让我想起了KISS原则（Keep It Simple, Stupid）。
+
+## 💡 协作心得
+
+与AI协作编程！！！：
+
+1. **明确目标**：想清楚你要什么，不要模棱两可。AI不是读心术，你得说清楚。
+2. **小步快跑**：尝试一个方案，立即测试，然后带着结果进行下一轮沟通。不要一次性要求太多。
+3. **提供精确反馈**：不要说"不行"，要说"哪里不行"、"为什么不行"。AI需要具体的错误信息。
+4. **回归本质**：当复杂方案失效时，往往最简单的方案最有效。这大概就是所谓的"大道至简"吧。
+
+总的来说， AI极其吃数据，你喂给他是好东西他就也会输出好东西。
+
+## 🎉 总结
+
+Gemini还不错，最后效果超出我预料地好看。
+
+
+
+
+
+**这是我大模型使用的初期探索，后来我会了很多优化技巧，早期的这些尝试也是很有意思的。**
+
+
+
+
+
+
+
+
+---
+
+**Ref:**
+- [blog-post-workflow](https://github.com/gautamkrishnar/blog-post-workflow)
+- [skillicons.dev](https://skillicons.dev)
+- [snk](https://github.com/Platane/snk)

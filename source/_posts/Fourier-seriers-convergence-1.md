@@ -2,9 +2,10 @@
 title: "Part I — 概览与问题定位" 
 date: "2025-08-09" 
 tags: [Fourier, Cesaro, Fejér, 概览] 
-summary: "引入傅里叶级数的基本记号，讨论各种收敛概念并说明为何 Cesàro/Fejér 平均是关键的求和方法。"
 ----
+"引入傅里叶级数的基本记号，讨论各种收敛概念并说明为何 Cesàro/Fejér 平均是关键的求和方法。"
 
+---
 ### Part I — 概览与问题定位 / Overview & the question of convergence
 
 **导读（中文）**：说明傅里叶级数的基本定义和记号，清晰区分各种收敛概念（点值、几乎处处、均匀、\$L^p\$）以及为何 Cesàro / Fejér 平均是自然且重要的方法。阐明本系列的路线与目标。

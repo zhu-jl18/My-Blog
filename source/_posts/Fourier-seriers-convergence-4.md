@@ -12,6 +12,7 @@ tags:
 ----
 
 
+
 `"https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/year-month/name" style= "width: 40% "`
 
 ## title: "Part IV — Cesàro / Fejér 平均与 Fejér 定理（严格证明）" date: "2025-08-09" tags: [Fejér, Cesaro, theorem, proof] summary: "对 Fejér 定理给出标准而严格的证明：连续函数的一致收敛与 \$L^1\$ 的收敛，并讨论勒贝格点处的点值收敛。"

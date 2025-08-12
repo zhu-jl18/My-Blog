@@ -1,4 +1,9 @@
-title: "Part III — Dirichlet 定理（点值收敛）及其详细证明" date: "2025-08-09" tags: [Dirichlet, pointwise convergence, proof] summary: "逐步给出 Dirichlet 定理的严格证明，包括必要引理、振荡积分估计与常数说明，适合课堂讲义级别的详尽证明。"
+----
+title: "Part III — Dirichlet 定理（点值收敛）及其详细证明" 
+date: "2025-08-09" 
+tags: [Dirichlet, pointwise convergence, proof] 
+----
+summary: "逐步给出 Dirichlet 定理的严格证明，包括必要引理、振荡积分估计与常数说明，适合课堂讲义级别的详尽证明。"
 
 Part III — Dirichlet 定理（点值收敛）及其详细证明 / Dirichlet theorem (pointwise convergence)
 

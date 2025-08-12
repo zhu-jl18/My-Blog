@@ -1,7 +1,10 @@
 ----
- title: "Part II — 符号、卷积与核：Dirichlet 核与 Fejér 核" date: "2025-08-09" tags: [Fourier, Dirichlet Kernel, Fejér Kernel] summary: "将部分和写成卷积，推导 Dirichlet 和 Fejér 核，并证明其重要性质（归一化、非负性、近似恒等元）。"
+ title: "Part II — 符号、卷积与核：Dirichlet 核与 Fejér 核" 
+ date: "2025-08-09" 
+ tags: [Fourier, Dirichlet Kernel, Fejér Kernel] 
 ----
 
+summary: "将部分和写成卷积，推导 Dirichlet 和 Fejér 核，并证明其重要性质（归一化、非负性、近似恒等元）。"
 # Part II — 符号、卷积与核：Dirichlet 核与 Fejér 核 / Notation, convolution, Dirichlet & Fejér kernels
 
 ## 部分和的卷积表达
