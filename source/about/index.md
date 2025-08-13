@@ -31,38 +31,15 @@ date: 2025-08-06 22:17:59
 
 ### ➰ Mathematical Musings
 
-<div align="center">
-  <!-- A new, composite block with image and text -->
-  <div style="border: 1px solid #d0d7de; border-radius: 6px; padding: 16px; max-width: 600px; display: flex; align-items: center; gap: 16px;">
-    <!-- Image Column -->
-    <div>
-      <!-- 图片文件名已更正为 Gauss.png -->
-      <!--<img src="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/main/assets/Gauss.png" width="120" alt="Sketch of Carl Friedrich Gauss">-->
-      \[K =\kappa_1 \kappa_2 \] 
-    </div>
-    <!-- Text Column -->
-    <div style="flex: 1; text-align: left;">
-      <p align="center">
-        <strong>Theorema Egregium</strong> 
-      </p>
-      <p>
-        This theorem states that the Gaussian Curvature of a surface,
-        <a href="https://en.wikipedia.org/wiki/Theorema_Egregium" style="vertical-align: middle;">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="https://latex.codecogs.com/svg.latex?\color{white}\Large&space;K=\kappa_1\kappa_2">
-            <source media="(prefers-color-scheme: light)" srcset="https://latex.codecogs.com/svg.latex?\color{black}\Large&space;K=\kappa_1\kappa_2">
-            <img src="https://latex.codecogs.com/svg.latex?\color{black}\Large&space;K=\kappa_1\kappa_2" alt="Gaussian Curvature: K = k1 * k2"/>
-          </picture>
-        </a>,
-        is an intrinsic property invariant under local isometry.
-      </p>
-      <p style="text-align: right; margin-top: 10px; font-style: italic;">
-        — <em>Carl Friedrich Gauss</em>
-      </p>
-    </div>
-  </div>
-</div>
 
+
+  <img src="https://raw.githubusercontent.com/zhu-jl18/zhu-jl18/main/assets/Gauss.png" width="120" alt="Sketch of Carl Friedrich Gauss">
+
+This theorem states that the Gaussian Curvature of a surface, Gaussian Curvature: K = k1 * k2 is an intrinsic property invariant under local isometry.
+
+       
+       
+    
 <br>
 
 ### 🛠️ My Tech Stack

@@ -2,6 +2,7 @@
 title: Gemini-MathInstructo-Prompts
 categories:
   - []
+abbrlink: 38945
 date: 2025-08-09 22:42:58
 tags:
 ---

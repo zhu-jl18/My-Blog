@@ -1,8 +1,10 @@
 ---
 title: English-DailyLearn-01
-date: 2021-04-01 10:03:50
-tags: [语言学习]
+tags:
+  - 语言学习
 categories: English
+abbrlink: 55322
+date: 2021-04-01 10:03:50
 ---
 
 English learned everyday!

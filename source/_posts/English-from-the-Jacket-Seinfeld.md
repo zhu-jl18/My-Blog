@@ -1,8 +1,9 @@
 ---
 title: English-from-the-Jacket-Seinfeld
+categories: English
+abbrlink: 20013
 date: 2021-03-26 19:17:16
 tags:
-categories: English
 ---
 Expressions and vocabulary learned from the episode.
 

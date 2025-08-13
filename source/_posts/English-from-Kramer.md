@@ -1,8 +1,9 @@
 ---
 title: English-from-Kramer
+categories: English
+abbrlink: 8377
 date: 2021-03-24 16:24:03
 tags:
-categories: English
 ---
 
 Expressions and vocabulary learned from the film.

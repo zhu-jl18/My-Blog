@@ -1,5 +1,163 @@
 /* source/_data/styles.styl */
 
+/* 侧边栏目录高亮颜色 - 改为蓝紫色 */
+.post-toc .nav .active > a,
+.post-toc .nav .active-current > a {
+  border-bottom-color: #667eea !important;
+  color: #667eea !important;
+}
+
+.post-toc .nav .active-current > a:hover {
+  color: #667eea !important;
+}
+
+/* 侧边栏导航激活状态 - 改为蓝紫色 */
+.sidebar-toc-active .sidebar-nav-toc,
+.sidebar-overview-active .sidebar-nav-overview {
+  border-bottom-color: #667eea !important;
+  color: #667eea !important;
+}
+
+.sidebar-toc-active .sidebar-nav-toc:hover,
+.sidebar-overview-active .sidebar-nav-overview:hover {
+  color: #667eea !important;
+}
+
+/* 阅读体验优化 */
+// 全局字体和行间距优化
+body {
+  background: #f8f9fa;
+  line-height: 1.7;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+// 文章内容区域优化
+.post-body {
+  font-size: 16px !important;
+  line-height: 1.75 !important;
+  color: #2c3e50 !important;
+  max-width: 65em !important;
+  margin: 0 auto !important;
+}
+
+// 段落间距优化
+.post-body p {
+  line-height: 1.75 !important;
+  margin: 1.2em 0 !important;
+  text-align: justify !important;
+  word-break: break-word !important;
+}
+
+// 标题字体大小优化
+.post-body h1 {
+  font-size: 1.8em !important;
+  line-height: 1.4 !important;
+  margin: 1.5em 0 0.8em !important;
+  font-weight: 600 !important;
+}
+
+.post-body h2 {
+  font-size: 1.5em !important;
+  line-height: 1.4 !important;
+  margin: 1.3em 0 0.7em !important;
+  font-weight: 600 !important;
+}
+
+.post-body h3 {
+  font-size: 1.3em !important;
+  line-height: 1.4 !important;
+  margin: 1.2em 0 0.6em !important;
+  font-weight: 600 !important;
+}
+
+.post-body h4 {
+  font-size: 1.1em !important;
+  line-height: 1.4 !important;
+  margin: 1.1em 0 0.5em !important;
+  font-weight: 600 !important;
+}
+
+// 列表样式优化
+.post-body ul, .post-body ol {
+  line-height: 1.7 !important;
+  margin: 1em 0 !important;
+  padding-left: 1.5em !important;
+}
+
+.post-body li {
+  margin: 0.5em 0 !important;
+  line-height: 1.7 !important;
+}
+
+// 代码块字体优化
+.post-body code {
+  font-size: 0.9em !important;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace !important;
+  background: #f6f8fa !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: 3px !important;
+  color: #e36209 !important;
+}
+
+.post-body pre {
+  font-size: 0.9em !important;
+  line-height: 1.6 !important;
+  margin: 1.5em 0 !important;
+  background: #f6f8fa !important;
+  border: 1px solid #e1e4e8 !important;
+  border-radius: 6px !important;
+  overflow-x: auto !important;
+  
+  code {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #24292e !important;
+    font-size: 0.9em !important;
+  }
+}
+
+// 行内代码样式
+.post-body p code {
+  font-size: 0.85em !important;
+  background: #f6f8fa !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: 3px !important;
+  color: #e36209 !important;
+  border: 1px solid #e1e4e8 !important;
+}
+
+// 引用块样式优化
+.post-body blockquote {
+  font-size: 0.95em !important;
+  line-height: 1.7 !important;
+  margin: 1.5em 0 !important;
+  padding: 1em 1.5em !important;
+  border-left: 4px solid #ff4757 !important;
+  background: #f8f9fa !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+// 表格样式优化
+.post-body table {
+  font-size: 0.9em !important;
+  line-height: 1.6 !important;
+  margin: 1.5em 0 !important;
+}
+
+// 链接样式优化
+.post-body a {
+  color: #667eea !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    border-bottom-color: #667eea !important;
+    color: #8b5cf6 !important;
+  }
+}
+
 /* post content */
 // 正确示例
 .post-content {
@@ -110,12 +268,29 @@ body {
   height: 100vh;
   overflow-y: auto;
   
+  /* 博客名字字体样式重新设计 */
+  .site-title {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.6em;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-style: italic;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
   &::-webkit-scrollbar {
     width: 6px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.1);
+    background: rgba(133, 61, 247, 0.2);
     border-radius: 3px;
   }
   
@@ -128,10 +303,11 @@ body {
         transition: all 0.3s ease;
         display: block;
         border-radius: 4px;
+        color: inherit;
         
         &:hover {
-          background: rgba(66,133,244,0.08);
-          color: #4285f4;
+          background: rgba(0, 0, 0, 0.05);
+          color: inherit;
           padding-left: 5px;
         }
       }
@@ -157,7 +333,7 @@ body {
     top: 50%;
     width: 4px;
     height: 80%;
-    background: #4285f4;
+    background: #667eea;
     transform: translateY(-50%);
     border-radius: 2px;
   }
@@ -186,35 +362,28 @@ body {
   }
 }
 
-.post-body {
-  font-size: 1.0125em !important;
-}
-
-p {
-  line-height: 1.6;
-  margin: 7px 0 7px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.5;
-  margin: 1px 0 6px;
-}
+// 移除重复的样式定义，使用上面优化的版本
 
 mjx-c {
   font-size: 85%;
 }
 
+/* 菜单字体优化 */
 .menu .menu-item a {
-  font-family: '等距更纱黑体 SC' !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
 }
 
-ul {
-  margin: 0 0 7px 0;
+/* Timeline样式优化 */
+.posts-collapse .post-title,
+.posts-collapse .collection-year,
+.posts-collapse .collection-title,
+.posts-collapse .post-meta,
+.posts-collapse .post-content {
+  font-weight: 500 !important;
 }
 
-ol {
-  margin: 4px 0;
-}
+// 移除重复的列表样式定义，使用上面优化的版本
 
 img {
   box-shadow: 0rem 0.4rem 0.8rem rgba(116, 95, 181, 0.1);
@@ -225,4 +394,583 @@ img {
   content: '#';
   padding-right: 10px;
   color: #a4b0be;
+}
+
+/* 自定义 Tags 和 Categories 页面样式 */
+
+// Tags 页面样式
+.tag-cloud {
+  text-align: center !important;
+  padding: 2em 0 !important;
+  
+  .tag-cloud-title {
+    font-size: 1.8em !important;
+    font-weight: 600 !important;
+    margin-bottom: 1.5em !important;
+    color: #2c3e50 !important;
+  }
+  
+  .tag-cloud-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 1em !important;
+    padding: 0 1em !important;
+    
+    .tag-cloud-list-item {
+      margin: 0 !important;
+      
+      a {
+        display: inline-block !important;
+        padding: 0.5em 1em !important;
+        background: linear-gradient(135deg, #667eea 0%, #8b5cf6 100%) !important;
+        color: white !important;
+        text-decoration: none !important;
+        border-radius: 25px !important;
+        font-size: 0.9em !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+        
+        &:hover {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
+          background: linear-gradient(135deg, #8b5cf6 0%, #667eea 100%) !important;
+        }
+      }
+    }
+  }
+}
+
+// Categories 页面样式
+.category-all-page {
+  padding: 2em 0 !important;
+  
+  .category-all-title {
+    font-size: 1.8em !important;
+    font-weight: 600 !important;
+    margin-bottom: 1.5em !important;
+    color: #2c3e50 !important;
+    text-align: center !important;
+  }
+  
+  .category-all {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    
+    .category-list {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      
+      .category-list-item {
+        margin-bottom: 1.5em !important;
+        
+        .category-list-count {
+          background: #667eea !important;
+          color: white !important;
+          padding: 0.2em 0.6em !important;
+          border-radius: 12px !important;
+          font-size: 0.8em !important;
+          font-weight: 500 !important;
+          margin-left: 0.5em !important;
+        }
+        
+        .category-list-link {
+          font-size: 1.1em !important;
+          font-weight: 500 !important;
+          color: #2c3e50 !important;
+          text-decoration: none !important;
+          padding: 0.8em 1.2em !important;
+          display: block !important;
+          background: #f8f9fa !important;
+          border-radius: 8px !important;
+          border-left: 4px solid #667eea !important;
+          transition: all 0.3s ease !important;
+          
+          &:hover {
+            background: #f0f4ff !important;
+            transform: translateX(5px) !important;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 标签云动画效果
+.tag-cloud-list-item {
+  animation: fadeInUp 0.6s ease-out !important;
+  animation-fill-mode: both !important;
+}
+
+// 为标签云项目添加延迟动画
+.tag-cloud-list-item:nth-child(1) { animation-delay: 0.1s !important; }
+.tag-cloud-list-item:nth-child(2) { animation-delay: 0.2s !important; }
+.tag-cloud-list-item:nth-child(3) { animation-delay: 0.3s !important; }
+.tag-cloud-list-item:nth-child(4) { animation-delay: 0.4s !important; }
+.tag-cloud-list-item:nth-child(5) { animation-delay: 0.5s !important; }
+.tag-cloud-list-item:nth-child(6) { animation-delay: 0.6s !important; }
+.tag-cloud-list-item:nth-child(7) { animation-delay: 0.7s !important; }
+.tag-cloud-list-item:nth-child(8) { animation-delay: 0.8s !important; }
+.tag-cloud-list-item:nth-child(9) { animation-delay: 0.9s !important; }
+.tag-cloud-list-item:nth-child(10) { animation-delay: 1.0s !important; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 分类页面动画
+.category-list-item {
+  animation: slideInLeft 0.5s ease-out !important;
+  animation-fill-mode: both !important;
+}
+
+// 为分类项目添加延迟动画
+.category-list-item:nth-child(1) { animation-delay: 0.1s !important; }
+.category-list-item:nth-child(2) { animation-delay: 0.2s !important; }
+.category-list-item:nth-child(3) { animation-delay: 0.3s !important; }
+.category-list-item:nth-child(4) { animation-delay: 0.4s !important; }
+.category-list-item:nth-child(5) { animation-delay: 0.5s !important; }
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 响应式设计
++tablet-mobile() {
+  .tag-cloud-list {
+    gap: 0.5em !important;
+    
+    .tag-cloud-list-item a {
+      font-size: 0.8em !important;
+      padding: 0.4em 0.8em !important;
+    }
+  }
+  
+  .category-all .category-list .category-list-item .category-list-link {
+    font-size: 1em !important;
+    padding: 0.6em 1em !important;
+  }
+}
+
+/* ========================================
+   左侧装饰模块样式
+   ======================================== */
+
+/* 左侧模块容器 */
+.left-sidebar-modules {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 180px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 收起状态 */
+  &.collapsed {
+    left: -150px; /* 收起时只露出30px */
+    
+    .left-module {
+      transform: translateX(0);
+      
+      /* 完全隐藏模块内容 */
+      .clock-display,
+      .weather-display,
+      .music-player {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+      
+      /* 隐藏模块标题 */
+      .module-title {
+        display: none;
+      }
+    }
+  }
+}
+
+/* 收缩按钮 */
+.collapse-toggle {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(133, 61, 247, 0.15);
+  border-left: none;
+  border-radius: 0 18px 18px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #853df7;
+  font-size: 10px;
+  transition: all 0.3s ease;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.95);
+    color: #853df7;
+    box-shadow: 0 2px 8px rgba(133, 61, 247, 0.2);
+  }
+  
+  i {
+    transition: transform 0.3s ease;
+  }
+  
+  .left-sidebar-modules.collapsed & {
+    i {
+      transform: rotate(180deg);
+    }
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.95);
+      color: #853df7;
+    }
+  }
+}
+
+/* 左侧模块通用样式 */
+.left-module {
+  border-radius: 20px;
+  padding: 1em;
+  box-shadow: 0 4px 20px rgba(133, 61, 247, 0.08);
+  color: #2c3e50;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(133, 61, 247, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  /* 顶部渐变条 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #853df7, #667eea, #ff6b6b);
+    opacity: 0.6;
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(133, 61, 247, 0.15);
+    border-color: rgba(133, 61, 247, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  /* 模块标题 */
+  .module-title {
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 0.8em;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+
+    i {
+      margin-right: 0.5em;
+      color: #853df7 !important;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 2px rgba(133, 61, 247, 0.2);
+    }
+  }
+
+  &:hover .module-title i {
+    transform: scale(1.1) rotate(3deg);
+  }
+}
+
+/* 时钟模块样式 */
+.clock-module {
+  background: linear-gradient(135deg, rgba(133, 61, 247, 0.03) 0%, rgba(102, 126, 234, 0.03) 100%);
+  
+  .clock-display {
+    .time {
+      font-size: 1.4em;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.25em;
+      color: #2c3e50;
+      text-shadow: 0 1px 2px rgba(133, 61, 247, 0.1);
+    }
+    
+    .date {
+      font-size: 0.7em;
+      color: #5a6c7d;
+      margin-bottom: 0.1em;
+      font-weight: 500;
+    }
+    
+    .week {
+      font-size: 0.6em;
+      color: #7f8c8d;
+      font-weight: 400;
+    }
+  }
+}
+
+/* 天气模块样式 */
+.weather-module {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(133, 61, 247, 0.03) 100%);
+  
+  .weather-display {
+    .weather-loading {
+      font-size: 0.7em;
+      color: #7f8c8d;
+      font-weight: 500;
+    }
+    
+    .weather-info {
+      .temperature {
+        font-size: 1.3em;
+        font-weight: 700;
+        margin-bottom: 0.2em;
+        color: #2c3e50;
+        text-shadow: 0 1px 2px rgba(133, 61, 247, 0.1);
+      }
+      
+      .description {
+        font-size: 0.7em;
+        color: #5a6c7d;
+        margin-bottom: 0.15em;
+        font-weight: 500;
+      }
+      
+      .location {
+        font-size: 0.6em;
+        color: #7f8c8d;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+/* 音乐播放器模块样式 */
+.music-module {
+  background: linear-gradient(135deg, rgba(133, 61, 247, 0.03) 0%, rgba(102, 126, 234, 0.03) 100%);
+  
+  .music-player {
+    .music-info {
+      margin-bottom: 0.8em;
+      
+      .song-title {
+        font-size: 0.75em;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.2em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .song-artist {
+        font-size: 0.65em;
+        color: #7f8c8d;
+        font-weight: 400;
+      }
+    }
+    
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5em;
+      margin-bottom: 0.8em;
+      
+      .music-btn {
+        width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(133, 61, 247, 0.1);
+        color: #853df7;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 12px;
+        
+        &:hover {
+          background: rgba(133, 61, 247, 0.2);
+          transform: scale(1.1);
+          box-shadow: 0 2px 8px rgba(133, 61, 247, 0.3);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+        
+        i {
+          transition: all 0.3s ease;
+        }
+      }
+    }
+    
+    .music-progress {
+      margin-bottom: 0.8em;
+      
+      .progress-bar {
+        width: 100%;
+        height: 3px;
+        background: rgba(133, 61, 247, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 0.3em;
+        
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #853df7, #667eea);
+          border-radius: 2px;
+          transition: width 0.3s ease;
+          width: 0%;
+        }
+      }
+      
+      .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.6em;
+        color: #7f8c8d;
+        font-weight: 400;
+      }
+    }
+    
+    .music-volume {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      
+      i {
+        font-size: 0.7em;
+        color: #853df7;
+        width: 12px;
+      }
+      
+      .volume-display {
+        font-size: 0.6em;
+        color: #7f8c8d;
+        font-weight: 400;
+        min-width: 25px;
+        text-align: center;
+      }
+      
+      .volume-controls {
+        display: flex;
+        gap: 0.3em;
+        justify-content: center;
+        align-items: center;
+        
+        .volume-btn {
+          width: 20px;
+          height: 20px;
+          border: none;
+          border-radius: 50%;
+          background: rgba(133, 61, 247, 0.1);
+          color: #853df7;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          font-size: 10px;
+          
+          &:hover {
+            background: rgba(133, 61, 247, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 2px 6px rgba(133, 61, 247, 0.3);
+          }
+          
+          &:active {
+            transform: scale(0.95);
+          }
+          
+          i {
+            transition: all 0.3s ease;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 侧边栏社交链接优化 - 解决文字显示不全问题 */
+.sidebar .social-links {
+  .social-link {
+    // 确保链接容器有足够空间
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    
+    // 图标样式
+    i {
+      flex-shrink: 0 !important;
+      margin-right: 0.5em !important;
+      width: 1em !important;
+      text-align: center !important;
+    }
+    
+    // 文字样式优化
+    span {
+      flex: 1 !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      font-size: 0.9em !important;
+    }
+  }
+}
+
+/* 特别针对StackOverflow链接的优化 */
+.sidebar .social-links .social-link[href*="stackoverflow"] {
+  span {
+    font-size: 0.85em !important; // 稍微缩小字体
+    letter-spacing: -0.02em !important; // 稍微压缩字母间距
+  }
+}
+
+/* 侧边栏整体宽度微调 */
+.sidebar {
+  .sidebar-inner {
+    padding-right: 0.5em !important; // 减少右边距
+  }
 }

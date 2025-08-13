@@ -1,8 +1,9 @@
 ---
 title: English-from-Notting-Hill
+categories: English
+abbrlink: 4061
 date: 2021-03-26 11:04:07
 tags:
-categories:  English
 ---
 
 Expressions and vocabulary learned from the film.

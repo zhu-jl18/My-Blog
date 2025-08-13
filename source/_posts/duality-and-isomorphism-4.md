@@ -1,10 +1,14 @@
 ---
 title: Duality and Isomorpism IX
 categories:
-  - []
-date: 2025-08-09 22:42:07
+  - Math
 tags:
---- tag
+  - math
+  - duality
+  - isomorphism
+abbrlink: 21524
+date: 2025-08-09 22:42:07
+---
 
 > * * 
 

@@ -1,0 +1,82 @@
+<!-- 左侧装饰模块 -->
+<div id="left-sidebar-modules" class="left-sidebar-modules">
+  <!-- 收缩按钮 -->
+  <div class="collapse-toggle" id="collapse-toggle" title="收起/展开">
+    <i class="fa fa-chevron-left"></i>
+  </div>
+  
+  <!-- 时钟模块 -->
+  <div class="left-module clock-module">
+    <div class="module-title">
+      <i class="fa-solid fa-clock"></i> 时间
+    </div>
+    <div class="clock-display" id="left-clock">
+      <div class="time">--:--:--</div>
+      <div class="date">----年--月--日</div>
+      <div class="week">星期-</div>
+    </div>
+  </div>
+
+  <!-- 天气模块 -->
+  <div class="left-module weather-module">
+    <div class="module-title">
+      <i class="fa fa-cloud"></i> 天气
+    </div>
+    <div class="weather-display" id="left-weather">
+      <div class="weather-loading">正在获取天气...</div>
+    </div>
+  </div>
+
+  <!-- 音乐播放器模块 -->
+  <div class="left-module music-module">
+    <div class="module-title">
+      <i class="fa fa-music"></i >音乐
+    </div>
+    <div class="music-player" id="left-music">
+      <div class="music-info">
+        <div class="song-title">暂无播放</div>
+        <div class="song-artist">-</div>
+      </div>
+      <div class="music-controls">
+        <button class="music-btn" id="left-music-prev" title="上一首">
+          <i class="fa fa-step-backward"></i>
+        </button>
+        <button class="music-btn" id="left-music-play" title="播放/暂停">
+          <i class="fa fa-play"></i>
+        </button>
+        <button class="music-btn" id="left-music-next" title="下一首">
+          <i class="fa fa-step-forward"></i>
+        </button>
+      </div>
+      <div class="music-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="left-music-progress-fill"></div>
+        </div>
+        <div class="time-display">
+          <span id="left-music-current-time">0:00</span>
+          <span id="left-music-total-time">0:00</span>
+        </div>
+      </div>
+      <div class="music-volume">
+        <i class="fa fa-volume-up"></i>
+        <span class="volume-display" id="left-music-volume-display">30%</span>
+        <div class="volume-controls">
+          <button class="volume-btn" id="left-music-volume-down" title="降低音量">
+            <i class="fa fa-volume-down"></i>
+          </button>
+          <button class="volume-btn" id="left-music-volume-up" title="提高音量">
+            <i class="fa fa-volume-up"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 引入音乐配置文件 -->
+<script src="/js/music-config.js"></script>
+
+<!-- 引入侧边栏装饰模块JavaScript -->
+<script src="/js/sidebar-modules.js"></script>
+
+

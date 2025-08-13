@@ -1,8 +1,9 @@
 ---
 title: English-from-the-Cafe-Seinfeld
+categories: English
+abbrlink: 43173
 date: 2021-03-31 08:39:28
 tags:
-categories: English
 ---
 
 Expressions and vocabulary learned from the episode.
