@@ -124,23 +124,14 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: next
 
-# MathJax Configuration
-mathjax:
-  tags: none # or 'ams' or 'all'
-  single_dollars: true # enable single dollar signs as in-line math delimiters
-  cjk_width: 0.9 # relative CJK char width
-  normal_width: 0.6 # relative normal (monospace) width
-  append_css: true # add CSS to pages rendered by MathJax
-  every_page: false # 如果设置为true,默认每篇文章都会被mathjax渲染
-
-# hexo-renderer-pandoc (https://github.com/wzpan/hexo-renderer-pandoc)
-pandoc:
-  extra:
-    - toc: # will be passed as `--toc`. Note the colon，如果不需要自动生成目录无需添加此行
-  extensions:
-    - "+hard_line_breaks"
-    - "+emoji"
-    - "-implicit_figures"
+# MathJax Configuration (由Next主题统一管理)
+# mathjax:
+#   tags: none # or 'ams' or 'all'
+#   single_dollars: true # enable single dollar signs as in-line math delimiters
+#   cjk_width: 0.9 # relative CJK char width
+#   normal_width: 0.6 # relative normal (monospace) width
+#   append_css: true # add CSS to pages rendered by MathJax
+#   every_page: false # 如果设置为true,默认每篇文章都会被mathjax渲染
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
