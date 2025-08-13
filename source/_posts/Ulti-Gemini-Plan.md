@@ -1,5 +1,5 @@
 ---
-title: Ulti-Gemini-Plan
+title: Ultimate Plan for Gemini API Calls
 categories:
   - [AI]
 date: 2025-08-12 23:52:13

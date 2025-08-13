@@ -1,5 +1,5 @@
 ---
-title: 和AI一起折腾：我的GitHub Profile进化史
+title: The Evolution of My GitHub Profile
 categories:
   - 技术折腾
   - AI协作

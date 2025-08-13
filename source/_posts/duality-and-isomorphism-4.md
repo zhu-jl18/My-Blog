@@ -1,5 +1,5 @@
 ---
-title: duality-and-isomorphism-4
+title: Duality and Isomorpism IX
 categories:
   - []
 date: 2025-08-09 22:42:07
