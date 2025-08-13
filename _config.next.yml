@@ -24,8 +24,8 @@ custom_file_path:
   sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
   #postBodyStart: source/_data/post-body-start.njk
-  #postBodyEnd: source/_data/post-body-end.njk
-  #footer: source/_data/footer.njk
+  postBodyEnd: source/_data/post-body-end.njk
+  footer: source/_data/footer.njk
   bodyEnd: source/_data/body-end.njk
   variable: source/_data/variables.styl
   #mixin: source/_data/mixins.styl
@@ -554,12 +554,20 @@ math:
   # Default (false) will load mathjax / katex script on demand.
   # That is it only render those page which has `mathjax: true` in front-matter.
   # If you set it to true, it will load mathjax / katex script EVERY PAGE.
-  every_page: false
+  every_page: true
 
   mathjax:
     enable: true
     # Available values: none | ams | all
-    tags: none
+    tags: ams
+    # 启用单美元符号作为行内数学分隔符
+    single_dollars: true
+    # 中文字符宽度
+    cjk_width: 0.9
+    # 普通字符宽度
+    normal_width: 0.6
+    # 添加CSS样式
+    append_css: true
 
   katex:
     enable: false

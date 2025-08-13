@@ -27,7 +27,7 @@ $\frac{1}{2} $
 
 - **定义**: $V^{\ast}{\ast}{\ast}*$ 是所有从 $V$ 到其标量域 $F$ 的线性映射（称为**线性泛函**）的集合。
 - **核心思想**: $V^{\ast}{\ast}{\ast}*$ 中的每个元素 $f$ 都是一个“测量工具”，它接收一个向量 $v \in V$，然后输出一个标量 $f(v) \in F$。
-- **关键结果 (有限维)**: 如果 $V$ 有一组基 $\{e_1, \dots, e_n\}$，那么 $V^{\ast}{\ast}{\ast}*$ 就有一组对应的**对偶基** $\{E^{\ast}{\ast}1, \dots, E^{\ast}{\ast}n\}$，定义为 $E^{\ast}{\ast}i(e_j) = \delta^i_j$。这直接导出一个重要结论：$\dim(V) = \dim(V^{\ast}{\ast}{\ast}*)$。
+- **关键结果 (有限维)**: 如果 $V$ 有一组基 $\{e_1, \dots, e_n\}$，那么 $V^{\ast}{\ast}{\ast}*$ 就有一组对应的**对偶基** $\{E^{\ast}{\ast}1, \dots, E^{\ast}{\ast}n\}$，定义为 $E^{\ast}{\ast}i(e_j) = \delta^{i}_{j}$。这直接导出一个重要结论：$\dim(V) = \dim(V^{\ast}{\ast}{\ast}*)$。
 
 #### 第 3 步：发现同构 —— “看起来一样”
 
@@ -78,7 +78,7 @@ $
   $
   (T^{\ast}*(g))(v) = g(T(v)) \quad \text{for all } v \in V
   $
-  这个过程可以被看作是函数复合：$V \xrightarrow{T} W \xrightarrow{g} F$。所以 $T^{\ast}*(g) = g \circ T$。
+  这个过程可以被看作是函数复合：$V \stackrel{T}{\rightarrow} W \stackrel{g}{\rightarrow} F$。所以 $T^{\ast}*(g) = g \circ T$。
 
 **请注意一个至关重要的细节：箭头的方向反转了！**
 $T$ 是从 $V$ 到 $W$，而 $T^{\ast}*$ 是从 $W^{\ast}*$ 到 $V^{\ast}{\ast}{\ast}*$。

@@ -93,9 +93,9 @@ $$
 如果 $\{e_1, e_2, \ldots, e_n\}$ 是 $V$ 的基，那么对偶基 $\{e^1, e^2, \ldots, e^n\}$ 满足：
 
 $$
-e^i(e_j) = \delta^i_j = \begin{cases} 
-1 & \text{if } i=j \\ 
-0 & \text{if } i \neq j 
+e^i(e_j) = \delta^{i}_{j} = \begin{cases}
+1 & \text{if } i=j \\
+0 & \text{if } i \neq j
 \end{cases}
 $$
 

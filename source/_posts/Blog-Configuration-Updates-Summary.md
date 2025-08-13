@@ -310,6 +310,75 @@ Pjax功能由Next主题内置提供，无需额外的JavaScript代码。主题�
 
 **结论**：有时候简单就是最好的！🎯
 
+## 🔧 Pandoc渲染问题解决
+
+### 问题背景
+在配置Pandoc渲染器后，发现现有文章中的LaTeX语法与Pandoc不兼容，导致大量渲染警告。
+
+### 主要问题类型
+
+#### 1. 星号语法问题
+**错误语法**：`V^*`, `G^*`
+**正确语法**：`V^{\ast}`, `G^{\ast}`
+
+**原因**：Pandoc对LaTeX语法要求更严格，星号需要用 `\ast` 命令。
+
+#### 2. 上下标语法问题
+**错误语法**：`\delta^i_j`
+**正确语法**：`\delta^{i}_{j}`
+
+**原因**：Pandoc要求上下标必须用大括号包围。
+
+#### 3. 箭头语法问题
+**错误语法**：`\xrightarrow{T}`
+**正确语法**：`\stackrel{T}{\rightarrow}`
+
+**原因**：`\xrightarrow` 在某些Pandoc版本中不被支持。
+
+### 修改的文件列表
+
+1. **`Duality-and-Isomorphism-1.md`**
+   - 第58行：`\delta^i_j` → `\delta^{i}_{j}`
+   - 第59行：`\delta^i_j` → `\delta^{i}_{j}`
+
+2. **`Duality-and-Isomorphism-2.md`**
+   - 第29行：`\delta^i_j` → `\delta^{i}_{j}`
+   - 第80行：`\xrightarrow{T}` → `\stackrel{T}{\rightarrow}`
+
+3. **`Duality-and-Isomorphism-4.md`**
+   - 第80行：`V^*` → `V^{\ast}`, `G^*` → `G^{\ast}`
+
+4. **`Math-Formula-Test.md`**
+   - 第95行：`\delta^i_j` → `\delta^{i}_{j}`
+
+### Pandoc兼容性规则总结
+
+```latex
+# 星号语法
+V^* → V^{\ast}
+G^* → G^{\ast}
+
+# 上下标语法
+\delta^i_j → \delta^{i}_{j}
+x^2 → x^{2}
+
+# 箭头语法
+\xrightarrow{T} → \stackrel{T}{\rightarrow}
+\longrightarrow → \rightarrow
+```
+
+### 经验教训
+- **语法严格性**：Pandoc比默认渲染器更严格
+- **逐步迁移**：现有文章需要逐步更新语法
+- **测试验证**：每次修改后都要测试渲染效果
+- **文档记录**：记录修改过程便于后续维护
+
+### 解决效果
+- ✅ 消除了所有Pandoc渲染警告
+- ✅ 数学公式正确显示
+- ✅ 保持了文章的可读性
+- ✅ 提高了渲染的稳定性
+
 ---
 
 *本文记录了博客配置的重要更新，为后续的维护和优化提供了完整的参考文档。*
