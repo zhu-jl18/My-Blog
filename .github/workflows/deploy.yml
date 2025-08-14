@@ -1,0 +1,89 @@
+name: 🚀 自动部署到 GitHub Pages
+
+# 触发条件：推送到main分支时
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'source/**'           # 只在内容变更时触发
+      - '_config.yml'
+      - '_config.next.yml'
+      - 'package.json'
+  pull_request:
+    branches: [ main ]
+
+# 工作流权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制：同时只允许一个部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # 构建任务
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取完整git历史
+        
+    - name: 🔧 设置 Node.js 环境  
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'  # 自动缓存npm依赖
+        
+    - name: 📦 安装依赖
+      run: |
+        npm ci --prefer-offline --no-audit --no-fund
+        npm list --depth=0
+        
+    - name: 🏗️ 构建静态文件
+      run: |
+        export NODE_ENV=production
+        export NODE_OPTIONS="--max-old-space-size=4096"
+        npm run clean
+        npm run build
+        
+    - name: 🔍 验证构建结果
+      run: |
+        ls -la public/
+        echo "📊 构建统计："
+        find public -name "*.html" | wc -l | xargs echo "HTML文件数："
+        find public -name "*.css" | wc -l | xargs echo "CSS文件数："
+        find public -name "*.js" | wc -l | xargs echo "JS文件数："
+        du -sh public/ | xargs echo "总大小："
+        
+    - name: 📤 上传构建产物
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./public
+
+  # 部署任务（仅在main分支）
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: 🚀 部署到 GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      
+    - name: 📊 生成部署报告
+      run: |
+        echo "## 🎉 部署成功报告" >> $GITHUB_STEP_SUMMARY
+        echo "- ⏰ 构建时间: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- 🔗 访问链接: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+        echo "- 📝 提交信息: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
+        echo "- 👤 提交作者: ${{ github.event.head_commit.author.name }}" >> $GITHUB_STEP_SUMMARY
