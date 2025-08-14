@@ -10,7 +10,7 @@ comments: false
 
 <div class="categories-overview">
   <div class="categories-grid" id="dynamic-categories">
-    <!-- 分类将通过JavaScript动态生成 -->
+    <!-- 分类内容将通过JavaScript生成 -->
   </div>
 </div>
 
@@ -66,13 +66,17 @@ comments: false
   function initCategories() {
     const container = document.getElementById('dynamic-categories');
     if (!container) {
+      console.log('容器未找到，等待重试');
       return false;
     }
     
-    // 防止重复初始化同一个容器
-    if (initialized && container.children.length > 0) {
+    // 检查是否已经有内容了（防止重复初始化）
+    if (container.children.length > 0 && initialized) {
+      console.log('内容已存在，跳过初始化');
       return true;
     }
+    
+    console.log('开始初始化分类页面');
     
     // 清空容器
     container.innerHTML = '';
@@ -99,42 +103,76 @@ comments: false
     });
 
     initialized = true;
-    console.log('分类页面初始化完成');
+    console.log('分类页面初始化完成，生成了', Object.keys(categoryConfig).length, '个分类');
     return true;
   }
 
-  // 重试机制（减少重试频率，避免多次初始化）
-  function initWithRetry() {
-    if (!initCategories()) {
-      let retryCount = 0;
-      const maxRetries = 10;
-      const retryInterval = setInterval(() => {
-        retryCount++;
-        if (initCategories() || retryCount >= maxRetries) {
-          clearInterval(retryInterval);
-        }
-      }, 300);
+  // 多重初始化策略 - 确保各种情况下都能成功加载
+  function startInitialization() {
+    // 立即尝试初始化
+    if (initCategories()) {
+      console.log('立即初始化成功');
+      return;
     }
+    
+    // 如果立即初始化失败，设置重试机制
+    let retryCount = 0;
+    const maxRetries = 20; // 增加重试次数
+    const retryInterval = setInterval(() => {
+      retryCount++;
+      console.log(`第${retryCount}次重试初始化`);
+      
+      if (initCategories()) {
+        console.log('重试初始化成功');
+        clearInterval(retryInterval);
+      } else if (retryCount >= maxRetries) {
+        console.error('初始化失败，已达到最大重试次数');
+        clearInterval(retryInterval);
+      }
+    }, 100); // 缩短重试间隔到100ms
   }
 
   // 多种初始化时机
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWithRetry);
+    document.addEventListener('DOMContentLoaded', startInitialization);
   } else {
-    initWithRetry();
+    startInitialization();
   }
   
-  // 延迟备份初始化（只在未初始化时执行）
+  // 立即初始化备份
+  setTimeout(startInitialization, 0);
+  
+  // 延迟初始化备份
   setTimeout(() => {
-    if (!initialized) initWithRetry();
+    if (!initialized) {
+      console.log('延迟备份初始化启动');
+      startInitialization();
+    }
+  }, 200);
+  
+  // 更长延迟的备份
+  setTimeout(() => {
+    if (!initialized) {
+      console.log('长延迟备份初始化启动');
+      startInitialization();
+    }
   }, 500);
   
-  // PJAX 兼容性 - 重置初始化状态
+  // PJAX 兼容性 - 重置初始化状态并重新初始化
   document.addEventListener('pjax:start', () => {
+    console.log('PJAX导航开始，重置状态');
     initialized = false;
   });
-  document.addEventListener('pjax:complete', initWithRetry);
-  document.addEventListener('pjax:success', initWithRetry);
+  
+  document.addEventListener('pjax:complete', () => {
+    console.log('PJAX导航完成，开始重新初始化');
+    setTimeout(startInitialization, 0);
+  });
+  
+  document.addEventListener('pjax:success', () => {
+    console.log('PJAX导航成功，开始重新初始化');
+    setTimeout(startInitialization, 0);
+  });
   
   // Next.js兼容
   if (window.NexT && window.NexT.utils) {

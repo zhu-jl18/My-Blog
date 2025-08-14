@@ -8,7 +8,8 @@
       "Bash(timeout:*)",
       "WebFetch(domain:theme-next.js.org)",
       "Bash(hexo deploy:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
