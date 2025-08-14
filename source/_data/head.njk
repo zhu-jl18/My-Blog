@@ -1,0 +1,39 @@
+<!-- 字体预加载优化 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- 字体加载优化 -->
+<style>
+  /* 字体显示优化 */
+  @font-face {
+    font-family: 'Source Han Sans SC';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Fira Code';
+    font-display: swap;
+  }
+</style>
+
+<!-- 关键CSS内联优化 -->
+<style>
+  /* 关键样式提前加载，减少FOUC */
+  body {
+    font-display: swap;
+  }
+  
+  /* 减少布局抖动 */
+  .sidebar {
+    contain: layout style;
+  }
+  
+  .main-inner {
+    contain: layout;
+  }
+</style>

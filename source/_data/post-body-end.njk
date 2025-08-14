@@ -1,1 +1,40 @@
 <!-- 文章底部自定义内容 -->
+
+{# Giscus评论系统 #}
+{% if page.comments !== false and config.giscus.enable %}
+<div class="giscus-container">
+  <script src="https://giscus.app/client.js"
+          data-repo="{{ config.giscus.repo }}"
+          data-repo-id="{{ config.giscus.repo_id }}"
+          data-category="{{ config.giscus.category }}"
+          data-category-id="{{ config.giscus.category_id }}"
+          data-mapping="{{ config.giscus.mapping }}"
+          data-strict="{{ config.giscus.strict }}"
+          data-reactions-enabled="{{ config.giscus.reactions_enabled }}"
+          data-emit-metadata="{{ config.giscus.emit_metadata }}"
+          data-input-position="{{ config.giscus.input_position }}"
+          data-theme="{{ config.giscus.theme }}"
+          data-lang="{{ config.giscus.lang }}"
+          data-loading="{{ config.giscus.loading }}"
+          crossorigin="anonymous"
+          async>
+  </script>
+</div>
+
+<style>
+.giscus-container {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color, #e1e4e8);
+}
+
+.giscus {
+  width: 100%;
+}
+
+/* 暗黑模式适配 */
+[data-theme="dark"] .giscus-container {
+  border-top-color: var(--border-color, #30363d);
+}
+</style>
+{% endif %}

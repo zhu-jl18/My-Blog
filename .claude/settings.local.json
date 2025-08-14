@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(hexo generate:*)",
+      "Bash(hexo server:*)",
+      "Bash(npm install:*)",
+      "Bash(hexo clean:*)",
+      "Bash(timeout:*)"
+    ],
+    "deny": []
+  }
+}

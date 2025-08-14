@@ -139,3 +139,26 @@ deploy:
   type: "git"
   repo: git@github.com:zhu-jl18/zhu-jl18.github.io.git
   branch: main
+
+# Giscus评论系统配置
+giscus:
+  enable: true
+  repo: "zhu-jl18/zhu-jl18.github.io"  # 你的GitHub仓库名
+  repo_id: ""  # 需要从giscus.app获取
+  category: "General"  # Discussion分类名
+  category_id: ""  # 需要从giscus.app获取
+  mapping: "pathname"  # 页面-discussion映射关系
+  strict: "0"
+  reactions_enabled: "1"  # 启用反应表情
+  emit_metadata: "0"
+  input_position: "bottom"  # 评论框位置
+  theme: "preferred_color_scheme"  # 主题跟随系统
+  lang: "zh-CN"  # 语言
+  loading: "lazy"  # 懒加载
+
+# 本地搜索配置
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html

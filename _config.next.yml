@@ -14,12 +14,12 @@ cache:
   enable: true
 
 # Remove unnecessary files after hexo generate.
-minify: false
+minify: true
 
 # Define custom file paths.
 # Create your custom files in site directory `source/_data` and uncomment needed files below.
 custom_file_path:
-  #head: source/_data/head.njk
+  head: source/_data/head.njk
   #header: source/_data/header.njk
   sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
@@ -42,7 +42,7 @@ scheme: Pisces
 #scheme: Gemini
 
 # Dark Mode
-darkmode: false
+darkmode: true
 
 # ---------------------------------------------------------------
 # Site Information Settings
@@ -56,7 +56,7 @@ favicon:
   #android_manifest: /manifest.json
 
 # Custom Logo (Warning: Do not support scheme Mist)
-custom_logo: /images/evolution.png #/uploads/custom-logo.png
+custom_logo: https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog@main/logo/evolution.png
 
 # Creative Commons 4.0 International License.
 # See: https://creativecommons.org/about/cclicenses/
@@ -94,13 +94,14 @@ open_graph:
 # External url should start with http:// or https://
 menu:
   Timeline: / || fa fa-bookmark # 时间线首页
+  Navigation: /navigation/ || fa fa-compass # 知识导航
   Schedule: /schedule/ || fa fa-calendar
-  About: /about/ || fa fa-user
-  Categories: /categories/ || fa fa-th
+  Milestones: /milestones/ || fa fa-trophy
   Archives: /archives/ || fa fa-archive
+  About: /about/ || fa fa-user
   #home: / || fa fa-home
   #about: /about/ || fa fa-user
-  Tags: /tags/ || fa fa-tags
+  #Tags: /tags/ || fa fa-tags
   #categories: /categories/ || fa fa-th
   #archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
@@ -144,7 +145,7 @@ sidebar:
 # Sidebar Avatar
 avatar:
   # Replace the default image and set the url here.
-  url: /images/avatar.jpg
+  url: https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog@main/avatar/avatar.jpg
   # If true, the avatar will be displayed in circle.
   rounded: true
   # If true, the avatar will be rotated with the cursor.
@@ -158,19 +159,25 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  # GitHub: https://github.com/zhu-jl18 || fab fa-github
-  E-Mail: mailto:zhujiale18@gmail.com || fa fa-envelope
-  #Weibo: https://weibo.com/yourname || fab fa-weibo
-  #Twitter: https://twitter.com/yourname || fab fa-twitter
-  #FB Page: https://www.facebook.com/yourname || fab fa-facebook
+  GitHub: https://github.com/zhu-jl18 || fab fa-github
+  #E-Mail: mailto:zhujiale18@gmail.com || fa fa-envelope
   StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
-  #YouTube: https://youtube.com/yourname || fab fa-youtube
-  #Instagram: https://instagram.com/yourname || fab fa-instagram
+  #Weibo: https://weibo.com/yourname || fa fa-weibo
+  Instagram: https://instagram.com/yourname || fa fa-instagram
+  Twitter: https://twitter.com/yourname || fab fa-twitter
+  #LinkedIn: https://linkedin.com/in/yourname || fab fa-linkedin
+  YouTube: https://youtube.com/yourname || fab fa-youtube
+  Facebook: https://www.facebook.com/yourname || fab fa-facebook
+  Telegram: https://t.me/yourname || fab fa-telegram
+  #Discord: https://discord.gg/yourname || fab fa-discord
+  Reddit: https://reddit.com/user/yourname || fab fa-reddit
+  #Medium: https://medium.com/@yourname || fab fa-medium
+  #Dev.to: https://dev.to/yourname || fab fa-dev
   #Skype: skype:yourname?call|chat || fab fa-skype
 
 social_icons:
   enable: true
-  icons_only: false
+  icons_only: true
   transition: true
 
 # Blog rolls
@@ -366,7 +373,7 @@ codeblock:
     dark: github-dark
   prism:
     light: prism-tomorrow
-    dark: prism-tomorrow
+    dark: prism-dark
   # Add copy button on codeblock
   copy_button:
     enable: true
@@ -442,13 +449,13 @@ font:
 
   # Font settings for site title (.site-title).
   title:
-    external: true
+    external: false
     family:
     size:
 
   # Font settings for headlines (<h1> to <h6>).
   headings:
-    external: true
+    external: false
     family:
     size:
 
@@ -590,11 +597,11 @@ fancybox: false
 # Medium Zoom is a JavaScript library for zooming images like Medium.
 # Warning: Do not enable both `fancybox` and `mediumzoom`.
 # For more information: https://medium-zoom.francoischalifour.com
-mediumzoom: false
+mediumzoom: true
 
 # Vanilla JavaScript plugin for lazyloading images.
 # For more information: https://apoorv.pro/lozad.js/demo/
-lazyload: false
+lazyload: true
 
 # Automatically insert whitespace between CJK and half-width characters.
 # For more information: https://github.com/vinta/pangu.js
@@ -605,11 +612,11 @@ pangu: false
 # For more information: https://getquick.link
 # Front-matter variable (nonsupport home archive).
 quicklink:
-  enable: false
+  enable: true
 
   # Home page and archive page can be controlled through home and archive options below.
   # This configuration item is independent of `enable`.
-  home: false
+  home: true
   archive: true
 
   # Default (true) will initialize quicklink after the load event fires.
@@ -836,7 +843,7 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # For more information: http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
-  enable: false
+  enable: true
   total_visitors: true
   total_visitors_icon: fa fa-user
   total_views: true
@@ -859,13 +866,13 @@ algolia_search:
 # Local Search
 # Dependencies: https://github.com/next-theme/hexo-generator-searchdb
 local_search:
-  enable: false
+  enable: true
   # Show top n results per article, show all results by setting to -1
   top_n_per_article: 1
   # Unescape html strings to the readable one.
   unescape: false
   # Preload the search data when the page loads.
-  preload: false
+  preload: true
 
 # ---------------------------------------------------------------
 # Chat Services
@@ -919,4 +926,4 @@ vendors:
 # The js option is only valid when vendors.internal is local.
 css: css
 js: js
-images: images
+images: images  # 文章图片用本地，避免手动维护麻烦
