@@ -162,3 +162,7 @@ search:
   field: post
   content: true
   format: html
+
+# 网站地图配置
+sitemap:
+  path: sitemap.xml

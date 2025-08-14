@@ -5,7 +5,10 @@
       "Bash(hexo server:*)",
       "Bash(npm install:*)",
       "Bash(hexo clean:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "WebFetch(domain:theme-next.js.org)",
+      "Bash(hexo deploy:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
