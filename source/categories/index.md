@@ -15,7 +15,7 @@ comments: false
 </div>
 
 <script>
-// 动态生成分类卡片 - 修复PJAX加载问题
+// 动态生成分类卡片 - 优化版本，确保首次加载成功
 (function() {
   // 分类配置
   const categoryConfig = {
@@ -61,123 +61,121 @@ comments: false
     '技术测试': 1
   };
 
-  let initialized = false;
+  let isInitialized = false;
 
-  function initCategories() {
+  function generateCategories() {
     const container = document.getElementById('dynamic-categories');
     if (!container) {
-      console.log('容器未找到，等待重试');
+      console.log('[Categories] 容器未找到');
       return false;
     }
     
-    // 检查是否已经有内容了（防止重复初始化）
-    if (container.children.length > 0 && initialized) {
-      console.log('内容已存在，跳过初始化');
+    // 如果已经初始化且容器有内容，跳过
+    if (isInitialized && container.children.length > 0) {
+      console.log('[Categories] 已初始化，跳过');
       return true;
     }
     
-    console.log('开始初始化分类页面');
+    console.log('[Categories] 开始生成分类内容');
     
-    // 清空容器
+    // 强制确保容器可见
+    container.style.minHeight = '200px';
+    container.style.display = 'grid';
+    
+    // 清空现有内容
     container.innerHTML = '';
     
-    // 生成分类卡片
+    // 生成HTML字符串，一次性插入DOM
+    let htmlContent = '';
     Object.entries(categoryConfig).forEach(([key, config]) => {
-      const categoryItem = document.createElement('div');
-      categoryItem.className = 'category-item';
-      
-      // 直接使用静态数量，避免闪烁
       const count = categoryCounts[key] || 0;
-      
-      categoryItem.innerHTML = `
-        <div class="category-header">
-          <span class="category-icon">${config.icon}</span>
-          <h4 class="category-title">${config.title}</h4>
-          <span class="category-count">${count}篇</span>
+      htmlContent += `
+        <div class="category-item" style="opacity: 1; transform: none;">
+          <div class="category-header">
+            <span class="category-icon">${config.icon}</span>
+            <h4 class="category-title">${config.title}</h4>
+            <span class="category-count">${count}篇</span>
+          </div>
+          <p class="category-desc">${config.desc}</p>
+          <a href="/categories/${encodeURIComponent(key)}/" class="category-link">进入分类 →</a>
         </div>
-        <p class="category-desc">${config.desc}</p>
-        <a href="/categories/${encodeURIComponent(key)}/" class="category-link">进入分类 →</a>
       `;
-      
-      container.appendChild(categoryItem);
     });
-
-    initialized = true;
-    console.log('分类页面初始化完成，生成了', Object.keys(categoryConfig).length, '个分类');
+    
+    // 一次性插入所有内容
+    container.innerHTML = htmlContent;
+    
+    // 强制重绘
+    container.offsetHeight;
+    
+    isInitialized = true;
+    console.log('[Categories] 分类内容生成完成，共', Object.keys(categoryConfig).length, '个分类');
     return true;
   }
 
-  // 多重初始化策略 - 确保各种情况下都能成功加载
-  function startInitialization() {
-    // 立即尝试初始化
-    if (initCategories()) {
-      console.log('立即初始化成功');
+  // 初始化函数
+  function initializeCategories() {
+    // 确保DOM准备就绪
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', generateCategories);
       return;
     }
     
-    // 如果立即初始化失败，设置重试机制
-    let retryCount = 0;
-    const maxRetries = 20; // 增加重试次数
+    // 立即尝试生成
+    if (generateCategories()) {
+      return;
+    }
+    
+    // 如果失败，使用定时器重试
+    let attempts = 0;
+    const maxAttempts = 10;
     const retryInterval = setInterval(() => {
-      retryCount++;
-      console.log(`第${retryCount}次重试初始化`);
+      attempts++;
+      console.log(`[Categories] 重试第${attempts}次`);
       
-      if (initCategories()) {
-        console.log('重试初始化成功');
+      if (generateCategories() || attempts >= maxAttempts) {
         clearInterval(retryInterval);
-      } else if (retryCount >= maxRetries) {
-        console.error('初始化失败，已达到最大重试次数');
-        clearInterval(retryInterval);
+        if (attempts >= maxAttempts) {
+          console.error('[Categories] 初始化失败，已达最大重试次数');
+        }
       }
-    }, 100); // 缩短重试间隔到100ms
+    }, 200);
   }
 
-  // 多种初始化时机
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startInitialization);
-  } else {
-    startInitialization();
-  }
-  
-  // 立即初始化备份
-  setTimeout(startInitialization, 0);
-  
-  // 延迟初始化备份
-  setTimeout(() => {
-    if (!initialized) {
-      console.log('延迟备份初始化启动');
-      startInitialization();
-    }
-  }, 200);
-  
-  // 更长延迟的备份
-  setTimeout(() => {
-    if (!initialized) {
-      console.log('长延迟备份初始化启动');
-      startInitialization();
-    }
-  }, 500);
-  
-  // PJAX 兼容性 - 重置初始化状态并重新初始化
+  // PJAX兼容性处理
   document.addEventListener('pjax:start', () => {
-    console.log('PJAX导航开始，重置状态');
-    initialized = false;
+    console.log('[Categories] PJAX开始，重置状态');
+    isInitialized = false;
   });
   
   document.addEventListener('pjax:complete', () => {
-    console.log('PJAX导航完成，开始重新初始化');
-    setTimeout(startInitialization, 0);
+    console.log('[Categories] PJAX完成，重新初始化');
+    setTimeout(initializeCategories, 100);
   });
   
   document.addEventListener('pjax:success', () => {
-    console.log('PJAX导航成功，开始重新初始化');
-    setTimeout(startInitialization, 0);
+    console.log('[Categories] PJAX成功，重新初始化');
+    setTimeout(initializeCategories, 100);
   });
+
+  // 页面可见性变化时重新检查
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !isInitialized) {
+      console.log('[Categories] 页面变为可见，尝试初始化');
+      setTimeout(initializeCategories, 100);
+    }
+  });
+
+  // 立即开始初始化
+  initializeCategories();
   
-  // Next.js兼容
-  if (window.NexT && window.NexT.utils) {
-    window.NexT.utils.registerExtURL();
-  }
+  // 备用初始化（确保在所有情况下都能工作）
+  setTimeout(() => {
+    if (!isInitialized) {
+      console.log('[Categories] 备用初始化启动');
+      initializeCategories();
+    }
+  }, 1000);
 })();
 </script>
 
