@@ -1,7 +1,9 @@
 // 简单可靠的GitHub音乐播放器
 // 适配现有的HTML结构和样式
 
-class SimpleMusicPlayer {
+// 检查是否已经定义
+if (typeof SimpleMusicPlayer === 'undefined') {
+  class SimpleMusicPlayer {
   constructor() {
     // 基础配置
     this.config = window.MusicConfig || {
@@ -16,7 +18,7 @@ class SimpleMusicPlayer {
     this.currentTrack = 0;
     this.isPlaying = false;
     this.playlist = [];
-    this.volume = 0.7;
+    this.volume = 0.25; // 默认25%音量
     
     // HTML元素（适配现有结构）
     this.songTitle = document.querySelector('.song-title');
@@ -27,6 +29,13 @@ class SimpleMusicPlayer {
     this.playerToggle = document.getElementById('player-toggle');
     this.musicWidget = document.getElementById('music-player-widget');
     
+    // 音量控制元素
+    this.volumeBar = document.querySelector('.volume-bar');
+    this.volumeFill = document.querySelector('.volume-fill');
+    this.volumeHandle = document.querySelector('.volume-handle');
+    this.volumeText = document.querySelector('.volume-text');
+    this.volumeIcon = document.querySelector('.volume-icon');
+    
     // 初始化
     this.init();
   }
@@ -35,6 +44,9 @@ class SimpleMusicPlayer {
     console.log('🎵 初始化简单音乐播放器');
     
     try {
+      // 初始化音量
+      this.initVolume();
+      
       // 绑定事件
       this.bindEvents();
       
@@ -62,6 +74,17 @@ class SimpleMusicPlayer {
     // 收缩控制
     if (this.playerToggle && this.musicWidget) {
       this.playerToggle.addEventListener('click', () => this.toggleWidget());
+    }
+    
+    // 音量控制
+    if (this.volumeBar) {
+      this.volumeBar.addEventListener('click', (e) => this.setVolumeFromClick(e));
+      this.volumeBar.addEventListener('mousedown', (e) => this.startVolumeDrag(e));
+    }
+    
+    // 静音切换（点击音量图标）
+    if (this.volumeIcon) {
+      this.volumeIcon.addEventListener('click', () => this.toggleMute());
     }
   }
   
@@ -241,7 +264,7 @@ class SimpleMusicPlayer {
   getAudioElement() {
     if (!this.audio) {
       this.audio = document.createElement('audio');
-      this.audio.volume = this.volume;
+      this.audio.volume = this.volume; // 使用当前音量设置
       
       // 自动播放下一首
       this.audio.addEventListener('ended', () => {
@@ -286,6 +309,100 @@ class SimpleMusicPlayer {
       this.songTitle.style.color = '#ff6b6b';
     }
   }
+  
+  // 音量控制方法
+  setVolume(volume) {
+    // 限制音量范围
+    volume = Math.max(0, Math.min(1, volume));
+    this.volume = volume;
+    
+    // 更新音频元素音量
+    if (this.audio) {
+      this.audio.volume = volume;
+    }
+    
+    // 更新UI
+    this.updateVolumeDisplay();
+    
+    // 保存到本地存储
+    localStorage.setItem('music-player-volume', volume);
+  }
+  
+  // 更新音量显示
+  updateVolumeDisplay() {
+    if (!this.volumeBar || !this.volumeFill || !this.volumeHandle || !this.volumeText) return;
+    
+    const percentage = Math.round(this.volume * 100);
+    this.volumeFill.style.width = `${percentage}%`;
+    this.volumeHandle.style.left = `${percentage}%`;
+    this.volumeText.textContent = `${percentage}%`;
+    
+    // 更新音量图标
+    if (this.volumeIcon) {
+      if (this.volume === 0) {
+        this.volumeIcon.className = 'volume-icon fa fa-volume-off';
+      } else if (this.volume < 0.5) {
+        this.volumeIcon.className = 'volume-icon fa fa-volume-down';
+      } else {
+        this.volumeIcon.className = 'volume-icon fa fa-volume-up';
+      }
+    }
+  }
+  
+  // 从点击位置设置音量
+  setVolumeFromClick(e) {
+    if (!this.volumeBar) return;
+    
+    const rect = this.volumeBar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    this.setVolume(percentage);
+  }
+  
+  // 开始拖动音量
+  startVolumeDrag(e) {
+    e.preventDefault();
+    
+    const onMouseMove = (e) => {
+      if (!this.volumeBar) return;
+      const rect = this.volumeBar.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const percentage = x / rect.width;
+      this.setVolume(percentage);
+    };
+    
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+    
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+  
+  // 切换静音
+  toggleMute() {
+    if (this.volume > 0) {
+      // 保存当前音量
+      this.lastVolume = this.volume;
+      this.setVolume(0);
+    } else {
+      // 恢复之前的音量
+      this.setVolume(this.lastVolume || 0.25);
+    }
+  }
+  
+  // 初始化音量
+  initVolume() {
+    // 从本地存储恢复音量
+    const savedVolume = localStorage.getItem('music-player-volume');
+    if (savedVolume !== null) {
+      this.setVolume(parseFloat(savedVolume));
+    } else {
+      // 使用默认音量25%
+      this.setVolume(0.25);
+    }
+  }
 }
 
 // DOM加载完成后初始化
@@ -296,3 +413,5 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 启动简单音乐播放器');
   window.simpleMusicPlayer = new SimpleMusicPlayer();
 });
+
+} // 结束if判断

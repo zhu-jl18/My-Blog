@@ -1,4 +1,11 @@
 {
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "sk-gLCxwzrklkbX0LlnBL0nYbM3TqBtrJ2UTM3LIZPqzgEpF9Op",
+    "ANTHROPIC_BASE_URL": "https://api.ibsgss.website/",
+    "API_TIMEOUT_MS": "3000000"
+  },
+  "model": "opus",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Bash(hexo generate:*)",
@@ -9,7 +16,13 @@
       "WebFetch(domain:theme-next.js.org)",
       "Bash(hexo deploy:*)",
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "Bash(mkdir:*)",
+      "Bash(move:*)",
+      "Bash(npm run build:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": []
   }

@@ -14,8 +14,8 @@ comments: false
   </div>
 </div>
 
-<script>
-// 动态生成分类卡片 - 优化版本，确保首次加载成功
+<script data-pjax>
+// 动态生成分类卡片 - 优化版本
 (function() {
   // 分类配置
   const categoryConfig = {
@@ -66,26 +66,18 @@ comments: false
   function generateCategories() {
     const container = document.getElementById('dynamic-categories');
     if (!container) {
-      console.log('[Categories] 容器未找到');
-      return false;
+      return;
     }
     
-    // 如果已经初始化且容器有内容，跳过
-    if (isInitialized && container.children.length > 0) {
-      console.log('[Categories] 已初始化，跳过');
-      return true;
+    // If the container is not empty, we assume it's already initialized.
+    if (container.children.length > 0) {
+        isInitialized = true;
     }
     
-    console.log('[Categories] 开始生成分类内容');
+    if (isInitialized) {
+      return;
+    }
     
-    // 强制确保容器可见
-    container.style.minHeight = '200px';
-    container.style.display = 'grid';
-    
-    // 清空现有内容
-    container.innerHTML = '';
-    
-    // 生成HTML字符串，一次性插入DOM
     let htmlContent = '';
     Object.entries(categoryConfig).forEach(([key, config]) => {
       const count = categoryCounts[key] || 0;
@@ -102,88 +94,33 @@ comments: false
       `;
     });
     
-    // 一次性插入所有内容
     container.innerHTML = htmlContent;
-    
-    // 强制重绘
-    container.offsetHeight;
-    
     isInitialized = true;
-    console.log('[Categories] 分类内容生成完成，共', Object.keys(categoryConfig).length, '个分类');
-    return true;
   }
 
-  // 初始化函数
-  function initializeCategories() {
-    // 立即尝试生成
-    if (generateCategories()) {
-      return;
-    }
-    
-    // 如果DOM还没准备好，等待DOM加载完成
+  function initialize() {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(generateCategories, 50);
-      });
+      document.addEventListener('DOMContentLoaded', generateCategories);
     } else {
-      // DOM已准备好，稍等片刻确保所有资源加载完成
-      setTimeout(() => {
-        if (!isInitialized) {
-          generateCategories();
-        }
-      }, 100);
+      generateCategories();
     }
-    
-    // 使用多种方式确保初始化成功
-    setTimeout(() => {
-      if (!isInitialized) {
-        console.log('[Categories] 延迟初始化');
-        generateCategories();
-      }
-    }, 500);
-    
-    setTimeout(() => {
-      if (!isInitialized) {
-        console.log('[Categories] 最终初始化尝试');
-        generateCategories();
-      }
-    }, 1500);
   }
 
-  // PJAX兼容性处理
-  document.addEventListener('pjax:start', () => {
-    console.log('[Categories] PJAX开始，重置状态');
+  document.addEventListener('pjax:start', function() {
     isInitialized = false;
   });
-  
-  document.addEventListener('pjax:complete', () => {
-    console.log('[Categories] PJAX完成，重新初始化');
-    setTimeout(initializeCategories, 100);
-  });
-  
-  document.addEventListener('pjax:success', () => {
-    console.log('[Categories] PJAX成功，重新初始化');
-    setTimeout(initializeCategories, 100);
+
+  document.addEventListener('pjax:complete', function() {
+    initialize();
   });
 
-  // 页面可见性变化时重新检查
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && !isInitialized) {
-      console.log('[Categories] 页面变为可见，尝试初始化');
-      setTimeout(initializeCategories, 100);
-    }
+  window.addEventListener('load', function() {
+      if (!isInitialized) {
+          initialize();
+      }
   });
 
-  // 立即开始初始化
-  initializeCategories();
-  
-  // 备用初始化（确保在所有情况下都能工作）
-  setTimeout(() => {
-    if (!isInitialized) {
-      console.log('[Categories] 备用初始化启动');
-      initializeCategories();
-    }
-  }, 1000);
+  initialize();
 })();
 </script>
 

@@ -1,0 +1,195 @@
+name: Sync Music Files to Vercel
+
+on:
+  push:
+    branches: [ claudecode, main ]
+    paths: 
+      - 'music/**'  # 只在 music 文件夹变化时触发
+      - '.github/workflows/sync-music.yml'  # 工作流本身变化时也触发
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+        
+      - name: Install dependencies
+        run: |
+          # 安装用于操作文件的依赖
+          npm install fs-extra path
+          
+      - name: Create sync script
+        run: |
+          # 创建同步脚本
+          cat > sync-vercel.js << 'EOF'
+          const fs = require('fs-extra');
+          const path = require('path');
+          
+          async function syncMusic() {
+            console.log('🚀 开始同步音乐文件到 Vercel...');
+            
+            // 源音乐目录
+            const musicDir = path.join(__dirname, 'music');
+            
+            // 检查音乐目录是否存在
+            if (!await fs.pathExists(musicDir)) {
+              console.log('❌ music 目录不存在，跳过同步');
+              return;
+            }
+            
+            // 创建临时目录
+            const tempDir = path.join(__dirname, 'vercel-temp');
+            await fs.ensureDir(tempDir);
+            
+            try {
+              // 创建 Vercel 项目结构
+              const publicDir = path.join(tempDir, 'public');
+              await fs.ensureDir(publicDir);
+              
+              // 复制音乐文件
+              console.log('📁 复制音乐文件...');
+              await fs.copy(musicDir, path.join(publicDir, 'music'));
+              
+              // 创建 vercel.json
+              const vercelConfig = {
+                version: 2,
+                builds: [
+                  {
+                    src: "public/**/*",
+                    use: "@vercel/static"
+                  }
+                ],
+                routes: [
+                  {
+                    src: "/music/(.*)",
+                    dest: "/music/$1"
+                  }
+                ],
+                headers: [
+                  {
+                    source: "/music/(.*)",
+                    headers: [
+                      {
+                        key: "Access-Control-Allow-Origin",
+                        value: "*"
+                      },
+                      {
+                        key: "Cache-Control",
+                        value: "public, max-age=31536000, immutable"
+                      },
+                      {
+                        key: "Access-Control-Allow-Methods",
+                        value: "GET, HEAD, OPTIONS"
+                      },
+                      {
+                        key: "Access-Control-Allow-Headers",
+                        value: "Origin, X-Requested-With, Content-Type, Accept, Range"
+                      }
+                    ]
+                  }
+                ]
+              };
+              
+              await fs.writeJSON(path.join(tempDir, 'vercel.json'), vercelConfig, { spaces: 2 });
+              
+              // 创建 package.json
+              const packageJson = {
+                name: "cdn4blog-vercel",
+                version: "1.0.0",
+                description: "CDN for blog music files",
+                private: true
+              };
+              
+              await fs.writeJSON(path.join(tempDir, 'package.json'), packageJson, { spaces: 2 });
+              
+              // 列出复制的文件
+              const files = await fs.readdir(path.join(publicDir, 'music'));
+              console.log(`✅ 成功复制 ${files.length} 个音乐文件:`);
+              files.forEach(file => console.log(`   - ${file}`));
+              
+              // 输出目录路径供后续步骤使用
+              console.log(`::set-output name=vercel-dir::${tempDir}`);
+              
+            } catch (error) {
+              console.error('❌ 同步过程中出错:', error);
+              throw error;
+            }
+          }
+          
+          syncMusic().catch(console.error);
+          EOF
+          
+          # 运行同步脚本
+          node sync-vercel.js
+          
+      - name: Deploy to Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          # 检查是否有 Vercel 认证信息
+          if [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "⚠️ Vercel 认证信息未设置，跳过部署"
+            echo "请在仓库设置中添加 VERCEL_ORG_ID 和 VERCEL_PROJECT_ID secrets"
+            exit 0
+          fi
+          
+          # 进入临时目录
+          cd vercel-temp
+          
+          # 登录 Vercel（使用 token）
+          echo ${{ secrets.VERCEL_TOKEN }} | vercel login --protocol oauth
+          
+          # 部署到生产环境
+          vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+          
+      - name: Cleanup
+        if: always()
+        run: |
+          # 清理临时目录
+          rm -rf vercel-temp sync-vercel.js
+          echo "✅ 清理完成"
+          
+      - name: Notify deployment status
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          text: '音乐文件同步到 Vercel'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # 可选
+          
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      has-changes: ${{ steps.check.outputs.has-changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Check for music file changes
+        id: check
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "^music/"; then
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+            echo "✅ 检测到音乐文件变化"
+          else
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ 未检测到音乐文件变化"
+          fi
