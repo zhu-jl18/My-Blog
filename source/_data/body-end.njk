@@ -30,15 +30,28 @@
         <i class="fa fa-step-forward"></i>
       </button>
     </div>
+    
+    <!-- 音量控制 -->
+    <div class="volume-section">
+      <i class="volume-icon fa fa-volume-up"></i>
+      <div class="volume-bar">
+        <div class="volume-fill"></div>
+        <div class="volume-handle"></div>
+      </div>
+      <span class="volume-text">25%</span>
+    </div>
   </div>
 </div>
 
 <!-- 加载音乐播放器脚本 -->
-<script src="/js/music-config.js"></script>
-<script src="/js/simple-music-player.js"></script>
+<script src="/js/music-config.js" data-pjax></script>
+<script src="/js/simple-music-player.js" data-pjax></script>
+
+<!-- 狄拉克之海特效 (PJAX兼容版) -->
+<script src="/js/dirac-sea-pjax.js" data-pjax></script>
 
 <!-- 控制台彩蛋 -->
-<script>
+<script data-pjax>
 (function() {
   // 检查是否已经显示过彩蛋
   if (sessionStorage.getItem('consoleEasterEggShown')) return;
@@ -84,6 +97,8 @@
   console.log('%c输入 blog.math() 显示随机数学公式', styles.text);
   console.log('%c输入 blog.about() 了解更多信息', styles.text);
   console.log('%c输入 blog.show() 重新显示这个欢迎信息', styles.text);
+  console.log('%c输入 toggleDiracSea() 开启/关闭狄拉克之海特效', styles.text);
+  console.log('%c输入 blog.cleanup() 清理特效设置', styles.text);
   
   console.log('\n%c🚀 快捷方式:', styles.subtitle);
   console.log('%c双击字母键 E 可以快速重新显示控制台彩蛋', styles.text);
@@ -93,6 +108,12 @@
   
   // 添加交互式功能
   window.blog = {
+    // 清理狄拉克之海特效的设置
+    cleanup: function() {
+      localStorage.removeItem('diracSeaEnabled');
+      console.log('%c🧹 已清理狄拉克之海特效设置', 'color: #4ecdc4;');
+    },
+    
     stats: function() {
       const posts = document.querySelectorAll('.post-title, .post-meta').length;
       console.log('%c📊 博客统计数据', 'color: #ff6b6b; font-size: 16px; font-weight: bold;');
@@ -170,7 +191,7 @@
 </script>
 
 <!-- 更多趣味彩蛋 -->
-<script>
+<script data-pjax>
 // Konami Code 彩蛋 (上上下下左右左右BA)
 (function() {
   const konamiCode = [

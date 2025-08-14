@@ -2,27 +2,18 @@
 // 支持GitHub CDN音乐仓库、网易云歌单和本地音乐
 
 window.MusicConfig = {
-  // 播放模式：'github-repo', 'github-cdn', 'netease', 'local'
-  mode: 'github-repo', // 使用GitHub仓库音乐
+  // 播放模式：'vercel', 'github-repo', 'github-cdn', 'netease', 'local'
+  mode: 'vercel', // 使用 Vercel CDN
   
-  // GitHub音乐仓库配置
-  github: {
-    owner: 'zhu-jl18',              // 你的GitHub用户名
-    repo: 'cdn4blog',               // 你的CDN仓库名
-    musicPath: 'music',             // 音乐文件夹路径
-    branch: 'main',                 // 分支名
-    
-    // CDN服务 - 使用jsDelivr更稳定
-    cdnType: 'jsdelivr', // 'jsdelivr' 或 'raw' 或 'statically'
-    
-    // 支持的音频格式
-    audioFormats: ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'],
-    
-    // 是否递归扫描子文件夹
-    recursive: true,
-    
-    // 是否启用自动刷新（每次访问都重新获取）
-    autoRefresh: false
+  // Vercel CDN 配置
+  vercel: {
+    baseUrl: 'https://cdn4blog.vercel.app', // 确认可访问的 URL
+    musicPath: 'music', // 音乐文件路径
+    // 备用 Vercel URL
+    fallbackUrls: [
+      'https://cdn4blog-git-main-zhu-jl18s-projects.vercel.app',
+      'https://cdn4blog-lyb5yw8b7-zhu-jl18s-projects.vercel.app'
+    ]
   },
   
   // 网易云音乐配置（备用）
