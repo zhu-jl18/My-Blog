@@ -5,13 +5,10 @@ class SimpleMusicPlayer {
   constructor() {
     // 基础配置
     this.config = window.MusicConfig || {
-      mode: 'github-repo',
-      github: {
-        owner: 'zhu-jl18',
-        repo: 'cdn4blog',
-        musicPath: 'music',
-        branch: 'main',
-        cdnType: 'jsdelivr'
+      mode: 'vercel',
+      vercel: {
+        baseUrl: 'https://cdn4blog.vercel.app',
+        musicPath: 'music'
       }
     };
     
@@ -79,65 +76,101 @@ class SimpleMusicPlayer {
     }
   }
   
-  // 从GitHub加载音乐列表
+  // 从GitHub或Vercel加载音乐列表
   async loadPlaylist() {
-    const { owner, repo, musicPath } = this.config.github;
+    const { mode } = this.config;
     
-    console.log(`📡 从GitHub加载: ${owner}/${repo}/${musicPath}`);
-    
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${musicPath}`;
-    const response = await fetch(apiUrl);
-    
-    if (!response.ok) {
-      throw new Error(`GitHub API请求失败: ${response.status}`);
-    }
-    
-    const files = await response.json();
-    
-    // 过滤音频文件
-    const audioFiles = files.filter(file => 
-      file.type === 'file' && 
-      /\.(mp3|wav|ogg|flac|m4a)$/i.test(file.name)
-    );
-    
-    if (audioFiles.length === 0) {
-      throw new Error('未找到音频文件');
-    }
-    
-    // 生成播放列表
-    this.playlist = audioFiles.map((file, index) => {
-      const title = file.name.replace(/\.(mp3|wav|ogg|flac|m4a)$/i, '');
+    if (mode === 'vercel') {
+      // Vercel 模式 - 使用固定的播放列表
+      console.log('📡 从Vercel加载音乐列表');
+      this.playlist = this.loadVercelPlaylist();
+    } else {
+      // GitHub 模式
+      const { owner, repo, musicPath } = this.config.github;
+      console.log(`📡 从GitHub加载: ${owner}/${repo}/${musicPath}`);
       
-      // 智能解析艺术家和标题
-      let artist = 'Background Music';
-      let songTitle = title;
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${musicPath}`;
+      const response = await fetch(apiUrl);
       
-      if (title.includes(' - ')) {
-        [artist, songTitle] = title.split(' - ', 2);
+      if (!response.ok) {
+        throw new Error(`GitHub API请求失败: ${response.status}`);
       }
       
-      return {
-        id: index,
-        title: songTitle.trim(),
-        artist: artist.trim(),
-        url: this.buildMusicUrl(file.name)
-      };
-    });
+      const files = await response.json();
+      
+      // 过滤音频文件
+      const audioFiles = files.filter(file => 
+        file.type === 'file' && 
+        /\.(mp3|wav|ogg|flac|m4a)$/i.test(file.name)
+      );
+      
+      if (audioFiles.length === 0) {
+        throw new Error('未找到音频文件');
+      }
+      
+      // 生成播放列表
+      this.playlist = audioFiles.map((file, index) => {
+        const title = file.name.replace(/\.(mp3|wav|ogg|flac|m4a)$/i, '');
+        
+        // 智能解析艺术家和标题
+        let artist = 'Background Music';
+        let songTitle = title;
+        
+        if (title.includes(' - ')) {
+          [artist, songTitle] = title.split(' - ', 2);
+        }
+        
+        return {
+          id: index,
+          title: songTitle.trim(),
+          artist: artist.trim(),
+          url: this.buildMusicUrl(file.name)
+        };
+      });
+    }
     
     console.log(`✅ 加载完成，共 ${this.playlist.length} 首歌曲`);
   }
   
+  // 加载Vercel播放列表（固定）
+  loadVercelPlaylist() {
+    const { baseUrl, musicPath } = this.config.vercel;
+    const pathPrefix = musicPath ? `${musicPath}/` : '';
+    
+    return [
+      {
+        id: 1,
+        title: 'acoustic breeze',
+        artist: 'Background Music',
+        url: `${baseUrl}/${pathPrefix}acoustic%20breeze.mp3`
+      },
+      {
+        id: 2,
+        title: 'The Sounds of Silence',
+        artist: 'Simon & Garfunkel',
+        url: `${baseUrl}/${pathPrefix}The%20Sounds%20of%20Silence.mp3`
+      }
+    ];
+  }
+  
   // 构建音乐URL
   buildMusicUrl(filename) {
-    const { owner, repo, branch, musicPath, cdnType } = this.config.github;
+    const { mode } = this.config;
     
-    switch (cdnType) {
-      case 'jsdelivr':
-        return `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${musicPath}/${filename}`;
-      case 'statically':
-        return `https://cdn.statically.io/gh/${owner}/${repo}/${branch}/${musicPath}/${filename}`;
-      default:
-        return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${musicPath}/${encodeURIComponent(filename)}`;
+    if (mode === 'vercel') {
+      const { baseUrl, musicPath } = this.config.vercel;
+      return `${baseUrl}/${musicPath}/${encodeURIComponent(filename)}`;
+    } else {
+      const { owner, repo, branch, musicPath, cdnType } = this.config.github;
+      
+      switch (cdnType) {
+        case 'jsdelivr':
+          return `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${musicPath}/${filename}`;
+        case 'statically':
+          return `https://cdn.statically.io/gh/${owner}/${repo}/${branch}/${musicPath}/${filename}`;
+        default:
+          return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${musicPath}/${encodeURIComponent(filename)}`;
+      }
     }
   }
   
