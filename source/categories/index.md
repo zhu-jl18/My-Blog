@@ -115,31 +115,39 @@ comments: false
 
   // 初始化函数
   function initializeCategories() {
-    // 确保DOM准备就绪
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', generateCategories);
-      return;
-    }
-    
     // 立即尝试生成
     if (generateCategories()) {
       return;
     }
     
-    // 如果失败，使用定时器重试
-    let attempts = 0;
-    const maxAttempts = 10;
-    const retryInterval = setInterval(() => {
-      attempts++;
-      console.log(`[Categories] 重试第${attempts}次`);
-      
-      if (generateCategories() || attempts >= maxAttempts) {
-        clearInterval(retryInterval);
-        if (attempts >= maxAttempts) {
-          console.error('[Categories] 初始化失败，已达最大重试次数');
+    // 如果DOM还没准备好，等待DOM加载完成
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(generateCategories, 50);
+      });
+    } else {
+      // DOM已准备好，稍等片刻确保所有资源加载完成
+      setTimeout(() => {
+        if (!isInitialized) {
+          generateCategories();
         }
+      }, 100);
+    }
+    
+    // 使用多种方式确保初始化成功
+    setTimeout(() => {
+      if (!isInitialized) {
+        console.log('[Categories] 延迟初始化');
+        generateCategories();
       }
-    }, 200);
+    }, 500);
+    
+    setTimeout(() => {
+      if (!isInitialized) {
+        console.log('[Categories] 最终初始化尝试');
+        generateCategories();
+      }
+    }, 1500);
   }
 
   // PJAX兼容性处理
