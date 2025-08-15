@@ -9,7 +9,7 @@
 |---------|------|
 | **博客引擎** | Hexo 7.3.0 + NexT 8.23.2 |
 | **部署平台** | GitHub Pages + GitHub Actions |
-| **功能完成度** | 23/23 (100%) |
+| **功能完成度** | 24/24 (100%) |
 | **PWA支持** | ✅ Lighthouse 96分 |
 | **安全状态** | ✅ 0个已知漏洞 |
 | **自动化程度** | ✅ 完全自动化部署 |
@@ -23,10 +23,15 @@
 ├── 📄 _config.next.yml         # NexT主题配置
 ├── 📄 package.json             # 依赖包配置
 ├── 📄 hexo-offline.config.cjs  # PWA离线配置
+├── 📄 GIT_BRANCH_STRATEGY.md # Git分支策略文档
+├── 📄 CLAUDE.md               # AI对话上下文跟踪
+├── 📄 BLOG_OPTIMIZATION_GUIDE.md # 博客优化指南
 ├── 📄 README.md                # 项目说明文档
 ├── 📁 .github/                 # GitHub Actions配置
 │   └── 📁 workflows/
-│       └── 📄 deploy.yml       # 自动部署工作流
+│       ├── 📄 deploy.yml       # 自动部署工作流
+│       └── 📄 sync-music.yml   # 音乐同步工作流
+├── 📁 shell_scripts/           # 实用脚本集合
 ├── 📁 source/                  # 源文件目录
 │   ├── 📁 _posts/             # 博客文章 (19篇)
 │   ├── 📁 _data/              # 自定义数据
@@ -64,7 +69,7 @@
 - ✅ **懒加载优化** - 图片按需加载
 - ✅ **快速链接预取** - Quicklink智能预取
 
-### 📦 扩展功能 (12/12)
+### 📦 扩展功能 (13/13)
 - ✅ **404小恐龙游戏** - 趣味互动体验
 - ✅ **控制台彩蛋系统** - 开发者友好彩蛋
 - ✅ **个人成长里程碑** - 完整成长记录系统
@@ -77,6 +82,7 @@
 - ✅ **性能优化** - 字体、压缩、缓存优化
 - ✅ **🎵 多音乐源播放器** - 智能音量控制，多CDN支持
 - ✅ **🚀 Vercel CDN自动部署** - 音乐文件自动同步
+- ✅ **⚡ PJAX优化** - 无刷新页面切换，脚本智能执行
 
 ### 📚 页面体系 (4/4)
 - ✅ **Categories页面** - 智能分类导航
@@ -357,6 +363,9 @@ github: {
 - 🌐 **网站地址**: [https://zhu-jl18.github.io](https://zhu-jl18.github.io)
 - 📊 **功能文档**: [BLOG_FEATURES_IMPLEMENTATION.md](./BLOG_FEATURES_IMPLEMENTATION.md)
 - 🚀 **GitHub Actions**: [自动化部署指南](./source/_posts/GitHub-Actions-CICD-Auto-Deploy-Guide.md)
+- 🌿 **Git分支策略**: [GIT_BRANCH_STRATEGY.md](./GIT_BRANCH_STRATEGY.md)
+- 📈 **博客优化指南**: [BLOG_OPTIMIZATION_GUIDE.md](./BLOG_OPTIMIZATION_GUIDE.md)
+- 🤖 **AI对话上下文**: [CLAUDE.md](./CLAUDE.md)
 - 📱 **移动端编辑**: 直接在GitHub APP中编辑即可自动部署
 
 ## 🤝 参与贡献
@@ -376,7 +385,17 @@ github: {
 
 ## 📄 许可证
 
-MIT License - 详见 [LICENSE](./LICENSE) 文件
+本项目基于 [MIT License](./LICENSE) 开源协议。
+
+### 项目声明
+
+- **基础框架**: [Hexo](https://github.com/hexojs/hexo) (MIT)
+- **主题**: [NexT](https://github.com/next-theme/hexo-theme-next) (MIT)
+- **本项目**: 基于上述项目的改进和扩展，同样使用 MIT 协议
+
+### 使用说明
+
+您可以自由使用、修改、分发本项目代码，但需保留版权声明。详见 [LICENSE](./LICENSE) 文件。
 
 ## 👤 作者
 
@@ -384,11 +403,20 @@ MIT License - 详见 [LICENSE](./LICENSE) 文件
 - GitHub: [@zhu-jl18](https://github.com/zhu-jl18)
 - Blog: [Dirac Sea](https://zhu-jl18.github.io)
 
+### 🤝 贡献者
+
+- **Claude Code** - AI编程助手，协助开发优化
+  - 帮助优化博客功能，实现PJAX解决方案
+  - 协助编写技术文档和优化指南
+- **特调版Claude Code** - makoMako的专属定制版
+  - 提供本地开发支持和代码辅助
+  - 协助项目管理和任务执行
+
 ---
 
 <div align="center">
 
-**🎉 从单调博客到现代化平台，21项功能100%完成！**
+**🎉 从单调博客到现代化平台，24项功能100%完成！**
 
 [🌟 Star](https://github.com/zhu-jl18/My-Blog) | [🍴 Fork](https://github.com/zhu-jl18/My-Blog/fork) | [📝 Issues](https://github.com/zhu-jl18/My-Blog/issues)
 

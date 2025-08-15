@@ -9,3 +9,5 @@ public/
 # Ignore bmad-core directory
 .bmad-core/
 .roomodes
+# Claude Code context file
+CLAUDE.md
