@@ -10,4 +10,7 @@ public/
 .bmad-core/
 .roomodes
 # Claude Code context file
-CLAUDE.md
+
+
+# Ignored by user request
+.roo/

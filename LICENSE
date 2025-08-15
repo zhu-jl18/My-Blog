@@ -1,0 +1,44 @@
+MIT License
+
+Copyright (c) 2021-2025 makoMako (zhu-jl18)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 项目说明
+
+本项目是基于以下开源项目的改进和扩展：
+
+- [Hexo](https://github.com/hexojs/hexo) - 快速、简洁且高效的静态博客框架 (MIT License)
+- [NexT Theme](https://github.com/next-theme/hexo-theme-next) - 高优雅的 Hexo 主题 (MIT License)
+
+### 本项目包含的主要改进：
+
+1. **功能集成** - 集成评论、搜索、统计等24项功能
+2. **音乐播放器** - 多CDN支持的智能音乐播放系统
+3. **PWA支持** - 完整的离线访问能力
+4. **性能优化** - 构建速度和加载性能优化
+5. **自动化部署** - GitHub Actions CI/CD 工作流
+6. **移动端适配** - 支持手机端直接编辑发布
+7. **Git分支策略** - 标准化的开发工作流
+
+### 第三方组件声明
+
+本项目使用的第三方组件均遵循其各自的开源协议。详见 package.json 文件。
