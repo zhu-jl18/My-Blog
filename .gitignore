@@ -6,11 +6,5 @@ node_modules/
 public/
 .deploy*/
 
-# Ignore bmad-core directory
-.bmad-core/
-.roomodes
-# Claude Code context file
 
 
-# Ignored by user request
-.roo/
