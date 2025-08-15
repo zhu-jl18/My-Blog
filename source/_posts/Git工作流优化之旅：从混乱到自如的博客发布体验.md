@@ -1,6 +1,6 @@
 ---
 title: Git工作流优化之旅：从混乱到自如的博客发布体验
-author: makoMako, Functor Fish
+author: 'makoMako, Functor Fish'
 tags:
   - Git
   - GitHub
@@ -9,6 +9,7 @@ tags:
   - 工作流
   - Functor Fish
   - 教程
+abbrlink: e71dcf05
 ---
 
 # Git工作流优化之旅：从混乱到自如的博客发布体验

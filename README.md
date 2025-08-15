@@ -1,19 +1,28 @@
 # 🦕 Dirac Sea - 狄拉克之海
 
-> **现代化Hexo博客平台** | love math and dinosaurs  
+> **Hexo博客平台搭建记录** | love math and dinosaurs  
 > 从单调博客到功能完备的学习记录平台，集成23项功能的完整实现
+
+## 😦 TO DO:
+- 修复github自动部署脚本~ 引入更强的 权限（强制覆写）
+- 测试相关音乐播放器 以及 另一个仓库的自动同步脚本能否工作
+- 好好调教gemin-cli和claude-code
+
+
+** 作者声明，全是AI写的。。。没啥可参考性~~很多功能能不能用都存疑**
+
 
 ## 📊 项目概览
 
-| 项目信息 | 详情 |
-|---------|------|
-| **博客引擎** | Hexo 7.3.0 + NexT 8.23.2 |
-| **部署平台** | GitHub Pages + GitHub Actions |
-| **功能完成度** | 23/23 (100%) |
-| **PWA支持** | ✅ Lighthouse 96分 |
-| **安全状态** | ✅ 0个已知漏洞 |
-| **自动化程度** | ✅ 完全自动化部署 |
-| **最新更新** | 2025-08-14 |
+| 项目信息       | 详情                          |
+| -------------- | ----------------------------- |
+| **博客引擎**   | Hexo 7.3.0 + NexT 8.23.2      |
+| **部署平台**   | GitHub Pages + GitHub Actions |
+| **功能完成度** | 24/24 (100%)                  |
+| **PWA支持**    | ✅ Lighthouse 96分             |
+| **安全状态**   | ✅ 0个已知漏洞                 |
+| **自动化程度** | ✅ 完全自动化部署              |
+| **最新更新**   | 2025-08-14                    |
 
 ## 🏗️ 项目结构
 
@@ -23,9 +32,10 @@
 ├── 📄 _config.next.yml         # NexT主题配置
 ├── 📄 package.json             # 依赖包配置
 ├── 📄 hexo-offline.config.cjs  # PWA离线配置
+├── 📄 CLAUDE.md               # AI对话上下文跟踪
 ├── 📄 README.md                # 项目说明文档
 ├── 📁 .github/                 # GitHub Actions配置
-│   └── 📁 workflows/
+│   └── 📁 workflows/ 
 │       └── 📄 deploy.yml       # 自动部署工作流
 ├── 📁 source/                  # 源文件目录
 │   ├── 📁 _posts/             # 博客文章 (19篇)
@@ -33,7 +43,8 @@
 │   │   ├── 📄 head.njk        # 头部自定义
 │   │   ├── 📄 body-end.njk    # 页尾自定义  
 │   │   ├── 📄 sidebar.njk     # 侧边栏自定义
-│   │   ├── 📄 styles.styl     # 样式自定义
+│   │   ├── 📄 styles.styl     # 样式自定义 1
+│   │   ├── 📄 variables.styl  # 样式自定义 2
 │   │   └── 📄 post-body-end.njk # 文章底部自定义
 │   ├── 📁 images/             # 图片资源
 │   ├── 📁 js/                 # JavaScript文件
@@ -64,7 +75,7 @@
 - ✅ **懒加载优化** - 图片按需加载
 - ✅ **快速链接预取** - Quicklink智能预取
 
-### 📦 扩展功能 (12/12)
+### 📦 扩展功能 (13/13)
 - ✅ **404小恐龙游戏** - 趣味互动体验
 - ✅ **控制台彩蛋系统** - 开发者友好彩蛋
 - ✅ **个人成长里程碑** - 完整成长记录系统
@@ -77,6 +88,7 @@
 - ✅ **性能优化** - 字体、压缩、缓存优化
 - ✅ **🎵 多音乐源播放器** - 智能音量控制，多CDN支持
 - ✅ **🚀 Vercel CDN自动部署** - 音乐文件自动同步
+- ✅ **⚡ PJAX优化** - 无刷新页面切换，脚本智能执行
 
 ### 📚 页面体系 (4/4)
 - ✅ **Categories页面** - 智能分类导航
@@ -112,7 +124,7 @@ hexo new "数学笔记标题"
 直接在GitHub APP中创建新md文件
 ```
 
-### 💻 本地开发
+### 💻 本地构建
 
 ```bash
 # 克隆仓库
@@ -122,18 +134,14 @@ cd My-Blog
 # 安装依赖
 npm install
 
-# 本地预览
-npm run server
-# 访问 http://localhost:4000
-
 # 创建新文章
 hexo new "Your-Article-Title"
 
 # 生成静态文件
-npm run build
+hexo clean && hexo g 
 
-# 部署到GitHub Pages
-npm run deploy
+# 本地预览
+hexo s (- p port)
 ```
 
 ### ✍️ 内容创作流程 (博文发布)
@@ -161,44 +169,38 @@ git push origin chore/my-new-post
 # 5. 在GitHub上创建从 `chore/my-new-post` 到 `main` 的Pull Request并合并
 # 合并后，GitHub Actions将自动完成部署
 
-# 6. (可选) 回到develop分支并恢复之前的工作
+# 6. 回到develop分支并恢复之前的工作
 git checkout develop
 git stash pop
 ```
 
 ## 🛠️ 技术栈
 
-| 技术栈 | 版本 | 用途 |
-|-------|------|------|
-| **Hexo** | 7.3.0 | 静态站点生成器 |
-| **NexT** | 8.23.2 | 博客主题 |
-| **Node.js** | 18+ | 运行环境 |
-| **GitHub Pages** | - | 部署平台 |
-| **GitHub Actions** | - | CI/CD自动化 |
-| **PWA** | Workbox | 离线支持 |
-| **abbrlink** | 2.2.1 | 短链接生成 |
-| **MathJax** | - | 数学公式渲染 |
+| 技术栈             | 版本    | 用途           |
+| ------------------ | ------- | -------------- |
+| **Hexo**           | 7.3.0   | 静态站点生成器 |
+| **NexT**           | 8.23.2  | 博客主题       |
+| **Node.js**        | 18+     | 运行环境       |
+| **GitHub Pages**   | -       | 部署平台       |
+| **GitHub Actions** | -       | CI/CD自动化    |
+| **PWA**            | Workbox | 离线支持       |
+| **abbrlink**       | 2.2.1   | 短链接生成     |
+| **MathJax**        | -       | 数学公式渲染   |
 
 ## 📈 性能指标
 
-| 指标 | 数值 | 说明 |
-|------|------|------|
-| **PWA得分** | 96/100 | Lighthouse评分 |
-| **安全漏洞** | 0个 | npm audit检测 |
-| **依赖优化** | 精简化 | 移除冗余包 |
+| 指标         | 数值     | 说明                   |
+| ------------ | -------- | ---------------------- |
+| **PWA得分**  | 96/100   | Lighthouse评分         |
+| **安全漏洞** | 0个      | npm audit检测          |
+| **依赖优化** | 精简化   | 移除冗余包             |
 | **构建时间** | ~1分40秒 | GitHub Actions自动构建 |
-| **文件数量** | 96个 | Service Worker缓存 |
-| **缓存大小** | 4.3MB | 完整离线支持 |
-| **首屏加载** | <2秒 | 性能优化后 |
-| **搜索速度** | <100ms | 本地搜索响应 |
+| **文件数量** | 96个     | Service Worker缓存     |
+| **缓存大小** | 4.3MB    | 完整离线支持           |
+| **首屏加载** | <2秒     | 性能优化后             |
+| **搜索速度** | <100ms   | 本地搜索响应           |
 
 ## 🎨 主要特色
-
-### 🌙 完整暗黑模式
-- 全站UI元素适配
-- 代码高亮主题切换
-- 跟随系统设置
-- 用户偏好记忆
 
 ### 📱 PWA离线支持
 - 完整离线访问
@@ -249,6 +251,8 @@ git stash pop
 ### 🚀 Vercel CDN自动部署
 
 #### 自动同步工作流
+另一仓库
+
 ```yaml
 # .github/workflows/sync-music.yml
 on:
@@ -263,6 +267,7 @@ jobs:
       - 自动部署CDN
       - 清理临时文件
 ```
+
 
 #### 手动同步脚本
 ```bash
@@ -357,6 +362,9 @@ github: {
 - 🌐 **网站地址**: [https://zhu-jl18.github.io](https://zhu-jl18.github.io)
 - 📊 **功能文档**: [BLOG_FEATURES_IMPLEMENTATION.md](./BLOG_FEATURES_IMPLEMENTATION.md)
 - 🚀 **GitHub Actions**: [自动化部署指南](./source/_posts/GitHub-Actions-CICD-Auto-Deploy-Guide.md)
+- 🌿 **Git分支策略**: [GIT_BRANCH_STRATEGY.md](./GIT_BRANCH_STRATEGY.md)
+- 📈 **博客优化指南**: [BLOG_OPTIMIZATION_GUIDE.md](./BLOG_OPTIMIZATION_GUIDE.md)
+- 🤖 **AI对话上下文**: [CLAUDE.md](./CLAUDE.md)
 - 📱 **移动端编辑**: 直接在GitHub APP中编辑即可自动部署
 
 ## 🤝 参与贡献
@@ -376,7 +384,17 @@ github: {
 
 ## 📄 许可证
 
-MIT License - 详见 [LICENSE](./LICENSE) 文件
+本项目基于 [MIT License](./LICENSE) 开源协议。
+
+### 项目声明
+
+- **基础框架**: [Hexo](https://github.com/hexojs/hexo) (MIT)
+- **主题**: [NexT](https://github.com/next-theme/hexo-theme-next) (MIT)
+- **本项目**: 基于上述项目的改进和扩展，同样使用 MIT 协议
+
+### 使用说明
+
+您可以自由使用、修改、分发本项目代码，但需保留版权声明。详见 [LICENSE](./LICENSE) 文件。
 
 ## 👤 作者
 
@@ -384,11 +402,19 @@ MIT License - 详见 [LICENSE](./LICENSE) 文件
 - GitHub: [@zhu-jl18](https://github.com/zhu-jl18)
 - Blog: [Dirac Sea](https://zhu-jl18.github.io)
 
----
+### 🤝 贡献者
+
+- fine-tuned **gemini cli** && **claude code** 
+  - 帮助优化博客功能，实现PJAX解决方案
+  - 协助编写技术文档和优化指南
+  - 提供本地开发支持和代码辅助
+  - 协助项目管理和任务执行
+  - 都是他俩干的
+  
 
 <div align="center">
 
-**🎉 从单调博客到现代化平台，21项功能100%完成！**
+**🎉 从单调博客到现代化平台，24项功能100%完成！**
 
 [🌟 Star](https://github.com/zhu-jl18/My-Blog) | [🍴 Fork](https://github.com/zhu-jl18/My-Blog/fork) | [📝 Issues](https://github.com/zhu-jl18/My-Blog/issues)
 
