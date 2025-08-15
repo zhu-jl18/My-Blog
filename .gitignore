@@ -5,3 +5,7 @@ db.json
 node_modules/
 public/
 .deploy*/
+
+# Ignore bmad-core directory
+.bmad-core/
+.roomodes
