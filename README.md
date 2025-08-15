@@ -113,6 +113,7 @@ hexo new "数学笔记标题"
 ```
 
 ### 💻 本地开发
+
 ```bash
 # 克隆仓库
 git clone https://github.com/zhu-jl18/My-Blog.git
@@ -133,6 +134,36 @@ npm run build
 
 # 部署到GitHub Pages
 npm run deploy
+```
+
+### ✍️ 内容创作流程 (博文发布)
+
+此流程用于在不影响`develop`分支开发的情况下，快速、安全地发布新文章。
+
+```bash
+# 1. (如有需要) 将正在进行中的开发修改暂存起来
+git stash -u
+
+# 2. 从最新的develop分支创建内容分支
+git checkout develop
+git pull
+git checkout -b chore/my-new-post
+
+# 3. 撰写文章并提交
+hexo new "My New Post Title"
+# ... write your post ...
+git add .
+git commit -m "docs: add new post about X"
+
+# 4. 推送分支到GitHub
+git push origin chore/my-new-post
+
+# 5. 在GitHub上创建从 `chore/my-new-post` 到 `main` 的Pull Request并合并
+# 合并后，GitHub Actions将自动完成部署
+
+# 6. (可选) 回到develop分支并恢复之前的工作
+git checkout develop
+git stash pop
 ```
 
 ## 🛠️ 技术栈
