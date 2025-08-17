@@ -63,11 +63,13 @@ jobs:
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        external_repository: zhu-jl18/zhu-jl18.github.io
+        publish_branch: main
         publish_dir: ./public
-        # 部署到用户/组织页面仓库
-        # 注意：需要确保 GITHUB_TOKEN 有写入目标仓库的权限
-        # 或者创建一个 PERSONAL_TOKEN 并添加到 secrets
+        user_name: github-actions[bot]
+        user_email: github-actions[bot]@users.noreply.github.com
+        commit_message: ${{ github.event.head_commit.message }} (Deployed from My-Blog)
         
     - name: 📊 生成部署报告
       if: github.ref == 'refs/heads/main'
