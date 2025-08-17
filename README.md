@@ -21,7 +21,7 @@
 | **功能完成度** | 24/24 (100%)                  |
 | **PWA支持**    | ✅ Lighthouse 96分             |
 | **安全状态**   | ✅ 0个已知漏洞                 |
-| **自动化程度** | ✅ 完全自动化部署              |
+| **自动化程度** | ✅ 自动部署                   |
 | **最新更新**   | 2025-08-14                    |
 
 ## 🏗️ 项目结构
@@ -38,7 +38,7 @@
 │   └── 📁 workflows/ 
 │       └── 📄 deploy.yml       # 自动部署工作流
 ├── 📁 source/                  # 源文件目录
-│   ├── 📁 _posts/             # 博客文章 (19篇)
+│   ├── 📁 _posts/             # 博客文章 (25篇)
 │   ├── 📁 _data/              # 自定义数据
 │   │   ├── 📄 head.njk        # 头部自定义
 │   │   ├── 📄 body-end.njk    # 页尾自定义  
@@ -64,31 +64,28 @@
 
 ## ✨ 核心功能特性
 
-### 🔥 高优先级功能 (4/4)
-- ✅ **Giscus评论系统** - GitHub Discussions集成
-- ✅ **本地搜索功能** - 毫秒级全文检索  
-- ✅ **访客统计功能** - 不蒜子实时统计
-- ✅ **暗黑模式功能** - 完整主题切换
+### 🔥 核心功能
+- ✅ **评论系统** - Giscus 集成 GitHub Discussions
+- ✅ **搜索功能** - 本地全文检索
+- ✅ **访客统计** - 不蒜子计数器
+- ✅ **主题切换** - 明暗模式支持
 
-### 🚀 中优先级功能 (3/3)  
-- ✅ **图片缩放功能** - MediumZoom点击缩放
-- ✅ **懒加载优化** - 图片按需加载
-- ✅ **快速链接预取** - Quicklink智能预取
+### 🚀 增强功能  
+- ✅ **图片交互** - 点击缩放查看
+- ✅ **性能优化** - 图片懒加载
+- ✅ **预加载** - Quicklink 链接预取
 
-### 📦 扩展功能 (13/13)
-- ✅ **404小恐龙游戏** - 趣味互动体验
-- ✅ **控制台彩蛋系统** - 开发者友好彩蛋
-- ✅ **个人成长里程碑** - 完整成长记录系统
-- ✅ **Categories页面优化** - 动态分类卡片
-- ✅ **Tags功能清理** - 系统性功能禁用
-- ✅ **RSS订阅** - XML订阅源生成
-- ✅ **网站地图** - SEO优化sitemap.xml
-- ✅ **Google Analytics 4** - GA4完整集成
-- ✅ **PWA支持** - 离线访问，Lighthouse 96分
-- ✅ **性能优化** - 字体、压缩、缓存优化
-- ✅ **🎵 多音乐源播放器** - 智能音量控制，多CDN支持
-- ✅ **🚀 Vercel CDN自动部署** - 音乐文件自动同步
-- ✅ **⚡ PJAX优化** - 无刷新页面切换，脚本智能执行
+### 📦 扩展功能
+- ✅ **404页面** - 小恐龙游戏
+- ✅ **控制台彩蛋** - 开发者互动
+- ✅ **里程碑页面** - 成长记录
+- ✅ **分类优化** - 动态卡片布局
+- ✅ **RSS订阅** - XML 订阅源
+- ✅ **SEO优化** - 站点地图生成
+- ✅ **数据分析** - Google Analytics
+- ✅ **PWA支持** - 离线访问能力
+- ✅ **音乐播放器** - 多源音乐播放
+- ✅ **PJAX支持** - 无刷新切换
 
 ### 📚 页面体系 (4/4)
 - ✅ **Categories页面** - 智能分类导航
@@ -187,18 +184,12 @@ git stash pop
 | **abbrlink**       | 2.2.1   | 短链接生成     |
 | **MathJax**        | -       | 数学公式渲染   |
 
-## 📈 性能指标
+## 📈 性能特点
 
-| 指标         | 数值     | 说明                   |
-| ------------ | -------- | ---------------------- |
-| **PWA得分**  | 96/100   | Lighthouse评分         |
-| **安全漏洞** | 0个      | npm audit检测          |
-| **依赖优化** | 精简化   | 移除冗余包             |
-| **构建时间** | ~1分40秒 | GitHub Actions自动构建 |
-| **文件数量** | 96个     | Service Worker缓存     |
-| **缓存大小** | 4.3MB    | 完整离线支持           |
-| **首屏加载** | <2秒     | 性能优化后             |
-| **搜索速度** | <100ms   | 本地搜索响应           |
+- **PWA支持** - Service Worker 缓存策略
+- **构建优化** - GitHub Actions 自动构建
+- **搜索性能** - 本地索引，快速响应
+- **资源优化** - 图片懒加载和压缩
 
 ## 🎨 主要特色
 
@@ -220,142 +211,15 @@ git stash pop
 - Google Calendar集成
 - 智能搜索过滤
 
-## 🎵 多音乐源播放器系统
+## 🎵 音乐播放器
 
-### 🎯 功能特性
-
-- **🎚️ 智能音量控制**
-  - 默认音量 25%，保护听力
-  - 音量滑块实时调节
-  - 一键静音/恢复
-  - 音量设置本地存储
-
-- **🌐 多CDN音乐源支持**
-  - **Vercel CDN** - 主音乐源，稳定快速
-  - **GitHub CDN** - 多CDN自动切换（jsDelivr、Statically、Raw）
-  - **网易云音乐** - 第三方API支持
-  - **紧急播放列表** - 最后的备用方案
-
-- **🤖 智能降级机制**
-  - 自动检测音乐源健康状态
-  - 失败源自动标记和重试
-  - 无缝切换到备用源
-  - 保证音乐播放不中断
-
-- **⌨️ 键盘快捷键**
-  - `空格` - 播放/暂停
-  - `←/→` - 上一首/下一首
-  - `↑/↓` - 音量增减10%
-  - `M` - 静音切换
-
-### 🚀 Vercel CDN自动部署
-
-#### 自动同步工作流
-另一仓库
-
-```yaml
-# .github/workflows/sync-music.yml
-on:
-  push:
-    paths: 
-      - 'music/**'  # 音乐文件变化时触发
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - 同步音乐文件到Vercel
-      - 自动部署CDN
-      - 清理临时文件
-```
-
-
-#### 手动同步脚本
-```bash
-# 使用shell脚本同步
-./shell_scripts/vercel-music-sync.sh
-```
-
-#### CDN优势
-- ✅ **CORS支持** - 完美解决跨域问题
-- ✅ **全球加速** - Vercel全球CDN网络
-- ✅ **自动部署** - GitHub Actions自动同步
-- ✅ **高可用性** - 多重备份机制
-
-### 📁 文件结构
-```
-source/
-├── js/
-│   ├── music-config.js              # 基础配置
-│   ├── simple-music-player.js       # 基础播放器
-│   ├── enhanced-music-config.js     # 增强版配置
-│   └── enhanced-music-player.js     # 增强版播放器
-└── _data/
-    └── body-end.njk                 # HTML结构
-```
-
-### 🔧 配置示例
-
-#### Vercel CDN配置
-```javascript
-// enhanced-music-config.js
-vercel: {
-  baseUrl: 'https://your-project.vercel.app',
-  musicPath: 'music',
-  playlist: [
-    {
-      id: 1,
-      title: '歌曲名',
-      artist: '艺术家',
-      url: 'https://cdn4blog.vercel.app/music/song.mp3',
-      duration: 240000
-    }
-  ]
-}
-```
-
-#### GitHub CDN配置
-```javascript
-github: {
-  owner: 'your-username',
-  repo: 'your-repo',
-  musicPath: 'music',
-  branch: 'main',
-  cdnProviders: [
-    { name: 'jsdelivr', url: 'https://cdn.jsdelivr.net/gh/...' },
-    { name: 'statically', url: 'https://cdn.statically.io/gh/...' },
-    { name: 'raw', url: 'https://raw.githubusercontent.com/...' }
-  ]
-}
-```
-
-### 🎮 使用方法
-
-#### 切换到增强版播放器
-```html
-<!-- 在 body-end.njk 中替换引用 -->
-<script src="/js/enhanced-music-config.js"></script>
-<script src="/js/enhanced-music-player.js"></script>
-```
-
-#### 添加新音乐
-1. 将音乐文件放入 `music/` 目录
-2. 更新配置文件中的播放列表
-3. 提交代码，自动部署到CDN
-
-### 🔍 故障排除
-
-#### 网易云音乐无法播放
-- 第三方API经常失效，属于正常现象
-- 播放器会自动降级到其他音乐源
-- 可手动更新API服务器列表
-
-#### GitHub CDN访问慢
-- 系统自动选择最快的CDN
-- 如果jsDelivr被墙，自动切换到其他CDN
-
-#### 音量设置不保存
-- 确保浏览器允许localStorage
-- 检查隐私插件是否阻止存储
+集成了智能音乐播放系统，支持：
+- **多音源智能切换**：Vercel CDN、GitHub CDN（多提供商）、网易云等
+- **智能降级机制**：音源失败时自动切换到备用源
+- **健康检查系统**：定期监测音源可用性
+- **紧急播放列表**：所有音源失效时的备用方案
+- **完整播放控制**：播放/暂停、音量调节、进度条、循环模式
+- **响应式设计**：完美适配桌面和移动设备
 
 ## 🔗 相关链接
 
@@ -398,12 +262,11 @@ github: {
 
 ## 👤 作者
 
-**makoMako** - love math and dinosaurs
+**mako** - love math and dinosaurs
 - GitHub: [@zhu-jl18](https://github.com/zhu-jl18)
 - Blog: [Dirac Sea](https://zhu-jl18.github.io)
 
-### 🤝 贡献者
-
+### 🛠️ 开发工具
 - fine-tuned **gemini cli** && **claude code** 
   - 帮助优化博客功能，实现PJAX解决方案
   - 协助编写技术文档和优化指南
@@ -414,7 +277,7 @@ github: {
 
 <div align="center">
 
-**🎉 从单调博客到现代化平台，24项功能100%完成！**
+**🎉 持续优化中的个人博客平台**
 
 [🌟 Star](https://github.com/zhu-jl18/My-Blog) | [🍴 Fork](https://github.com/zhu-jl18/My-Blog/fork) | [📝 Issues](https://github.com/zhu-jl18/My-Blog/issues)
 

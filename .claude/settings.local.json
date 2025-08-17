@@ -16,7 +16,9 @@
       "Bash(mkdir:*)",
       "Bash(move:*)",
       "Bash(npm run build:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(hexo new:*)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }

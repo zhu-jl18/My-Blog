@@ -157,6 +157,13 @@ if (typeof SimpleMusicPlayer === 'undefined') {
   
   // 加载Vercel播放列表（固定）
   loadVercelPlaylist() {
+    // 使用配置文件中的 Vercel 播放列表
+    if (this.config.vercelPlaylist && this.config.vercelPlaylist.length > 0) {
+      console.log('📋 使用配置文件中的 Vercel 播放列表');
+      return this.config.vercelPlaylist;
+    }
+    
+    // 如果配置文件中没有，使用默认列表
     const { baseUrl, musicPath } = this.config.vercel;
     const pathPrefix = musicPath ? `${musicPath}/` : '';
     
@@ -166,12 +173,6 @@ if (typeof SimpleMusicPlayer === 'undefined') {
         title: 'acoustic breeze',
         artist: 'Background Music',
         url: `${baseUrl}/${pathPrefix}acoustic%20breeze.mp3`
-      },
-      {
-        id: 2,
-        title: 'The Sounds of Silence',
-        artist: 'Simon & Garfunkel',
-        url: `${baseUrl}/${pathPrefix}The%20Sounds%20of%20Silence.mp3`
       }
     ];
   }

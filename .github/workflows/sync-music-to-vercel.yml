@@ -1,0 +1,76 @@
+name: 🎵 同步音乐文件到 Vercel
+
+# 当 music 文件夹有变化时触发
+on:
+  push:
+    paths:
+      - 'music/**'
+    branches: [main]
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  sync-to-vercel:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 检出 cdn4blog 仓库
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🔧 配置 Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
+    - name: 📥 检出 Vercel 仓库（通过 GitHub 内容 API）
+      uses: actions/checkout@v4
+      with:
+        repository: zhu-jl18/cdn4blog
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: 'temp-vercel'
+        
+    - name: 🔄 同步音乐文件到 Vercel
+      env:
+        VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+      run: |
+        # 由于 Vercel 和 GitHub 是同一个仓库，我们直接提交即可
+        # Vercel 会自动检测 GitHub 仓库的更新
+        
+        # 检查 music 文件夹是否有新内容
+        if [ -d "music" ] && [ "$(ls -A music)" ]; then
+          echo "🎵 发现音乐文件，准备同步..."
+          
+          # 提交音乐文件
+          git add music/
+          if git diff --staged --quiet; then
+            echo "ℹ️ 没有新的音乐文件需要提交"
+          else
+            git commit -m "🎵 更新音乐文件
+            
+            📁 更新的文件：
+            $(git diff --staged --name-only | sed 's/^/  - /')
+            
+            🤖 自动同步于 $(date '+%Y-%m-%d %H:%M:%S')
+            "
+            git push origin main
+            
+            echo "✅ 音乐文件已推送到 GitHub，Vercel 会自动部署"
+            
+            # 如果有 Vercel Deploy Hook，触发部署
+            if [ ! -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
+              echo "🚀 触发 Vercel 重新部署..."
+              curl -X POST $VERCEL_DEPLOY_HOOK_URL
+            fi
+          fi
+        else
+          echo "⚠️ music 文件夹为空或不存在"
+        fi
+        
+    - name: 📊 同步报告
+      run: |
+        echo "## 📋 同步完成报告" >> $GITHUB_STEP_SUMMARY
+        echo "- ⏰ 同步时间: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- 📁 同步内容: music 文件夹" >> $GITHUB_STEP_SUMMARY
+        echo "- 🌐 Vercel 地址: https://cdn4blog.vercel.app" >> $GITHUB_STEP_SUMMARY
+        echo "- 📝 提交信息: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
