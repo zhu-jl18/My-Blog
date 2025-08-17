@@ -135,10 +135,11 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  type: "git"
-  repo: git@github.com:zhu-jl18/zhu-jl18.github.io.git
-  branch: main
+# 使用 GitHub Actions 部署，不需要传统的 hexo deploy 配置
+# deploy:
+#   type: "git"
+#   repo: git@github.com:zhu-jl18/zhu-jl18.github.io.git
+#   branch: main
 
 # Giscus评论系统配置
 giscus:
