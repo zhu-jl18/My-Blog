@@ -1,4 +1,4 @@
-name: 🚀 自动部署到 GitHub Pages
+name: 🚀 构建并部署到 GitHub Pages
 
 # 触发条件：推送到main分支时
 on:
@@ -20,18 +20,13 @@ permissions:
   pages: write
   id-token: write
 
-# 并发控制：同时只允许一个部署
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  # 构建任务
-  build:
+  # 构建和部署任务
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: 📥 检出代码
+    - name: 📥 检出源代码
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # 获取完整git历史
@@ -64,30 +59,21 @@ jobs:
         find public -name "*.js" | wc -l | xargs echo "JS文件数："
         du -sh public/ | xargs echo "总大小："
         
-    - name: 📤 上传构建产物
-      uses: actions/upload-pages-artifact@v3
+    - name: 🚀 部署到 GitHub Pages 仓库
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        path: ./public
-
-  # 部署任务（仅在main分支）
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    
-    steps:
-    - name: 🚀 部署到 GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
-      
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        # 部署到用户/组织页面仓库
+        # 注意：需要确保 GITHUB_TOKEN 有写入目标仓库的权限
+        # 或者创建一个 PERSONAL_TOKEN 并添加到 secrets
+        
     - name: 📊 生成部署报告
+      if: github.ref == 'refs/heads/main'
       run: |
         echo "## 🎉 部署成功报告" >> $GITHUB_STEP_SUMMARY
         echo "- ⏰ 构建时间: $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "- 🔗 访问链接: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
         echo "- 📝 提交信息: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
         echo "- 👤 提交作者: ${{ github.event.head_commit.author.name }}" >> $GITHUB_STEP_SUMMARY
-        echo "- 🌐 环境: ${{ github.environment }}" >> $GITHUB_STEP_SUMMARY
+        echo "- 🌐 博客地址: https://zhu-jl18.github.io" >> $GITHUB_STEP_SUMMARY

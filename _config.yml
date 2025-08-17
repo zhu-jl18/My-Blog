@@ -135,11 +135,13 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
-# 使用 GitHub Actions 部署，不需要传统的 hexo deploy 配置
-# deploy:
-#   type: "git"
-#   repo: git@github.com:zhu-jl18/zhu-jl18.github.io.git
-#   branch: main
+# 使用 GitHub Actions 部署到 zhu-jl18.github.io 仓库
+# 本仓库 (My-Blog) 是源码仓库，通过 Actions 自动构建并部署
+deploy:
+  type: git
+  repo: https://github.com/zhu-jl18/zhu-jl18.github.io.git
+  branch: main
+  message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
 
 # Giscus评论系统配置
 giscus:
