@@ -1,13 +1,11 @@
 ---
 title: The Evolution of My GitHub Profile
+author:
+  - mako
+  - fish
 categories:
-  - 技术折腾
-  - AI协作
-tags:
-  - GitHub
-  - AI协作
-  - 自动化
-  - 前端
+  - 技术记录与分享
+  - AI & LLM
 abbrlink: 17888
 date: 2025-08-08 18:41:03
 
@@ -16,7 +14,9 @@ date: 2025-08-08 18:41:03
 > 摘要：记录了一次有趣的"人机协作"经历——和Gemini一起从零开始，打造了一个让我非常满意的Github Profile。
 
 <!--more-->
+
 ----
+
 ## 🎯 先看效果，再聊过程
 
 我的GitHub Profile现在长这样：

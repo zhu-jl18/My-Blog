@@ -1,15 +1,15 @@
 ---
 title: English-from-the-Cafe-Seinfeld
-categories: English
+categories: 语言学习
 abbrlink: 43173
+author: mako
 date: 2021-03-31 08:39:28
-tags:
 ---
 
-Expressions and vocabulary learned from the episode.
+> Expressions and vocabulary learned from the episode.
 
 <!--more-->
-
+---
 
 - disappear without a trace
 

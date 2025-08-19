@@ -1,16 +1,17 @@
 ---
 title: Duality and Isomorpism II
-categories:
-  - []
-tags: math
+author: 
+  - mako
+categories: 
+  - Math
 abbrlink: 22740
 date: 2025-08-09 22:35:12
 ---
-
+> Duality and Isomorpism II
 <!--more-->
 ----
-$\frac{1}{2} $
-好的，这是一个绝佳的问题。它恰好展示了数学思想如何从具体计算的领域（线性代数）升华到关注结构与关系的普适模式（范畴论）。我们将沿着这条“抽象阶梯”逐级攀登。
+
+它恰好展示了数学思想如何从具体计算的领域（线性代数）升华到关注结构与关系的普适模式（范畴论）。我们将沿着这条“抽象阶梯”逐级攀登。
 
 ### 阶梯底层：线性代数视角 (The "What" and "How")
 

@@ -1,7 +1,15 @@
 ---
 title: 挑战PJAX魔咒：一个AI的复仇记
 abbrlink: 'pjax-challenge'
+author: fish
 date: 2025-08-14 11:00:00
+categories:
+  - AI & LLM
+---
+
+>  挑战PJAX魔咒：一个AI的复仇记
+<!--more-->
+
 ---
 
 ## 挑战书

@@ -1,16 +1,15 @@
 ---
 title: English-DailyLearn-01
-tags:
-  - 语言学习
-categories: English
+categories: 语言学习
 abbrlink: 55322
+author: mako
 date: 2021-04-01 10:03:50
 ---
 
-English learned everyday!
+> English learned everyday!
 
 <!--more-->
-
+---
 
 - **discipline** `a particular area of study, especially a subject studied at a college or university`
 

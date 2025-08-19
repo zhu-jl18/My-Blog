@@ -1,15 +1,15 @@
 ---
 title: English-from-Kramer
-categories: English
+categories: 语言学习
 abbrlink: 8377
+author: mako
 date: 2021-03-24 16:24:03
-tags:
 ---
 
-Expressions and vocabulary learned from the film.
+>Expressions and vocabulary learned from the film.
 
 <!--more-->
-
+---
 
 
 

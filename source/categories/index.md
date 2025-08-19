@@ -1,11 +1,11 @@
 ---
-title: 📚 学习分类目录
+title: 📚 文章分类目录
 date: 2021-03-20 22:25:39
 comments: false
 ---
 
 <div align="center">
-  <h3>📖 知识分类索引</h3>
+  <h3>📖 板块索引 </h3>
 </div>
 
 <div class="categories-overview">
@@ -24,41 +24,41 @@ comments: false
       icon: '🧮',
       desc: '深入数学的美妙世界，从基础概念到高深理论，记录在数学学习路上的思考与发现'
     },
-    '技术折腾': {
-      title: '技术折腾',
+    '技术记录与分享': {
+      title: '技术分享',
       icon: '💻',
       desc: '技术学习与实践记录，包括编程技巧、工具使用、博客优化等技术相关内容'
     },
-    'English': {
+    '语言学习': {
       title: '语言学习',
       icon: '🗣️',
-      desc: '英语学习心得与日常练习，记录语言能力提升的点点滴滴'
+      desc: '英语等学习心得与日常练习，记录语言能力提升的点点滴滴'
     },
-    'AI': {
+    'AI & LLM': {
       title: '人工智能',
       icon: '🤖',
-      desc: 'AI技术学习与应用实践，探索人工智能在学习和工作中的可能性'
+      desc: '探索人工智能在学习和工作中的可能性'
     },
-    'LaTeX': {
-      title: '排版艺术',
+    'Interesting': {
+      title: '有趣的东西',
       icon: '📝',
-      desc: 'LaTeX学习与使用技巧，追求完美的数学公式和文档排版效果'
+      desc: '一些有意思的东西，比如AI角色卡'
     },
-    '技术测试': {
-      title: '技术测试',
+    '其他': {
+      title: '其他模块',
       icon: '🧪',
-      desc: '各种技术测试与实验，记录探索过程中的尝试与发现'
+      desc: '一些其他的东西'
     }
   };
 
   // 分类文章数量（静态配置，避免重复加载闪烁）
   const categoryCounts = {
     'Math': 2,
-    '技术折腾': 3,
-    'English': 7,
-    'AI': 2,
-    'LaTeX': 1,
-    '技术测试': 1
+    '技术记录与分享': 3,
+    '语言学习': 7,
+    'AI & LLM': 2,
+    'Interesting': 1,
+    '其他': 1
   };
 
   let isInitialized = false;

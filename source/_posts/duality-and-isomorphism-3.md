@@ -1,13 +1,14 @@
 ---
-title: Duality and Isomorpism I
+title: Duality and Isomorpism III
+author: 
+  - mako
 categories:
-  - []
+  - Math
 abbrlink: 21655
 date: 2025-08-09 22:37:15
-tags:
 ---
 
-> * * 
+>  Duality and Isomorpism III
 
 <!--more-->
 ----

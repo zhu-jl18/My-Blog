@@ -1,54 +1,3 @@
-<!-- 简洁音乐播放器 -->
-<div id="music-player-widget" class="music-player-widget">
-  <!-- 收缩按钮 -->
-  <div class="player-toggle" id="player-toggle" title="收起/展开">
-    <i class="fa fa-chevron-left"></i>
-  </div>
-  
-  <!-- 音乐播放器主体 -->
-  <div class="music-player">
-    <div class="player-header">
-      <i class="fa fa-music"></i>
-      <span>音乐播放器</span>
-    </div>
-    
-    <!-- 歌曲信息 -->
-    <div class="song-info">
-      <div class="song-title">正在加载音乐...</div>
-      <div class="song-artist">请稍候</div>
-    </div>
-    
-    <!-- 播放控制按钮 -->
-    <div class="player-controls">
-      <button class="control-btn prev-btn" title="上一首">
-        <i class="fa fa-step-backward"></i>
-      </button>
-      <button class="control-btn play-btn" title="播放/暂停">
-        <i class="fa fa-play"></i>
-      </button>
-      <button class="control-btn next-btn" title="下一首">
-        <i class="fa fa-step-forward"></i>
-      </button>
-    </div>
-    
-    <!-- 音量控制 -->
-    <div class="volume-section">
-      <i class="volume-icon fa fa-volume-up"></i>
-      <div class="volume-bar">
-        <div class="volume-fill"></div>
-        <div class="volume-handle"></div>
-      </div>
-      <span class="volume-text">25%</span>
-    </div>
-  </div>
-</div>
-
-<!-- 加载音乐播放器脚本 -->
-<script src="/js/music-config.js" data-pjax></script>
-<script src="/js/simple-music-player.js" data-pjax></script>
-
-<!-- 狄拉克之海特效 (PJAX兼容版) -->
-<script src="/js/dirac-sea-pjax.js" data-pjax></script>
 
 <!-- 控制台彩蛋 -->
 <script data-pjax>
@@ -68,7 +17,7 @@
     contact: 'color: #ffeaa7; font-size: 13px; font-weight: bold;'
   };
   
-  console.log('%c🦕 Dirac Sea - 狄拉克之海', styles.title);
+  console.log('%c🎓 数学与技术博客', styles.title);
   console.log('%c═══════════════════════════════════════', 'color: #ddd;');
   console.log('%c👋 你好，好奇的开发者！', styles.subtitle);
   console.log('%c欢迎来到我的数学与技术世界', styles.text);
@@ -97,7 +46,6 @@
   console.log('%c输入 blog.math() 显示随机数学公式', styles.text);
   console.log('%c输入 blog.about() 了解更多信息', styles.text);
   console.log('%c输入 blog.show() 重新显示这个欢迎信息', styles.text);
-  console.log('%c输入 toggleDiracSea() 开启/关闭狄拉克之海特效', styles.text);
   console.log('%c输入 blog.cleanup() 清理特效设置', styles.text);
   
   console.log('\n%c🚀 快捷方式:', styles.subtitle);
@@ -108,11 +56,6 @@
   
   // 添加交互式功能
   window.blog = {
-    // 清理狄拉克之海特效的设置
-    cleanup: function() {
-      localStorage.removeItem('diracSeaEnabled');
-      console.log('%c🧹 已清理狄拉克之海特效设置', 'color: #4ecdc4;');
-    },
     
     stats: function() {
       const posts = document.querySelectorAll('.post-title, .post-meta').length;
@@ -149,7 +92,7 @@
     show: function() {
       // 重新显示完整的控制台彩蛋
       console.clear();
-      console.log('%c🦕 Dirac Sea - 狄拉克之海', 'color: #ff6b6b; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);');
+      console.log('%c🎓 数学与技术博客', 'color: #ff6b6b; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);');
       console.log('%c═══════════════════════════════════════', 'color: #ddd;');
       console.log('%c👋 你好，好奇的开发者！', 'color: #4ecdc4; font-size: 16px; font-weight: bold;');
       console.log('%c欢迎来到我的数学与技术世界', 'color: #45b7d1; font-size: 14px;');
@@ -253,7 +196,7 @@
   
   document.addEventListener('click', function(e) {
     // 随机决定是否显示特效 (20% 概率)
-    if (Math.random() > 0.8) {
+    if (Math.random() > 0.9) {
       createMathSymbolEffect(e.clientX, e.clientY);
     }
   });
@@ -268,7 +211,7 @@
       left: ${x}px;
       top: ${y}px;
       font-size: 20px;
-      color: #4ecdc4;
+      color: #c4b5fd ;
       font-weight: bold;
       pointer-events: none;
       z-index: 9999;
