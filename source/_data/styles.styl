@@ -1,26 +1,75 @@
 /* source/_data/styles.styl */
 
-/* 侧边栏目录高亮颜色 - 改为蓝紫色 */
+$mycolor = #ff4757
+$mycolor1 = #c4b5fd  /* 淡紫水晶 */ /* 冰川紫 */
+
+
+
+// 上下一篇美化 
+.post-nav-item a:hover {
+  color: $mycolor1;
+}
+
+.posts-expand .post-title {
+  margin: 0 0  1.7em 0;  
+  text-decoration: underline;             /* 激活下划线功能 */
+  text-decoration-style: wavy;            /* 最关键的来了！设置为波浪线 */     
+  text-decoration-thickness: 2.5px;       /* 下划线的粗细 (更细显得更精致） */
+  text-underline-offset: 0.5em;             /* 下划线与文本之间的距离，避免“压”到字上 */
+  font-weight: 500;  /* 稍微加粗文字，让其更易区分和引导视觉 */
+}
+
+.posts-expand .post-header {
+    font-size: 18px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+
+
+// follow me 美化
+.followme {
+    color:  #8064F1!important;
+    font-size: 0.9em; 
+    background: transparent;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* 增加透明背景下字体颜色和背景色的变化过渡 */
+    cursor: pointer; /* 通常followme 都是可点击，所以建议加入 */
+    border-left: none;
+}
+/* 如果你的 `followme` 内部有 link 或者 button */
+.followme .social-list {
+    margin: 0.7em 0 0 0;
+}
+.followme a:hover {
+    color: #8064F1!important; /* 可以考虑在 a:hover 的时候给个微小的变色反馈 */
+}
+
+
+
+/* 侧边栏目录高亮颜色 -  */
 .post-toc .nav .active > a,
 .post-toc .nav .active-current > a {
-  border-bottom-color: #667eea !important;
-  color: #667eea !important;
-}
+  border-bottom-color: $mycolor !important;
+  color: $mycolor  !important;
+}.post-body blockquote
+Specificity: (0,1,1)
+ 
 
 .post-toc .nav .active-current > a:hover {
-  color: #667eea !important;
+  color: $mycolor !important;
 }
 
-/* 侧边栏导航激活状态 - 改为蓝紫色 */
+
+/* 侧边栏导航激活状态 */
 .sidebar-toc-active .sidebar-nav-toc,
 .sidebar-overview-active .sidebar-nav-overview {
-  border-bottom-color: #667eea !important;
-  color: #667eea !important;
+  border-bottom-color: $mycolor !important;
+  color: $mycolor !important;
 }
 
 .sidebar-toc-active .sidebar-nav-toc:hover,
 .sidebar-overview-active .sidebar-nav-overview:hover {
-  color: #667eea !important;
+  color: $mycolor !important;
 }
 
 /* 阅读体验优化 */
@@ -44,7 +93,7 @@ body {
 // 段落间距优化
 .post-body p {
   line-height: 1.75 !important;
-  margin: 1.2em 0 !important;
+  margin: 1.25em 0 !important;
   text-align: justify !important;
   word-break: break-word !important;
 }
@@ -90,50 +139,53 @@ body {
   line-height: 1.7 !important;
 }
 
-// 代码块字体优化
-.post-body code {
-  font-size: 0.9em !important;
-  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace !important;
-  background: #f6f8fa !important;
-  padding: 0.2em 0.4em !important;
-  border-radius: 3px !important;
-  color: #e36209 !important;
-}
+// 代码块字体优化 多余的样式
+// .post-body code {
+//   //font-size: 0.9em !important;
+//   font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", "Courier New", monospace !important;
+//   background: #f8f9fa !important;
+//   //padding: 0.2em 0.4em !important;
+//   //border-radius: 3px !important;
+//   //color: #e36209 !important;
+// }
 
-.post-body pre {
-  font-size: 0.9em !important;
-  line-height: 1.6 !important;
-  margin: 1.5em 0 !important;
-  background: #f6f8fa !important;
-  border: 1px solid #e1e4e8 !important;
-  border-radius: 6px !important;
-  overflow-x: auto !important;
+// .post-body pre {
+//   //font-size: 0.9em !important;
+//   //line-height: 1.6 !important;
+//   //margin: 0.5em 0 !important;
+//   background: #f6f8fa !important;
+//   //border: 1px solid #e1e4e8 !important;
+//   //border-radius: 6px !important;
+//   //overflow-x: auto !important;
   
-  code {
-    background: transparent !important;
-    padding: 0 !important;
-    color: #24292e !important;
-    font-size: 0.9em !important;
-  }
-}
+//   code {
+//     background: transparent !important;
+//     padding: 0 !important;
+//     color: #24292e !important;
+//     //font-size: 0.9em !important;
+//   }
+// }
+
 
 // 行内代码样式
 .post-body p code {
   font-size: 0.85em !important;
-  background: #f6f8fa !important;
-  padding: 0.2em 0.4em !important;
-  border-radius: 3px !important;
-  color: #e36209 !important;
-  border: 1px solid #e1e4e8 !important;
+  font-family: "Maple Mono NF","JetBrains Mono", "Fira Code", "Source Code Pro", "Courier New", monospace !important;
+  // background: #f8f9fa !important;
+  // // padding: 0.2em 0.4em !important;
+  // // border-radius: 3px !important;
+  // color: #24292e !important; !important;
+  // // border: 1px solid #E1E4E8 !important;
 }
 
-// 引用块样式优化
+//引用块样式优化
 .post-body blockquote {
   font-size: 0.95em !important;
-  line-height: 1.7 !important;
-  margin: 1.5em 0 !important;
-  padding: 1em 1.5em !important;
-  border-left: 4px solid #ff4757 !important;
+  font-style: italic !important;
+  //line-height: 1.7 !important;
+  //margin: 1.2em 0 !important;
+  padding: 0.8em 1.3em !important;
+  border-left: 4px solid $mycolor1 !important;
   background: #f8f9fa !important;
   border-radius: 0 4px 4px 0 !important;
 }
@@ -142,20 +194,20 @@ body {
 .post-body table {
   font-size: 0.9em !important;
   line-height: 1.6 !important;
-  margin: 1.5em 0 !important;
+  //margin: 1.5em 0 !important;
+  margin: 0 !important;
 }
 
 // 链接样式优化
 .post-body a {
-  color: #667eea !important;
+  color: $mycolor1 !important;
   text-decoration: none !important;
   border-bottom: 1px solid transparent !important;
   transition: all 0.3s ease !important;
-  
-  &:hover {
-    border-bottom-color: #667eea !important;
-    color: #8b5cf6 !important;
-  }
+  // &:hover {
+  //   border-bottom-color: $mycolor !important;
+  //   color: #8b5cf6 !important;
+  // }
 }
 
 /* post content */
@@ -163,6 +215,7 @@ body {
 .post-content {
   padding: 2.5em !important;
 }
+
 
 
 // 图片最大化处理
@@ -332,26 +385,15 @@ body {
     position: absolute;
     left: 0;
     top: 50%;
-    width: 4px;
+    width: 3px;
     height: 80%;
-    background: #667eea;
+    background: $mycolor1 ;
     transform: translateY(-50%);
-    border-radius: 2px;
+    border-radius: 10px;
   }
 }
 
-/*.posts-collapse .post-title::before {
-  content: '|';
-  positon: absolute;
-  left: 0;
-  top: 50%;
-  width: 4px;
-  hegiht: 80%;
-  transform:translateY(-50%);
 
-  border-radius: 2px;
-  color: #667eea;
-}*/
 
 /* 滚动条美化 */
 ::-webkit-scrollbar {
@@ -397,29 +439,14 @@ mjx-c {
   font-weight: 500 !important;
 }
 
-// 移除重复的列表样式定义，使用上面优化的版本
 
-img {
-  box-shadow: 0rem 0.4rem 0.8rem rgba(116, 95, 181, 0.1);
-  border-radius: 5px;
-}
 
 .post-body h1::before, .post-body h2::before, .post-body h3::before, .post-body h4::before, .post-body h5::before {
   content: '#';
   padding-right: 10px;
-  color: #a4b0be;
+  color:$mycolor1;
+  //color: #a4b0be;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 .sidebar {
@@ -437,7 +464,7 @@ img {
   
   /* 确保图片在sidebar内部正确显示 */
   img {
-    max-width: 170px !important;
+    max-width: 175px !important;
     width: auto !important;
     height: auto !important;
     opacity: 0.85 !important;

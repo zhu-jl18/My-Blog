@@ -6,13 +6,13 @@ author: mako
 date: 2021-03-26 11:04:07
 ---
 
-Expressions and vocabulary learned from the film.
+>Expressions and vocabulary learned from the film.
 
 <!--more-->
 
-#### Vocabulary
+---
 
-
+## Vocabulary
 
 
 - **ponder**  *`v.`*  `to think about something carefully for a period of time`
@@ -180,7 +180,7 @@ Expressions and vocabulary learned from the film.
 
 
 
-#### Expressions
+## Expressions
 
 
 - Doorbell dings/rings!
@@ -275,7 +275,7 @@ Right, right. Yeah. Perfect timing, as ever.好吧,好吧,来得可真是时候�
 ------
 
 
-#### Quote
+## Quote
 
 - >C'est la vie!
 人生就是如此！

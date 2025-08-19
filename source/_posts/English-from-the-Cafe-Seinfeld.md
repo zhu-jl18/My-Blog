@@ -6,10 +6,10 @@ author: mako
 date: 2021-03-31 08:39:28
 ---
 
-Expressions and vocabulary learned from the episode.
+> Expressions and vocabulary learned from the episode.
 
 <!--more-->
-
+---
 
 - disappear without a trace
 

@@ -146,14 +146,14 @@ sidebar:
 # Sidebar Avatar
 avatar:
   # Replace the default image and set the url here.
-  url: https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog@main/avatar/avatar.jpg
+  url: /images/avatar.png
   # If true, the avatar will be displayed in circle.
   rounded: true
   # If true, the avatar will be rotated with the cursor.
   rotated: true
 
 # Posts / Categories / Tags in sidebar. (已禁用tags显示)
-site_state: true
+site_state: false   # 这个不开
 
 # Social Links
 # Usage: `Key: permalink || icon`
@@ -188,10 +188,7 @@ links_settings:
   layout: block
 
 links:
-  GitHub: https://github.com
-  Hexo官网: https://hexo.io
-  NexT主题: https://theme-next.js.org
-  朋友博客: https://friend-blog.com
+
 
 # Table of Contents in the Sidebar
 # Front-matter variable (nonsupport wrap expand_all).
@@ -202,9 +199,10 @@ toc:
   # If true, all words will placed on next lines if header width longer then sidebar width.
   wrap: true
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
-  expand_all: true
+  expand_all: false 
   # Maximum heading depth of generated toc.
-  max_depth: 2
+  ### 1 2 3 级标题都可见 建议从2级标题开写
+  max_depth: 3
 
 # ---------------------------------------------------------------
 # Footer Settings
@@ -291,8 +289,8 @@ reward:
 # Subscribe through Telegram Channel, Twitter, etc.
 # Usage: `Key: permalink || icon` (Font Awesome)
 follow_me:
-  Twitter: https://twitter.com/username || fab fa-twitter
-  Telegram: https://t.me/channel_name || fab fa-telegram
+  #Twitter: https://twitter.com/username || fab fa-twitter
+  YouTube: https://t.me/channel_name || fab fa-youtube
   #WeChat: /images/wechat_channel.png || fab fa-weixin
   #RSS: /atom.xml || fa fa-rss
   Bilibili: https://space.bilibili.com/403214142 || fa-brands fa-bilibili
@@ -374,22 +372,22 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    light: github
-    dark: github-dark
+    light: base16/ros-pine
+    dark: base16/ros-pine
   prism:
-    light: prism-tomorrow
-    dark: prism-dark
+    light: prism-coy.min
+    dark: prism-tomorrow 
   # Add copy button on codeblock
   copy_button:
-    enable: true
+    enable: false 
     # Available values: default | flat | mac
     style: flat
   # Fold code block
   fold:
-    enable: true
+    enable: false
     height: 200
   # Display language name
-  language: false
+  language: true
 
 back2top:
   enable: true
@@ -405,9 +403,10 @@ reading_progress:
   start_at: left
   # Available values: top | bottom
   position: top
-  reversed: false
-  color: "#37c6c0"
+  reversed: false  
+  color: "#ff4757"
   height: 3px
+
 
 # Bookmark Support
 bookmark:

@@ -5,10 +5,13 @@ abbrlink: 20013
 author: mako
 date: 2021-03-26 19:17:16
 ---
-Expressions and vocabulary learned from the episode.
+>Expressions and vocabulary learned from the episode.
 
 
 <!--more-->
+
+---
+
 #### Vocabulary
 
 
