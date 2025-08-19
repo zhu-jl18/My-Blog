@@ -1,10 +1,9 @@
 ---
 title: latex-draw-a-tree
 categories:
-  - LaTeX
+  - 其他
 abbrlink: 38523
 date: 2021-03-12 12:22:09
-tags:
 ---
 How to draw simple trees in LaTeX without using TikZ.
 

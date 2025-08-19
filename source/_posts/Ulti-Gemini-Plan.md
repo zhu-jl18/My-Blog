@@ -1,12 +1,7 @@
 ---
 title: Ultimate Plan for Gemini API Calls
-categories:
-  - - AI
-tags:
-  - LLM
-  - AI
-  - Gemini
-  - API管理
+categories: 
+  - 技术记录与分享
 abbrlink: 4763
 date: 2025-08-12 23:52:13
 ---

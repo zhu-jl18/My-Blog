@@ -1,9 +1,8 @@
 ---
 title: English-DailyLearn-01
-tags:
-  - 语言学习
-categories: English
+categories: 语言学习
 abbrlink: 55322
+author: mako
 date: 2021-04-01 10:03:50
 ---
 

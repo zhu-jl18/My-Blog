@@ -1,11 +1,9 @@
 ---
 title: Duality and Isomorpism IX
+author: 
+  - mako
 categories:
   - Math
-tags:
-  - math
-  - duality
-  - isomorphism
 abbrlink: 21524
 date: 2025-08-09 22:42:07
 ---

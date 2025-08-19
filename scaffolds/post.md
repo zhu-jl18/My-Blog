@@ -1,10 +1,12 @@
 ---
 title: {{ title }}
 date: {{ date }}
+author:
+  - 
 categories:
-  - Math
+  - Math 技术记录与分享  AI & LLM Interesting 语言学习  其他
 abbrlink: 
-mathjax: true
+mathjax: false
 ---
 
 > **摘要**: 

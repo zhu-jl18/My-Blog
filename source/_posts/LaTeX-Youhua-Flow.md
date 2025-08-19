@@ -1,10 +1,8 @@
 ---
 title: LaTeX工作流优化指南
-categories:
-  - - AI
-tags:
-  - LaTeX
-  - AI
+categories: 
+  - AI & LLM
+  - 技术分享与记录
 abbrlink: 23471
 date: 2025-08-13 17:52:13
 ---

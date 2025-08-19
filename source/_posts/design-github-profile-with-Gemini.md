@@ -1,13 +1,11 @@
 ---
 title: The Evolution of My GitHub Profile
+author:
+  - mako
+  - fish
 categories:
-  - 技术折腾
-  - AI协作
-tags:
-  - GitHub
-  - AI协作
-  - 自动化
-  - 前端
+  - 技术记录与分享
+  - AI & LLM
 abbrlink: 17888
 date: 2025-08-08 18:41:03
 
