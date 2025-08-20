@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可拖动聊天窗口</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 200vh;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 聊天按钮 */
+        .chat-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chat-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-bubble.hidden {
+            display: none;
+        }
+
+        .chat-bubble span {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* 聊天窗口 */
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999;
+        }
+
+        .chat-window.active {
+            display: flex;
+        }
+
+        /* 窗口头部 - 可拖动区域 */
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .chat-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .chat-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 5px;
+        }
+
+        .chat-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* 聊天内容区域 */
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f5f5f5;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.bot {
+            background: white;
+            color: #333;
+        }
+
+        /* 输入区域 */
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; padding: 20px;">我的博客</h1>
+    <p style="text-align: center;">试试右下角的聊天窗口，可以拖动哦！</p>
+
+    <!-- 聊天按钮 -->
+    <div class="chat-bubble" id="chatBubble">
+        <span>💬</span>
+    </div>
+
+    <!-- 聊天窗口 -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header" id="chatHeader">
+            <span class="chat-title">AI 助手</span>
+            <div class="chat-controls">
+                <button class="chat-btn" id="minimizeBtn">−</button>
+                <button class="chat-btn" id="closeBtn">×</button>
+            </div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="message bot">你好！我是AI助手，有什么可以帮助你的吗？</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="输入消息...">
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <script>
+        // 获取元素
+        const chatBubble = document.getElementById('chatBubble');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatHeader = document.getElementById('chatHeader');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const messageInput = document.getElementById('messageInput');
+        const chatBody = document.getElementById('chatBody');
+
+        // 拖动功能
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // 点击聊天按钮打开窗口
+        chatBubble.addEventListener('click', () => {
+            chatWindow.classList.add('active');
+            chatBubble.classList.add('hidden');
+        });
+
+        // 最小化
+        minimizeBtn.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+            chatBubble.classList.remove('hidden');
+        });
+
+        // 关闭
+        closeBtn.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+            chatBubble.classList.remove('hidden');
+        });
+
+        // 拖动开始
+        chatHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === chatHeader) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                // 更新位置
+                chatWindow.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        // 发送消息
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                // 添加用户消息
+                addMessage(message, 'user');
+                messageInput.value = '';
+                
+                // 模拟AI回复
+                setTimeout(() => {
+                    addMessage('收到你的消息：' + message, 'bot');
+                }, 1000);
+            }
+        }
+
+        // 添加消息到聊天窗口
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // 回车发送
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
