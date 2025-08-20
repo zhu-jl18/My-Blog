@@ -127,7 +127,7 @@ sidebar:
   # Applicable to Muse | Mist and mobile of Pisces | Gemini.
   width_expanded: 350 # 320 -> 350 增加宽度解决文字显示不全问题
   # Applicable to desktop of Pisces | Gemini.
-  width_dual_column: 280 #240 -> 280 增加宽度解决文字显示不全问题
+  width_dual_column: 280 # 240 -> 280 增加宽度解决文字显示不全问题
 
   # Sidebar display.
   # Applicable to Muse | Mist and mobile of Pisces | Gemini.
