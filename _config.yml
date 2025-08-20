@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Dirac Sea
-# subtitle: "极客:: 进化！ | Geek: Evolution"
+title: Dirac Sea 
+subtitle: "🦖::😼::🧐"
 description: love math and dinosaurs
 keywords:
-author: makoMako
+author: mako
 language:
   - zh-CN
   - en
@@ -146,7 +146,7 @@ deploy:
 
 # Giscus评论系统配置
 giscus:
-  enable: true
+  enable: false
   repo: "zhu-jl18/zhu-jl18.github.io"  # 你的GitHub仓库名
   repo_id: ""  # 需要从giscus.app获取
   category: "General"  # Discussion分类名
