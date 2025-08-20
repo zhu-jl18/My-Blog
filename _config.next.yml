@@ -31,6 +31,10 @@ custom_file_path:
   #mixin: source/_data/mixins.styl
   style: source/_data/styles.styl
 
+# Clock settings
+clock:
+  enable: false
+
 # ---------------------------------------------------------------
 # Scheme Settings
 # ---------------------------------------------------------------
