@@ -2,7 +2,7 @@
 
 $mycolor = #ff4757
 $mycolor1 = #c4b5fd  /* 淡紫水晶 */ /* 冰川紫 */
-
+$mycolor2 = #8064F1
 
 
 .site-author-name {
@@ -19,7 +19,8 @@ $mycolor1 = #c4b5fd  /* 淡紫水晶 */ /* 冰川紫 */
 .posts-expand .post-title {
   margin: 0 0  1.7em 0;  
   text-decoration: underline;             /* 激活下划线功能 */
-  text-decoration-style: wavy;            /* 最关键的来了！设置为波浪线 */     
+  text-decoration-style: wavy; 
+  text-decoration-color: #2E0F53D1;           /* 最关键的来了！设置为波浪线 */     
   text-decoration-thickness: 2.5px;       /* 下划线的粗细 (更细显得更精致） */
   text-underline-offset: 0.5em;             /* 下划线与文本之间的距离，避免“压”到字上 */
   font-weight: 500;  /* 稍微加粗文字，让其更易区分和引导视觉 */
@@ -35,7 +36,7 @@ $mycolor1 = #c4b5fd  /* 淡紫水晶 */ /* 冰川紫 */
 
 // follow me 美化
 .followme {
-    color:  #8064F1!important;
+    color:  $mycolor2 !important;
     font-size: 0.9em; 
     background: transparent;
     transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* 增加透明背景下字体颜色和背景色的变化过渡 */
