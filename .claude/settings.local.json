@@ -1,11 +1,10 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "ANTHROPIC_AUTH_TOKEN": "sk-GIKNbc4Slk9k6obSW5OppXhWZwFKIDizJKdSvJgRfhI8dSM5",
     "ANTHROPIC_BASE_URL": "https://api.ibs-gss.top/",
     "API_TIMEOUT_MS": "3000000"
   },
-  "model": "opus",
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Bash(hexo generate:*)",
@@ -26,8 +25,10 @@
       "Bash(hexo new:*)",
       "Bash(dir:*)",
       "Bash(cat:*)",
-      "mcp__zen__chat"
+      "mcp__zen__chat",
+      "Bash(hexo:*)"
     ],
     "deny": []
-  }
+  },
+  "model": "opus"
 }
