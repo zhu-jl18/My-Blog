@@ -49,10 +49,10 @@ darkmode: true
 # ---------------------------------------------------------------
 
 favicon:
-  small: /images/favicon-16x16-next.png
-  medium: /images/favicon-32x32-next.png
-  apple_touch_icon: /images/apple-touch-icon-next.png
-  safari_pinned_tab: /images/logo.svg
+  small: /images/lambda-icon-size_16.png
+  medium: /images/lambda-icon-size_32.png
+  apple_touch_icon: /images/lambda-icon-size_64.png
+  safari_pinned_tab: /images/lambda-icon-size_64.png
   android_manifest: /manifest.json
 
 # Custom Logo (Warning: Do not support scheme Mist)
@@ -764,10 +764,11 @@ isso: # <data_isso>
 
 # AddToAny Share. See: https://www.addtoany.com
 addtoany:
-  enable: false
+  enable: true
   buttons:
     - facebook
     - twitter
+    - wechat
 
 # ---------------------------------------------------------------
 # Statistics and Analytics
@@ -850,7 +851,7 @@ busuanzi_count:
   enable: true
   total_visitors: true
   total_visitors_icon: fa fa-user
-  total_views: true
+  total_views: false
   total_views_icon: fa fa-eye
   post_views: true
   post_views_icon: far fa-eye
