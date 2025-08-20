@@ -2,12 +2,11 @@
 title: Ultimate Plan for Gemini API Calls
 categories: 
   - 技术记录与分享
+  - AI & LLM
 abbrlink: 4763
 date: 2025-08-12 23:52:13
 ---
-
-> **Gemini API Key 终极管理方案** - 个人技术记录
-
+> Gemini API Key 终极管理方案
 <!--more-->
 ----
 
@@ -24,16 +23,19 @@ Gemini API Key 管理方案，解决 API 调用限制、断流问题以及多账
 - **aibots**: `deprecated, exposed` ❌ (开小号被发现了)
 
 ### 账户配额
-| 账户 | 配额 | 状态 |
-| ---- | ---- | ---- |
-| mako | 8个  | 主用 |
-| grey | 10个 | 主用 |
-| fish | 10个 | 备用 |
+| 账户     | 配额 | 状态    |
+| -------- | ---- | ------- |
+| mako     | 10个 | 主用    |
+| grey     | 0个  | 被ban了 |
+| fish     | 7个  | 主用    |
+| 打野付费 | 5个  | 备用    |
 
 ### 扩展计划
 - [ ] 手机 Google Mail 注册新账户增加 Key 数量
 - [ ] Chrome 匿名模式管理小号
 - [ ] 避免在非匿名环境中操作小号
+- [ ] 幽灵代理，没看明白
+- [ ] 扩充反截断方案和部署CF Worker数目
 
 ## 🏗️ 技术方案
 
@@ -41,15 +43,19 @@ Gemini API Key 管理方案，解决 API 调用限制、断流问题以及多账
 ```mermaid
 graph LR
     A[Cherry Studio] --> B[Docker GPT-Load]
-    B --> C[CloudFlare Worker]
-    C --> D[Google AI API]
-    C --> E[断流检测]
-    E --> F[自动续传]
+    B --> A
+    B --> C[CloudFlare]
+    C --> B
+    C --反截断--> D[Netlify]
+    D --完整响应--> C
+    D --反代--> E[Gemini API]
+    E --> D
 ```
 
 ### 技术栈
 - **GPT-Load**: 负载均衡和API管理
 - **CloudFlare Worker**: 断流检测和自动续传
+- **Netlify** 反代服务
 - **Docker**: 容器化部署
 - **Google AI API**: 底层服务
 
@@ -58,31 +64,33 @@ graph LR
 #### 1. 请求流程详解
 
 **第一步：Cherry Studio → GPT-Load**
-```
+```text
 Cherry Studio 发送请求 → Docker 容器中的 GPT-Load 接收
 ```
 
 **第二步：GPT-Load → CloudFlare Worker**
-```
+```text
 GPT-Load 根据负载均衡策略选择 API Key
 → 将请求转发到 CloudFlare Worker
 → Worker 作为中间代理层处理请求
 ```
 
-**第三步：CloudFlare Worker → Google AI API**
-```
+**第三步：CloudFlare Worker → Netlify**
+```text
 CloudFlare Worker 携带选定的 API Key
-→ 直接调用 Google AI API
-→ 获取 Gemini 响应
+→ 请求Netlify转发响应
 ```
 
-**第四步：响应处理与断流检测**
+**第四步：Netlify → Google API**
+```text
+Netlify 请求 Google API的相应
 ```
-CloudFlare Worker 接收 Gemini 响应
+
+**第五步：反向传播回 CloudFlare**
+```text
 → 实时分析响应内容
-→ 检测是否被截断
+→ 检测是否被截断，如果被截断，继续第三步
 ```
-
 #### 2. 防截断机制 (基于 G.E.M. 方案)
 
 **截断检测算法：**
@@ -115,16 +123,15 @@ function detectTruncation(response) {
 ```yaml
 # 多账户轮询配置
 providers:
-  - name: "mako"
+  - name: "myself"
     api_key: "${MAKO_API_KEY}"
-    quota: 8
-  - name: "grey" 
+    quota: 10
+  - name: "free" 
     api_key: "${GREY_API_KEY}"
-    quota: 10
-  - name: "fish"
+    quota: 7777
+  - name: "charge"
     api_key: "${FISH_API_KEY}"
-    quota: 10
-    hidden: true
+    quota: 5
 ```
 
 **故障切换机制：**
@@ -169,13 +176,13 @@ providers:
 | ----------------- | ------ | -------------------------------------------------------- |
 | **Cherry Studio** | 新方案 | 调用Gemini的话全部这个方案~~ 其他方案可以先设置为 unseen |
 | **ChatBox**       | 老方案 | 得用老方案，这个是手机端的                               |
-| **RooCode etc**   | 观望   | 先不动再说，看Cursor和ClaudeCode能否稳定长期使用         |
+| **RooCode etc**   | 废弃   | 先不动再说，看Cursor和ClaudeCode能否稳定长期使用         |
 
 ### 🔍 待考虑的~
 想起来什么再补充
 
-- [ ] 所有的key应该有记录，整个加密文件
-- [ ] 监控和告警机制
+- 幽灵反代
+- 自建
 - [ ] 成本统计和分析
 - [ ] 备份和恢复策略
 
@@ -188,8 +195,10 @@ providers:
 
 ## 📝 更新日志
 
-- **2025-08-12**: 初始版本，基础框架搭建
 - 待补充更多更新记录...
+- **2025-08-20** v1，增加稳定反代，扩展反截断
+- **2025-08-12**: 初始版本，基础框架搭建
+
 
 ---
 
