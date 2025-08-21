@@ -10,7 +10,7 @@ date: 2025-08-12 23:52:13
 <!--more-->
 ----
 
-## 📋 概述
+## 📋 密钥状态
 
 Gemini API Key 管理方案，解决 API 调用限制、断流问题以及多账户负载均衡。
 
@@ -30,12 +30,26 @@ Gemini API Key 管理方案，解决 API 调用限制、断流问题以及多账
 | fish     | 7个  | 主用    |
 | 打野付费 | 5个  | 备用    |
 
+
+### 反代方案
+
+- Netlify mako non fish bot03 rexy bangzhu
+- Vercel  non  
+  
+  [Interface proxy](https://github.com/lovingfish/proxy-interface)
+  [palm-netlify-proxy](https://github.com/lovingfish/palm-netlify-proxy)
+
 ### 扩展计划
 - [ ] 手机 Google Mail 注册新账户增加 Key 数量
 - [ ] Chrome 匿名模式管理小号
 - [ ] 避免在非匿名环境中操作小号
 - [ ] 幽灵代理，没看明白
 - [ ] 扩充反截断方案和部署CF Worker数目
+
+
+
+
+
 
 ## 🏗️ 技术方案
 
