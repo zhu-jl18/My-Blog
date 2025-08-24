@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "ANTHROPIC_AUTH_TOKEN": "sk-GIKNbc4Slk9k6obSW5OppXhWZwFKIDizJKdSvJgRfhI8dSM5",
+    "ANTHROPIC_AUTH_TOKEN": "",
     "ANTHROPIC_BASE_URL": "https://api.ibs-gss.top/",
     "API_TIMEOUT_MS": "3000000"
   },
