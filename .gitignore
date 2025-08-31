@@ -5,10 +5,6 @@ db.json
 node_modules/
 public/
 .deploy*/
-.vscode
+.vscode/
+.claude/
 
-
-
-
-
-db.json
