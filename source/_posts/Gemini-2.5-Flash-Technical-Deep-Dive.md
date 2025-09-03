@@ -1,6 +1,5 @@
 ---
 title: Gemini 2.5 Flash图像模型技术深度解析：一致性与指令理解的内在机制
-date: 2025-09-03 15:45:00
 categories:
   - 技术原理解析
   - AI & LLM
@@ -11,6 +10,8 @@ tags:
   - 多模态
   - 图像编辑
   - 技术拆解
+abbrlink: 8a6ab0d0
+date: 2025-09-03 15:45:00
 ---
 
 > 本文为个人学习记录，旨在深度解析Google Gemini 2.5 Flash Image模型在图像编辑任务中，其卓越的“一致性”与“指令理解能力”背后的核心技术原理，并基于公开的学术研究探讨其技术边界与未来趋势。
@@ -126,7 +127,7 @@ graph TD
 
 ---
 
-## 五、“Nano Banana”生成实例
+## 五、"Nano Banana"生成实例
 
 以下是我使用Gemini 2.5 Flash Image进行的一些编辑与生成实例。
 
