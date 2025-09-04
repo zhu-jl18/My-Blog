@@ -17,9 +17,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Common Commands
 - `npm install` - Install dependencies
+- `hexo clean` - Clean generated files
 - `hexo generate` or `hexo g` - Generate static files
 - `hexo server` or `hexo s` - Start local server
-- `hexo clean` - Clean generated files
 - `hexo deploy` - Deploy to GitHub Pages
 
 
