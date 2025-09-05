@@ -41,12 +41,12 @@ date: 2025-08-09 22:42:07
 
 -   **帕斯卡定理 (Pascal's Theorem)**: 如果一个六边形的六个顶点都在一个圆锥曲线（如椭圆）上，那么三对对边的交点是共线的。
 <div style = "text-align: center;">
-<img src ="https://media.makomako.dpdns.org/2025/8/pascal.png" width = 70%>
+<img src ="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2025-8/pascal.png" width = 70%>
 </div>
 
 -   **布列安桑定理 (Brianchon's Theorem)**: 如果一个六边形的六条边都与一个圆锥曲线相切，那么三条对角线（连接对顶点的线）是共点的。
 <div style = "text-align: center;">
-<img src ="https://media.makomako.dpdns.org/2025/8/Brianchon.png" width = 70%>
+<img src ="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2025-8/Brianchon.png" width = 70%>
 </div>
 
 这两个看起来截然不同的定理，实际上是**同一个定理的两个对偶版本**。证明了其中一个，另一个自动成立。这是数学对称性之美的极致体现。
@@ -62,7 +62,7 @@ date: 2025-08-09 22:42:07
 2.  如果 $G$ 中有两个面被一条边 $e$ 分隔，那么就在这两个面对应的 $G^{\ast}$ 顶点之间连一条边 $e^{\ast}$，这条边要穿过原来的边 $e$。
 
 <div style = "text-align: center;">
-<img src ="https://media.makomako.dpdns.org/2025/8/Duals_graphs.png" width = 70%>
+<img src ="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2025-8/Duals_graphs.png" width = 70%>
 </div>
 (红色是原图 G，蓝色是对偶图 G*)
 

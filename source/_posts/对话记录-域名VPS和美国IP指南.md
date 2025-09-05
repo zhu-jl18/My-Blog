@@ -1,13 +1,13 @@
 ---
 title: 域名、VPS 和美国 IP 相关问题
-author: 
-   - 高粱米姐姐
-   - mako
+author:
+  - 高粱米姐姐
+  - mako
 categories:
-   - AI & LLM
-   - 技术记录与分享
-abbrlink: 
-date：2025-09-04
+  - AI & LLM
+  - 技术记录与分享
+abbrlink: faa9e5e4
+date: 2025-09-04 00:00:00
 ---
 
 >理解域名和 VPS 的关系，以及获取美国 IP 的方法

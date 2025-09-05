@@ -34,7 +34,7 @@ Consider the following TeX:
 
 This produces the following tree:
 
-<img src="https://media.makomako.dpdns.org/2021/3/latex-draw-a-tree-01.png">
+<img src="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2021-3/latex-draw-a-tree-01.png">
 
 The basic syntax is simply `[.node-name subtrees... ]`; `\qroof`, which draws the triangle, requires its node name at the end, instead. The `\1` is just a shortcut for a math-mode prime. In addition, qtree will always render `_` and `^` as sub- and super-scripts, too.
 
@@ -88,7 +88,7 @@ Easy to see its syntax~ And we can select some additional features: forest allow
 
 Here's an extreme example:
 
-<img src="https://media.makomako.dpdns.org/2021/3/latex-draw-a-tree-02.png" style="width:59%">
+<img src="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2021-3/latex-draw-a-tree-02.png" style="width:59%">
 
 ```latex
 \begin{forest}
@@ -127,4 +127,4 @@ Here's an extreme example:
  ```
 
  It looks like this:
- <img src="https://media.makomako.dpdns.org/2021/3/latex-draw-a-tree-03.png">
+ <img src="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog/2021-3/latex-draw-a-tree-03.png">

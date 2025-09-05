@@ -71,7 +71,7 @@ GitHub Profile本质上就是一个`README.md`文件。Markdown -> HTML 懂了�
 ```html
 <div style="border: 1px solid #d0d7de; border-radius: 6px; padding: 16px; margin: 16px 0;">
   <div style="display: flex; align-items: center; gap: 16px;">
-    <img src="https://media.makomako.dpdns.org/avatar/Gauss.png" width="120" style="border-radius: 6px;">
+    <img src="https://cdn.jsdelivr.net/gh/zhu-jl18/cdn4blog@main/avatar/Gauss.png" width="120" style="border-radius: 6px;">
     <div>
       <h3>Theorema Egregium</h3>
       <p>高斯绝妙定理：曲面的高斯曲率K是内蕴几何量</p>
