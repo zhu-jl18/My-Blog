@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "zen": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/BeehiveInnovations/zen-mcp-server.git",
+        "zen-mcp-server"
+      ]
+    }
+  }
+}
