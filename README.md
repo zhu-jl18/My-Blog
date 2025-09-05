@@ -6,6 +6,22 @@
 
 本博客使用了 Hexo 7.3.0 作为静态站点生成器，NexT 8.23.2 作为主题。在官方配置基础上进行了一些个性化调整。
 
+
+## 主题切换与显示（2025-09-05 更新）
+
+- 默认配色：浅色（白天）。
+- 切换方式：屏幕贴边的“浮动主题按钮”（默认位于左下角），点击可在浅色/深色间切换，并记忆到浏览器的 localStorage。
+- 悬挂位置可选：
+  - left-bottom（默认，左下）
+  - left-middle（左中）
+  - top-left（贴上边稍靠左）
+- 修改位置：编辑文件 source/_data/body-end.njk，找到常量 `FLOAT_POS`，改为上面任一值；随后执行 `hexo clean && hexo generate`。
+- 深色适配：当用户点击切换时，HTML 根元素会设置 `data-theme="dark"`。自定义样式在 `source/_data/styles.styl` 中通过 `html[data-theme="dark"]` 覆盖 CSS 变量（如 `--content-bg-color`），并同步应用到 `.main-inner` / `.sidebar-inner` / `header.header`，确保正文包裹区与侧栏背景正确变暗。
+
+开发小贴士：
+- 若页面使用 PJAX，切页后按钮会自动重新挂载。
+- 如遇样式冲突导致按钮不可见，控制台会打印 `[theme] floating toggle attached` 日志；也可在控制台直接搜索 `.theme-floating-toggle` 元素进行排查。
+
 ## 自定义修改记录
 
 ### Hexo 配置修改 (_config.yml)
