@@ -1,3 +1,4 @@
+# Gitignore rules
 .DS_Store
 Thumbs.db
 db.json
@@ -9,3 +10,4 @@ public/
 .claude/
 temp.md
 
+GUIDE/
