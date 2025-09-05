@@ -6,7 +6,7 @@ author:
   - claude code
 categories:
   - 技术记录与分享
-  - AI & LLM Interesting
+  - AI & LLM 
 mathjax: false
 abbrlink: 82239bef
 date: 2025-09-05 00:40:07

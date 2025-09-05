@@ -1,0 +1,46 @@
+{% extends '_layout.njk' %}
+{% import '_macro/sidebar.njk' as sidebar_template with context %}
+
+{% block title %}{{ page.title }} | {{ title }}{% endblock %}
+{% block class %}page posts-expand{% endblock %}
+
+{% block content %}
+  <div class="post-block" lang="{{ page.lang }}">
+    <div class="post-content">
+      <div class="collection-title">
+        <h1 class="collection-header">{{ page.title }}</h1>
+      </div>
+
+      <div class="categories-overview">
+        <div class="categories-grid">
+          {# 仅渲染你在 data 文件中维护的 6 个顶级分类，并在构建期统计文章数 #}
+          {% set overrides = site.data.categories or {} %}
+
+          {% for name, meta in overrides %}
+            {% set cat_count = 0 %}
+            {% for pair in site.categories %}
+              {% if pair[0] == name %}
+                {% set cat_count = pair[1].length %}
+              {% endif %}
+            {% endfor %}
+
+            <div class="category-item">
+              <div class="category-header">
+                <span class="category-icon">{{ meta.icon or "📁" }}</span>
+                <h4 class="category-title">{{ meta.title or name }}</h4>
+                <span class="category-count">{{ cat_count }}篇</span>
+              </div>
+              {% if meta.desc %}<p class="category-desc">{{ meta.desc }}</p>{% endif %}
+              <a href="/categories/{{ name | urlencode }}/" class="category-link">进入分类 →</a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}
+

@@ -1,8 +1,9 @@
 ---
 title: LaTeX工作流优化指南
+author: mako
 categories: 
   - AI & LLM
-  - 技术分享与记录
+  - 技术记录与分享
 abbrlink: 23471
 date: 2025-08-13 17:52:13
 ---
