@@ -739,6 +739,22 @@ mjx-c {
   box-shadow: 0 6px 14px rgba(0,0,0,.35)
 
 
+
+// Override CSS variables when user toggles theme via [data-theme="dark"]
+html[data-theme="dark"]
+  --body-bg-color: #0f1116
+  --content-bg-color: #111827
+  --card-bg-color: #1f2937
+  --text-color: #e5e7eb
+  --link-color: #e5e7eb
+  --link-hover-color: #fff
+
+// Make containers follow content-bg variable explicitly
+[data-theme="dark"] .main-inner,
+[data-theme="dark"] .sidebar-inner,
+[data-theme="dark"] header.header
+  background: var(--content-bg-color)
+
 // Theme toggle button layout
 .site-nav-right .theme-toggle
   display: inline-flex !important
