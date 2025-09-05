@@ -883,87 +883,128 @@ html[data-theme="dark"]
 .chat-body
   flex: 1
   overflow: auto
-  padding: 12px 14px
-  font-size: 13px
-  line-height: 1.5
+  padding: 10px 12px
+  font-size: 12px
+  line-height: 1.4
   .msg
-    padding: 8px 10px
-    margin: 8px 0
-    border-radius: 8px
+    padding: 6px 8px
+    margin: 6px 0
+    border-radius: 6px
     word-wrap: break-word
+    max-width: 95%
   .user
     background: rgba(124,58,237,.12)
+    margin-left: auto
+    text-align: right
   .bot
     background: rgba(99,102,241,.10)
+    margin-right: auto
     h1, h2, h3, h4, h5, h6
-      margin: 8px 0 4px 0
-      font-size: 14px
+      margin: 6px 0 3px 0
+      font-size: 13px
+      font-weight: 600
     p
-      margin: 4px 0
+      margin: 3px 0
+      line-height: 1.5
     ul, ol
-      margin: 4px 0
-      padding-left: 16px
+      margin: 3px 0
+      padding-left: 14px
     li
-      margin: 2px 0
+      margin: 1px 0
+      line-height: 1.4
     code
       background: rgba(0,0,0,.08)
-      padding: 2px 4px
-      border-radius: 3px
-      font-size: 12px
+      padding: 1px 3px
+      border-radius: 2px
+      font-size: 11px
+      font-family: 'Consolas', 'Monaco', monospace
     pre
       background: rgba(0,0,0,.05)
-      padding: 8px
-      border-radius: 4px
+      padding: 6px
+      border-radius: 3px
       overflow-x: auto
-      margin: 4px 0
+      margin: 3px 0
+      font-size: 11px
       code
         background: none
         padding: 0
+    strong
+      font-weight: 600
+    em
+      font-style: italic
   .err
     background: rgba(239,68,68,.12)
     color: #b91c1c
+  .loading
+    background: rgba(156,163,175,.10)
+    color: #6b7280
+    font-style: italic
   .cites
-    margin-top: 6px
-    font-size: 11px
+    margin-top: 4px
+    font-size: 10px
+    opacity: 0.8
+    border-top: 1px solid rgba(0,0,0,.05)
+    padding-top: 3px
 
 .chat-input
   display: flex
-  gap: 8px
-  padding: 10px 12px
+  gap: 6px
+  padding: 8px 10px
   border-top: 1px solid #ddd
   input
     flex: 1
     border: 1px solid #ccc
-    border-radius: 6px
-    padding: 8px 10px
+    border-radius: 4px
+    padding: 6px 8px
+    font-size: 12px
+    &:disabled
+      background: #f5f5f5
+      cursor: not-allowed
   button
     background: #6b46c1
     color: #fff
     border: none
-    border-radius: 6px
-    padding: 8px 14px
+    border-radius: 4px
+    padding: 6px 12px
     cursor: pointer
+    font-size: 12px
+    min-width: 50px
+    &:disabled
+      background: #9ca3af
+      cursor: not-allowed
 
 .chat-config
-  padding: 10px 12px
+  padding: 8px 10px
   border-top: 1px solid #ddd
   display: grid
   grid-template-columns: 1fr
-  gap: 8px
+  gap: 6px
+  font-size: 11px
   &.hidden
     display: none
   label
     display: grid
-    grid-template-columns: 100px 1fr
+    grid-template-columns: 80px 1fr
     align-items: center
-    gap: 8px
-  input
+    gap: 6px
+    font-size: 11px
+  input, select
     border: 1px solid #ccc
-    border-radius: 6px
-    padding: 6px 8px
+    border-radius: 3px
+    padding: 4px 6px
+    font-size: 11px
   button.save
-    width: 120px
+    width: 100px
     justify-self: end
+    padding: 4px 8px
+    font-size: 11px
+  .config-section
+    border-bottom: 1px solid #eee
+    padding-bottom: 6px
+    margin-bottom: 6px
+    &:last-child
+      border-bottom: none
+      margin-bottom: 0
 
 [data-theme="dark"] .chat-drawer
   border-left: 1px solid rgba(255,255,255,.10)

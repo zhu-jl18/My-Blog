@@ -10,6 +10,7 @@ tags:
   - 数学
   - math
 updated: "2025-09-05 12:56:04"
+mathjax: true
 ---
 > Duality and Isomorpism II
 <!--more-->
