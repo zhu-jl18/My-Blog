@@ -1,12 +1,12 @@
 ---
-title: <i class="fas fa-th-large"></i> 文章分类目录
+title: 文章分类目录
 date: 2021-03-20 22:25:39
 comments: false
 
 
 ---
 <div align="center">
-  <h3><i class="fas fa-bookmark"></i> 板块索引</h3>
+  <h3>板块索引</h3>
 </div>
 
 <div class="categories-overview">
