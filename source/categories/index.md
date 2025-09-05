@@ -14,6 +14,11 @@ comments: false
   </div>
 </div>
 
+<script>
+  const categoryCounts = { {% for c in site.categories %}
+    "{{ c[0] }}": {{ c[1].length }}{% if not loop.last %},{% endif %}
+  {% endfor %} };
+</script>
 <script data-pjax>
 // 动态生成分类卡片 - 优化版本
 (function() {
@@ -51,15 +56,9 @@ comments: false
     }
   };
 
-  // 分类文章数量（静态配置，避免重复加载闪烁）
-  const categoryCounts = {
-    'Math': 2,
-    '技术记录与分享': 3,
-    '语言学习': 7,
-    'AI & LLM': 2,
-    'Interesting': 1,
-    '其他': 1
-  };
+{% for category in site.categories %}
+  <div class="category-count">{{ category.length }}篇</div>
+{% endfor %}
 
   let isInitialized = false;
 
