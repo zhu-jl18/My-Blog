@@ -1,0 +1,70 @@
+<script>
+(function() {
+  const STORAGE_KEY = 'theme';
+
+  function getPreferredTheme() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }
+
+  function updateToggleIcon(btn) {
+    if (!btn) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const icon = btn.querySelector('i');
+    if (icon) icon.className = isDark ? 'fa fa-sun fa-fw fa-lg' : 'fa fa-moon fa-fw fa-lg';
+    btn.setAttribute('aria-label', isDark ? '切换为浅色' : '切换为深色');
+    btn.title = isDark ? '切换为浅色' : '切换为深色';
+  }
+
+  function ensureThemeToggle() {
+    const container = document.querySelector('.site-nav-right');
+    if (!container) return;
+    let btn = container.querySelector('.theme-toggle');
+    if (!btn) {
+      btn = document.createElement('div');
+      btn.className = 'toggle theme-toggle';
+      btn.setAttribute('role', 'button');
+      btn.innerHTML = '<i class="fa fa-moon fa-fw fa-lg"></i>';
+      btn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
+        updateToggleIcon(btn);
+      });
+      // 放在搜索按钮左侧
+      container.insertBefore(btn, container.firstChild);
+    }
+    updateToggleIcon(btn);
+  }
+
+  // 初始化
+  applyTheme(getPreferredTheme());
+  ensureThemeToggle();
+
+  // 跟随系统变化（仅当没有显式选择时）
+  const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  if (media && media.addEventListener) {
+    media.addEventListener('change', () => {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        applyTheme(getPreferredTheme());
+        updateToggleIcon(document.querySelector('.theme-toggle'));
+      }
+    });
+  }
+
+  // PJAX 页面切换后重新挂载按钮
+  document.addEventListener('pjax:success', () => {
+    ensureThemeToggle();
+  });
+})();
+</script>
