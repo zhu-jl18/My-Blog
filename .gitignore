@@ -11,3 +11,25 @@ public/
 temp.md
 
 GUIDE/
+
+
+# Editors
+.idea/
+
+# Python / Env artifacts
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.ipynb_checkpoints/
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Local auxiliary not related to blog
+temp.json
