@@ -3,11 +3,21 @@ title: 从 jsDelivr 迁移到 Cloudflare R2：实战经验分享
 author:
   - mako
 categories:
-  - 技术记录与分享  
-  - AI & LLM 
+  - 技术记录与分享
+  - AI & LLM
 mathjax: false
 abbrlink: 5705467b
-date: 2025-09-05 01:31:58
+date: 2025-09-05T01:31:58.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - hexo
+  - git
+  - blog
+  - javascript
+  - cloudflare
+  - workflow
+updated: '2025-09-05 12:56:04'
 ---
 >  
 

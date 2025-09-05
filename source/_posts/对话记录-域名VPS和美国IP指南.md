@@ -7,8 +7,17 @@ categories:
   - AI & LLM
   - 技术记录与分享
 abbrlink: faa9e5e4
-date: 2025-09-04 00:00:00
-
+date: 2025-09-04T00:00:00.000Z
+tags:
+  - AI-LLM
+  - 技术分享
+  - api
+  - ai
+  - proxy
+  - cloudflare
+  - deployment
+  - nginx
+updated: '2025-09-05 12:56:04'
 ---
 
 >理解域名和 VPS 的关系，以及获取美国 IP 的方法

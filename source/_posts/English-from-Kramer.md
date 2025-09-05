@@ -3,7 +3,12 @@ title: English-from-Kramer
 categories: 语言学习
 abbrlink: 8377
 author: mako
-date: 2021-03-24 16:24:03
+date: 2021-03-24T16:24:03.000Z
+tags:
+  - 语言学习
+  - ai
+  - english
+updated: '2025-09-05 12:56:04'
 ---
 
 >Expressions and vocabulary learned from the film.

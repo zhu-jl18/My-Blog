@@ -3,7 +3,12 @@ title: English-DailyLearn-01
 categories: 语言学习
 abbrlink: 55322
 author: mako
-date: 2021-04-01 10:03:50
+date: 2021-04-01T10:03:50.000Z
+tags:
+  - 语言学习
+  - ai
+  - english
+updated: '2025-09-05 12:56:04'
 ---
 
 > English learned everyday!

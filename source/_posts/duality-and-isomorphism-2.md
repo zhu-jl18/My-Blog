@@ -1,11 +1,15 @@
 ---
 title: Duality and Isomorpism II
-author: 
+author:
   - mako
-categories: 
+categories:
   - Math
 abbrlink: 22740
-date: 2025-08-09 22:35:12
+date: 2025-08-09T22:35:12.000Z
+tags:
+  - 数学
+  - math
+updated: '2025-09-05 12:56:04'
 ---
 > Duality and Isomorpism II
 <!--more-->

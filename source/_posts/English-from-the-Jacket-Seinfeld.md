@@ -3,7 +3,11 @@ title: English-from-the-Jacket-Seinfeld
 categories: 语言学习
 abbrlink: 20013
 author: mako
-date: 2021-03-26 19:17:16
+date: 2021-03-26T19:17:16.000Z
+tags:
+  - 语言学习
+  - english
+updated: '2025-09-05 12:56:04'
 ---
 >Expressions and vocabulary learned from the episode.
 

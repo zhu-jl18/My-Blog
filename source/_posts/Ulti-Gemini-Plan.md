@@ -1,10 +1,20 @@
 ---
 title: Ultimate Plan for Gemini API Calls
-categories: 
+categories:
   - 技术记录与分享
   - AI & LLM
 abbrlink: 4763
-date: 2025-08-12 23:52:13
+date: 2025-08-12T23:52:13.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - git
+  - api
+  - gemini
+  - ai
+  - proxy
+  - cloudflare
+updated: '2025-09-05 12:56:04'
 ---
 > Gemini API Key 终极管理方案
 <!--more-->

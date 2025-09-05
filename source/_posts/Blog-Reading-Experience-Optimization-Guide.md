@@ -1,13 +1,23 @@
 ---
 title: 博客阅读体验优化与主题自定义指南
-author: 
+author:
   - fish
-  - mako 
+  - mako
 categories:
   - 技术记录与分享
   - AI & LLM
 abbrlink: 24845
-date: 2025-08-13 21:45:00
+date: 2025-08-13T21:45:00.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - hexo
+  - next
+  - blog
+  - css
+  - optimization
+  - experience
+updated: '2025-09-05 12:56:04'
 ---
 
 > 本文记录了为 Hexo + NexT 主题优化阅读体验的过程，包括字体大小调整、页面宽度优化、代码块适配、标签/分类页面的自定义样式，以及左侧装饰模块的添加。

@@ -7,8 +7,17 @@ categories:
   - 技术记录与分享
   - AI & LLM
 abbrlink: 17888
-date: 2025-08-08 18:41:03
-
+date: 2025-08-08T18:41:03.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - git
+  - gemini
+  - blog
+  - css
+  - javascript
+  - math
+updated: '2025-09-05 12:56:04'
 ---
 
 > 摘要：记录了一次有趣的"人机协作"经历——和Gemini一起从零开始，打造了一个让我非常满意的Github Profile。

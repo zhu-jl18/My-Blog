@@ -6,10 +6,20 @@ author:
   - claude code
 categories:
   - 技术记录与分享
-  - AI & LLM 
+  - AI & LLM
 mathjax: false
 abbrlink: 82239bef
-date: 2025-09-05 00:40:07
+date: 2025-09-05T00:40:07.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - hexo
+  - git
+  - gemini
+  - blog
+  - javascript
+  - proxy
+updated: '2025-09-05 12:56:04'
 ---
 >  使用gemini-2.5-pro 的deep research 功能生成的指南
 

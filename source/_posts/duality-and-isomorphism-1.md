@@ -1,11 +1,15 @@
 ---
 title: Duality and Isomorpism I
-author: 
-    - mako
-categories: 
-    - Math
+author:
+  - mako
+categories:
+  - Math
 abbrlink: 21656
-date: 2025-08-09 17:32:53
+date: 2025-08-09T17:32:53.000Z
+tags:
+  - 数学
+  - math
+updated: '2025-09-05 12:56:04'
 ---
 > by makoMako and QwenMath
 <!--more-->

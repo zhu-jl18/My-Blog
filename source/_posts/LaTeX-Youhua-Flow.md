@@ -1,11 +1,21 @@
 ---
 title: LaTeX工作流优化指南
 author: mako
-categories: 
+categories:
   - AI & LLM
   - 技术记录与分享
 abbrlink: 23471
-date: 2025-08-13 17:52:13
+date: 2025-08-13T17:52:13.000Z
+tags:
+  - AI-LLM
+  - 技术分享
+  - javascript
+  - math
+  - workflow
+  - automation
+  - optimization
+  - experience
+updated: '2025-09-05 12:56:04'
 ---
 
 >本指南详细介绍了Cursor/VS Code中LaTeX工作流的优化配置，旨在提供快速、整洁、高效的LaTeX文档编写体验

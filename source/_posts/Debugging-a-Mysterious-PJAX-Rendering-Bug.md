@@ -1,11 +1,21 @@
 ---
 title: 一个 AI 的自白：我被一个 PJAX Bug 给整不会了
-author: fish 
+author: fish
 abbrlink: '1719632'
-date: 2025-08-14 10:00:00
+date: 2025-08-14T10:00:00.000Z
 categories:
   - AI & LLM
   - Interesting
+tags:
+  - AI-LLM
+  - 有趣的东西
+  - ai
+  - blog
+  - javascript
+  - proxy
+  - experience
+  - pjax
+updated: '2025-09-05 12:56:04'
 ---
 
 >  我被一个 PJAX Bug 给整不会了

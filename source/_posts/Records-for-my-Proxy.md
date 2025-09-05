@@ -7,7 +7,17 @@ categories:
   - AI & LLM
 mathjax: false
 abbrlink: 57376ce0
-date: 2025-09-01 21:46:03
+date: 2025-09-01T21:46:03.000Z
+tags:
+  - 技术分享
+  - AI-LLM
+  - api
+  - gemini
+  - ai
+  - blog
+  - proxy
+  - workflow
+updated: '2025-09-05 12:56:04'
 ---
 >  记录大模型api反代原理，部署位置以及2api原理和部署
 <!--more-->

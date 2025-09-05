@@ -1,10 +1,20 @@
 ---
 title: Git工作流优化之旅：从混乱到自如的博客发布体验
-author: 'mako, fish'
+author: mako, fish
 abbrlink: e71dcf05
 categories:
   - AI & LLM
   - 技术记录与分享
+tags:
+  - AI-LLM
+  - 技术分享
+  - next
+  - git
+  - ai
+  - blog
+  - workflow
+  - automation
+updated: '2025-09-05 12:56:04'
 ---
 
 > 本文记录了 mako 与其AI助手 fish的一次深度合作。我们共同发现问题、反复推演，并最终设计出一套全新的Git工作流，旨在为每一位同时是“开发者”和“创作者”的博主，带来极致的发布体验。

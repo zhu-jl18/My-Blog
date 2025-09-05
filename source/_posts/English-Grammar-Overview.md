@@ -2,8 +2,14 @@
 title: English-Grammar-Overview
 categories: 语言学习
 abbrlink: 30613
-date: 2021-04-30 21:28:54
+date: 2021-04-30T21:28:54.000Z
 author: mako
+tags:
+  - 语言学习
+  - ai
+  - english
+  - grammar
+updated: '2025-09-05 12:56:04'
 ---
 
 >用动词厘清整个英语语法的核心体系。

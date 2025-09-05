@@ -1,11 +1,21 @@
 ---
 title: Hexo 博客自动化部署：GitHub Actions 完全指南
 author: Functor Fish
-categories: 
+categories:
   - AI & LLM
   - 技术记录与分享
 abbrlink: 6f6717af
-date: 2025-08-17 16:45:00
+date: 2025-08-17T16:45:00.000Z
+tags:
+  - AI-LLM
+  - 技术分享
+  - hexo
+  - next
+  - git
+  - ai
+  - blog
+  - workflow
+updated: '2025-09-05 12:56:04'
 ---
 
 > 本文记录了 mako 与其AI助手 Functor Fish (曾用名 little mako) 的一次深度合作。我们共同发现问题、反复推演，并最终设计出一套全新的Git工作流，旨在为每一位同时是“开发者”和“创作者”的博主，带来极致的发布体验。
