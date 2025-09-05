@@ -45,11 +45,16 @@ jobs:
         npm list --depth=0
         
     - name: Build RAG index
-      if: ${{ secrets.EMBEDDING_ENDPOINT != '' && secrets.EMBEDDING_API_KEY != '' }}
-      run: npm run rag:index -- --chunk 600 --overlap 120
       env:
         EMBEDDING_ENDPOINT: ${{ secrets.EMBEDDING_ENDPOINT }}
         EMBEDDING_API_KEY: ${{ secrets.EMBEDDING_API_KEY }}
+      run: |
+        if [ -n "${EMBEDDING_ENDPOINT}" ] && [ -n "${EMBEDDING_API_KEY}" ]; then
+          echo "Building RAG index..."
+          npm run rag:index -- --chunk 600 --overlap 120
+        else
+          echo "Skipping RAG index: EMBEDDING_* secrets not set"
+        fi
 
     - name: 🏗️ 构建静态文件
       run: |
