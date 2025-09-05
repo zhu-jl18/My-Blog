@@ -12,7 +12,7 @@
   const STATE = { index:null, dim:0, busy:false, messages:[] };
 
   function loadCfg(){
-    try { return JSON.parse(localStorage.getItem(CFG_KEY)) || { base:'https://openai-compatible-api-proxy-for-z-myg0.onrender.com', embedModel:'text-embedding-3-small', chatModel:'GLM-4.5', apiKey:'', embedKey:'' }; } catch(e){ return { base:'https://openai-compatible-api-proxy-for-z-myg0.onrender.com', embedModel:'text-embedding-3-small', chatModel:'GLM-4.5', apiKey:'', embedKey:'' }; }
+    try { return JSON.parse(localStorage.getItem(CFG_KEY)) || { base:'https://ai-proxy.bhznjns.qzz.io', embedModel:'text-embedding-3-small', chatModel:'deepseek-r1', apiKey:'', embedKey:'' }; } catch(e){ return { base:'https://ai-proxy.bhznjns.qzz.io', embedModel:'text-embedding-3-small', chatModel:'deepseek-r1', apiKey:'', embedKey:'' }; }
   }
   function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
 
@@ -53,11 +53,11 @@
         <button class="send">发送</button>
       </div>
       <div class="chat-config hidden">
-        <label>API Base <input type="text" name="base" placeholder="https://openai-compatible-api-proxy-for-z-myg0.onrender.com"></label>
+        <label>API Base <input type="text" name="base" placeholder="https://ai-proxy.bhznjns.qzz.io"></label>
         <label>Chat API Key <input type="password" name="key" placeholder="对话 Key（仅本机）"></label>
         <label>Embed Endpoint or Model <input type="text" name="embed" placeholder="FULL_ENDPOINT::MODEL 或 text-embedding-3-small"></label>
         <label>Embed API Key <input type="password" name="embedkey" placeholder="嵌入 Key（仅本机）"></label>
-        <label>Chat Model <input type="text" name="chat" placeholder="GLM-4.5"></label>
+        <label>Chat Model <input type="text" name="chat" placeholder="deepseek-r1"></label>
         <button class="save">保存</button>
       </div>`;
     document.body.appendChild(drawer);
@@ -79,11 +79,11 @@
     form.querySelector('[name=chat]').value = cfg.chatModel;
     form.querySelector('.save').addEventListener('click', ()=>{
       const next = {
-        base: form.querySelector('[name=base]').value.trim() || 'https://openai-compatible-api-proxy-for-z-myg0.onrender.com',
+        base: form.querySelector('[name=base]').value.trim() || 'https://ai-proxy.bhznjns.qzz.io',
         apiKey: form.querySelector('[name=key]').value.trim(),
         embedModel: form.querySelector('[name=embed]').value.trim() || 'text-embedding-3-small',
         embedKey: (form.querySelector('[name=embedkey]')?.value || '').trim(),
-        chatModel: form.querySelector('[name=chat]').value.trim() || 'GLM-4.5'
+        chatModel: form.querySelector('[name=chat]').value.trim() || 'deepseek-r1'
       };
       saveCfg(next);
       alert('已保存（仅存于本机）');
@@ -153,11 +153,12 @@
       const qv = await embed(q);
       const ctx = pickTopK(qv, 6);
       const contextText = ctx.map((c,i)=>`[${i+1}] ${c.title} — ${c.url}\n${c.text}`).join('\n\n');
-      const sys = '你是本博客的智能助手。回答要简洁明了，不要输出思考过程。对于技术概念，先给出标准定义，再结合博客内容补充。若上下文无相关信息就说不确定。';
-      const prompt = `上下文:\n${contextText}\n\n问题: ${q}\n\n请直接回答，不要说"根据上下文"等过程描述。`;
+      const sys = '你是本博客的智能助手。请用Markdown格式回答，包括适当的标题、段落、列表等。回答要简洁明了，分段清晰。对于技术概念，先给出标准定义，再结合博客内容补充。若上下文无相关信息就说不确定。';
+      const prompt = `上下文:\n${contextText}\n\n问题: ${q}\n\n请用Markdown格式直接回答，适当分段，不要说"根据上下文"等过程描述。`;
       const ans = await chatComplete(sys, prompt);
       const cites = ctx.map((c,i)=>`[${i+1}] <a href="${c.url}">${escapeHtml(c.title)}</a>`).join(' ');
-      body.insertAdjacentHTML('beforeend', `<div class="msg bot">${ans}<div class="cites">${cites}</div></div>`);
+      const formattedAns = simpleMarkdownToHtml(ans);
+      body.insertAdjacentHTML('beforeend', `<div class="msg bot">${formattedAns}<div class="cites">${cites}</div></div>`);
       body.scrollTop = body.scrollHeight;
     }catch(e){
       console.error(e);
@@ -185,6 +186,40 @@
   }
 
   function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])); }
+
+  function simpleMarkdownToHtml(md) {
+    if (!md) return '';
+
+    // 简单的Markdown转HTML，避免复杂的正则表达式
+    let html = escapeHtml(md);
+
+    // 标题
+    html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+
+    // 粗体和斜体
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+    // 行内代码
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // 简单的段落处理：双换行分段
+    html = html.replace(/\n\n/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+
+    // 包装段落
+    if (html && !html.startsWith('<h') && !html.startsWith('<ul') && !html.startsWith('<ol')) {
+      html = '<p>' + html + '</p>';
+    }
+
+    // 清理空段落
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p><br><\/p>/g, '');
+
+    return html;
+  }
 
   // Initialize after DOM ready
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', ensureUI);
