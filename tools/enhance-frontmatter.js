@@ -10,8 +10,8 @@
  * - Dry-run preview before applying changes
  * 
  * Usage:
- *   node scripts/enhance-frontmatter.js --dry-run    # Preview changes
- *   node scripts/enhance-frontmatter.js --apply      # Apply changes
+ *   node tools/enhance-frontmatter.js --dry-run    # Preview changes
+ *   node tools/enhance-frontmatter.js --apply      # Apply changes
  */
 
 const fs = require('fs');
@@ -70,14 +70,14 @@ class FrontMatterEnhancer {
   parseMarkdownFile(filePath) {
     const content = fs.readFileSync(filePath, 'utf8');
     const frontMatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
-
+    
     if (!frontMatterMatch) {
       throw new Error('No front-matter found');
     }
 
     const frontMatterYaml = frontMatterMatch[1];
     const markdownContent = frontMatterMatch[2];
-
+    
     try {
       const frontMatter = yaml.load(frontMatterYaml);
       return { frontMatter, markdownContent, originalContent: content };
@@ -92,7 +92,7 @@ class FrontMatterEnhancer {
     const textToAnalyze = `${title} ${content}`.toLowerCase();
 
     // Normalize categories to array
-    const categories = Array.isArray(existingCategories) ? existingCategories :
+    const categories = Array.isArray(existingCategories) ? existingCategories : 
                       typeof existingCategories === 'string' ? [existingCategories] : [];
 
     // Add category-based tags
@@ -183,13 +183,13 @@ class FrontMatterEnhancer {
   run() {
     if (!DRY_RUN && !APPLY) {
       console.log('❓ Usage:');
-      console.log('  node scripts/enhance-frontmatter.js --dry-run    # Preview changes');
-      console.log('  node scripts/enhance-frontmatter.js --apply      # Apply changes');
+      console.log('  node tools/enhance-frontmatter.js --dry-run    # Preview changes');
+      console.log('  node tools/enhance-frontmatter.js --apply      # Apply changes');
       return;
     }
 
     console.log(`🚀 ${DRY_RUN ? 'DRY-RUN' : 'APPLYING'} Front-matter Enhancement...\n`);
-
+    
     // Debug: Check if posts directory exists
     if (!fs.existsSync(POSTS_DIR)) {
       console.error(`❌ Posts directory not found: ${POSTS_DIR}`);

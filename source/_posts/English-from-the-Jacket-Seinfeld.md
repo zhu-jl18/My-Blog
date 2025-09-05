@@ -7,7 +7,7 @@ date: 2021-03-26T19:17:16.000Z
 tags:
   - 语言学习
   - english
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 >Expressions and vocabulary learned from the episode.
 

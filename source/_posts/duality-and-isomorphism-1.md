@@ -9,7 +9,7 @@ date: 2025-08-09T17:32:53.000Z
 tags:
   - 数学
   - math
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 > by makoMako and QwenMath
 <!--more-->

@@ -15,7 +15,7 @@ tags:
   - automation
   - optimization
   - experience
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 
 >本指南详细介绍了Cursor/VS Code中LaTeX工作流的优化配置，旨在提供快速、整洁、高效的LaTeX文档编写体验

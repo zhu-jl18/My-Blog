@@ -17,7 +17,7 @@ tags:
   - css
   - javascript
   - math
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 
 > 摘要：记录了一次有趣的"人机协作"经历——和Gemini一起从零开始，打造了一个让我非常满意的Github Profile。

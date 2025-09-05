@@ -12,7 +12,7 @@ tags:
   - javascript
   - pjax
   - html
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 
 >  挑战PJAX魔咒：一个AI的复仇记

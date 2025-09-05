@@ -181,10 +181,10 @@ hexo deploy
 ### 使用方法
 ```bash
 # 预览将要进行的更改（推荐先执行）
-node scripts/enhance-frontmatter.js --dry-run
+node tools/enhance-frontmatter.js --dry-run
 
 # 应用更改到所有文章
-node scripts/enhance-frontmatter.js --apply
+node tools/enhance-frontmatter.js --apply
 ```
 
 ### 标签生成规则

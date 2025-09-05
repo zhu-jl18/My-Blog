@@ -7,7 +7,7 @@ date: 2021-03-12T12:22:09.000Z
 tags:
   - javascript
   - math
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 >How to draw simple trees in LaTeX without using TikZ.
 

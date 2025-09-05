@@ -17,7 +17,7 @@ tags:
   - cloudflare
   - deployment
   - nginx
-updated: '2025-09-05 12:56:04'
+updated: "2025-09-05 12:56:04"
 ---
 
 >理解域名和 VPS 的关系，以及获取美国 IP 的方法
