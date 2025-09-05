@@ -106,7 +106,7 @@ menu:
   #Navigation: /navigation/ || fa fa-compass # 用Categories替代
   #home: / || fa fa-home
   #about: /about/ || fa fa-user
-  #Tags: /tags/ || fa fa-tags
+  Tags: /tags/ || fa fa-tags
   #categories: /categories/ || fa fa-th
   #archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
@@ -321,13 +321,13 @@ post_navigation: left
 # See: https://theme-next.js.org/docs/theme-settings/custom-pages
 # ---------------------------------------------------------------
 
-# TagCloud settings for tags page. (tags功能已禁用)
-# tagcloud:
-#   min: 12 # Minimum font size in px
-#   max: 30 # Maximum font size in px
-#   amount: 200 # Total amount of tags
-#   orderby: name # Order of tags
-#   order: 1 # Sort order
+# TagCloud settings for tags page.
+tagcloud:
+  min: 12
+  max: 30
+  amount: 200
+  orderby: name
+  order: 1
 
 # Google Calendar
 # Share your recent schedule to others via calendar page.

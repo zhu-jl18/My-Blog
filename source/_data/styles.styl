@@ -7,20 +7,20 @@ $mycolor2 = #8064F1
 
 .site-author-name {
   font-size: 1.2em;
-  margin: 0.9em 0 0 0.5em;  
+  margin: 0.9em 0 0 0.5em;
   color:  $mycolor;
 }
 
-// 上下一篇美化 
+// 上下一篇美化
 .post-nav-item a:hover {
   color: $mycolor1;
 }
 
 .posts-expand .post-title {
-  margin: 0 0  1.7em 0;  
+  margin: 0 0  1.7em 0;
   text-decoration: underline;             /* 激活下划线功能 */
-  text-decoration-style: wavy; 
-  text-decoration-color: #2E0F53D1;           /* 最关键的来了！设置为波浪线 */     
+  text-decoration-style: wavy;
+  text-decoration-color: #2E0F53D1;           /* 最关键的来了！设置为波浪线 */
   text-decoration-thickness: 2.5px;       /* 下划线的粗细 (更细显得更精致） */
   text-underline-offset: 0.5em;             /* 下划线与文本之间的距离，避免“压”到字上 */
   font-weight: 500;  /* 稍微加粗文字，让其更易区分和引导视觉 */
@@ -37,7 +37,7 @@ $mycolor2 = #8064F1
 // follow me 美化
 .followme {
     color:  $mycolor2 !important;
-    font-size: 0.9em; 
+    font-size: 0.9em;
     background: transparent;
     transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* 增加透明背景下字体颜色和背景色的变化过渡 */
     cursor: pointer; /* 通常followme 都是可点击，所以建议加入 */
@@ -60,7 +60,7 @@ $mycolor2 = #8064F1
   color: $mycolor  !important;
 }.post-body blockquote
 Specificity: (0,1,1)
- 
+
 
 .post-toc .nav .active-current > a:hover {
   color: $mycolor !important;
@@ -164,7 +164,7 @@ body {
 //   //border: 1px solid #e1e4e8 !important;
 //   //border-radius: 6px !important;
 //   //overflow-x: auto !important;
-  
+
 //   code {
 //     background: transparent !important;
 //     padding: 0 !important;
@@ -234,7 +234,7 @@ body {
   max-width: 100% !important;
   margin: 15px auto 0 !important; // 居中显示
   transition: transform 0.3s ease !important;
-  
+
   &:hover {
     transform: scale(1.07) !important; // 悬停放大效果
   }
@@ -246,13 +246,13 @@ body {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    
+
     .site-title {
       margin: 0 !important;
       font-size: 2em !important; // 增大标题
     }
   }
-  
+
   .site-subtitle {
     margin: 5px 0 0 !important;
     font-size: 1.2em !important; // 增大副标题
@@ -263,7 +263,7 @@ body {
 // 导航栏调整
 .site-nav {
   margin-top: 5px !important;
-  
+
   .menu-item {
     padding: 5px 10px !important;
   }
@@ -280,11 +280,11 @@ body {
 .cc-license
   text-align: center
   margin: 10px 0
-  
+
   img
     transition: all 0.3s ease
     margin: 0 10px
-    
+
     &:hover
       transform: scale(1.1)
       opacity: 0.8
@@ -327,7 +327,7 @@ body {
   top: 0;
   height: 100vh;
   overflow-y: auto;
-  
+
   /* 博客名字字体样式重新设计 */
   .site-title {
     font-family: 'Georgia', 'Times New Roman', serif;
@@ -338,33 +338,33 @@ body {
     font-style: italic;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-1px);
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
   }
-  
+
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(133, 61, 247, 0.2);
     border-radius: 3px;
   }
-  
+
   .menu {
     .menu-item {
       margin: 0.6rem 0 !important;
-      
+
       a {
         padding: 0.4rem 0 !important;
         transition: all 0.3s ease;
         display: block;
         border-radius: 4px;
         color: inherit;
-        
+
         &:hover {
           background: rgba(0, 0, 0, 0.05);
           color: inherit;
@@ -386,7 +386,7 @@ body {
 .posts-collapse .post-title {
   position: relative;
   padding-left: 15px;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -468,7 +468,7 @@ mjx-c {
   z-index: 1;
   margin-top: auto !important;
   margin-bottom: 18px !important;
-  
+
   /* 确保图片在sidebar内部正确显示 */
   img {
     max-width: 175px !important;
@@ -476,7 +476,7 @@ mjx-c {
     height: auto !important;
     opacity: 0.85 !important;
     transition: all 0.3s ease !important;
-    
+
     &:hover {
       opacity: 1 !important;
       transform: scale(1.05) !important;
@@ -491,3 +491,18 @@ mjx-c {
   }
 }
 
+
+
+/* Tags page chip style */
+.tag-cloud a
+  display: inline-block
+  padding: 4px 12px
+  margin: 6px
+  border-radius: 16px
+  background: rgba(128, 100, 241, .10)
+  color: #333
+  text-decoration: none
+  transition: transform .15s ease, background .2s ease
+  &:hover
+    transform: translateY(-1px)
+    background: rgba(128, 100, 241, .18)
