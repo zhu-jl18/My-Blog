@@ -12,7 +12,7 @@
   const STATE = { index:null, dim:0, busy:false, messages:[] };
 
   function loadCfg(){
-    try { return JSON.parse(localStorage.getItem(CFG_KEY)) || { base:'https://api.openai.com', embedModel:'text-embedding-3-small', chatModel:'gpt-4o-mini', apiKey:'' }; } catch(e){ return { base:'https://api.openai.com', embedModel:'text-embedding-3-small', chatModel:'gpt-4o-mini', apiKey:'' }; }
+    try { return JSON.parse(localStorage.getItem(CFG_KEY)) || { base:'https://openai-compatible-api-proxy-for-z-myg0.onrender.com', embedModel:'text-embedding-3-small', chatModel:'GLM-4.5', apiKey:'', embedKey:'' }; } catch(e){ return { base:'https://openai-compatible-api-proxy-for-z-myg0.onrender.com', embedModel:'text-embedding-3-small', chatModel:'GLM-4.5', apiKey:'', embedKey:'' }; }
   }
   function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
 
@@ -42,10 +42,11 @@
         <button class="send">发送</button>
       </div>
       <div class="chat-config hidden">
-        <label>API Base <input type="text" name="base" placeholder="https://api.openai.com"></label>
-        <label>API Key <input type="password" name="key" placeholder="sk-...（仅保存在本机）"></label>
-        <label>Embed Model <input type="text" name="embed" placeholder="text-embedding-3-small"></label>
-        <label>Chat Model <input type="text" name="chat" placeholder="gpt-4o-mini"></label>
+        <label>API Base <input type="text" name="base" placeholder="https://openai-compatible-api-proxy-for-z-myg0.onrender.com"></label>
+        <label>Chat API Key <input type="password" name="key" placeholder="对话 Key（仅本机）"></label>
+        <label>Embed Endpoint or Model <input type="text" name="embed" placeholder="FULL_ENDPOINT::MODEL 或 text-embedding-3-small"></label>
+        <label>Embed API Key <input type="password" name="embedkey" placeholder="嵌入 Key（仅本机）"></label>
+        <label>Chat Model <input type="text" name="chat" placeholder="GLM-4.5"></label>
         <button class="save">保存</button>
       </div>`;
     document.body.appendChild(drawer);
@@ -63,13 +64,15 @@
     form.querySelector('[name=base]').value = cfg.base;
     form.querySelector('[name=key]').value = cfg.apiKey;
     form.querySelector('[name=embed]').value = cfg.embedModel;
+    const embedKeyInput = form.querySelector('[name=embedkey]'); if (embedKeyInput) embedKeyInput.value = cfg.embedKey || '';
     form.querySelector('[name=chat]').value = cfg.chatModel;
     form.querySelector('.save').addEventListener('click', ()=>{
       const next = {
-        base: form.querySelector('[name=base]').value.trim() || 'https://api.openai.com',
+        base: form.querySelector('[name=base]').value.trim() || 'https://openai-compatible-api-proxy-for-z-myg0.onrender.com',
         apiKey: form.querySelector('[name=key]').value.trim(),
         embedModel: form.querySelector('[name=embed]').value.trim() || 'text-embedding-3-small',
-        chatModel: form.querySelector('[name=chat]').value.trim() || 'gpt-4o-mini'
+        embedKey: (form.querySelector('[name=embedkey]')?.value || '').trim(),
+        chatModel: form.querySelector('[name=chat]').value.trim() || 'GLM-4.5'
       };
       saveCfg(next);
       alert('已保存（仅存于本机）');
@@ -88,15 +91,27 @@
     STATE.index = data.items;
     STATE.dim = data.dim;
     return STATE.index;
+  // Optional: override embedding endpoint (non-OpenAI path)
+  function getEmbeddingEndpoint(base){
+    const cfg = loadCfg();
+    // If user set a full endpoint in embed field like 'FULL_ENDPOINT::MODEL', split
+    if (cfg.embedModel && cfg.embedModel.includes('::')){
+      const [endpoint, model] = cfg.embedModel.split('::');
+      return { url: endpoint, model };
+    }
+    return { url: new URL('/v1/embeddings', base).toString(), model: cfg.embedModel };
+  }
+
   }
 
   async function embed(text){
     const cfg = loadCfg();
-    if (!cfg.apiKey) throw new Error('请先在设置中填入 API Key');
-    const resp = await fetch((new URL('/v1/embeddings', cfg.base)).toString(), {
+    if (!cfg.embedKey && !cfg.apiKey) throw new Error('请在设置中填入嵌入或通用 API Key');
+    const { url, model } = getEmbeddingEndpoint(cfg.base);
+    const resp = await fetch(url, {
       method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${cfg.apiKey}` },
-      body: JSON.stringify({ model: cfg.embedModel, input: text })
+      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${cfg.embedKey || cfg.apiKey}` },
+      body: JSON.stringify({ model, input: text })
     });
     if (!resp.ok) throw new Error('嵌入失败：' + await resp.text());
     const json = await resp.json();

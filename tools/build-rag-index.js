@@ -32,9 +32,11 @@ function getArg(name, def) {
   return def;
 }
 
-const MODEL = getArg('model', 'text-embedding-3-small');
+let MODEL = getArg('model', 'text-embedding-3-small');
 const API_BASE = getArg('base', process.env.EMBEDDING_API_BASE || 'https://api.openai.com');
 const API_KEY = process.env.EMBEDDING_API_KEY || process.env.OPENAI_API_KEY;
+// Allow direct full embedding endpoint override for non-openai-compatible paths
+const DIRECT_EMBEDDING_ENDPOINT = process.env.EMBEDDING_ENDPOINT || getArg('endpoint');
 const CHUNK = parseInt(getArg('chunk', '600'), 10);
 const OVERLAP = parseInt(getArg('overlap', '120'), 10);
 const BATCH = parseInt(getArg('batch', '64'), 10);
@@ -100,7 +102,7 @@ function chunkText(txt, size = CHUNK, overlap = OVERLAP) {
 
 async function embedBatch(inputs) {
   const payload = JSON.stringify({ model: MODEL, input: inputs });
-  const url = new URL('/v1/embeddings', API_BASE);
+  const url = DIRECT_EMBEDDING_ENDPOINT ? new URL(DIRECT_EMBEDDING_ENDPOINT) : new URL('/v1/embeddings', API_BASE);
   const opts = {
     method: 'POST',
     headers: {
@@ -116,7 +118,17 @@ async function embedBatch(inputs) {
         if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
           try {
             const json = JSON.parse(data);
-            const vectors = json.data.map(d => d.embedding);
+            // support both OpenAI-like {data:[{embedding:[]}, ...]} and direct {data:{embedding:[]}} or {embeddings:[[...]]}
+            let vectors;
+            if (Array.isArray(json.data)) {
+              vectors = json.data.map(d => d.embedding);
+            } else if (Array.isArray(json.embeddings)) {
+              vectors = json.embeddings;
+            } else if (json.data && Array.isArray(json.data.embedding)) {
+              vectors = json.data.embedding;
+            } else {
+              throw new Error('Unrecognized embeddings response format');
+            }
             resolve(vectors);
           } catch (e) { reject(e); }
         } else {
