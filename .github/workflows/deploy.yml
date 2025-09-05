@@ -6,6 +6,7 @@ on:
     branches: [ main ]
     paths:
       - 'source/**'           # 只在内容变更时触发
+      - 'tools/**'            # 索引构建脚本变更也触发
       - '_config.yml'
       - '_config.next.yml'
       - 'package.json'
@@ -43,6 +44,13 @@ jobs:
         npm ci --prefer-offline --no-audit --no-fund
         npm list --depth=0
         
+    - name: Build RAG index
+      if: ${{ secrets.EMBEDDING_ENDPOINT != '' && secrets.EMBEDDING_API_KEY != '' }}
+      run: npm run rag:index -- --chunk 600 --overlap 120
+      env:
+        EMBEDDING_ENDPOINT: ${{ secrets.EMBEDDING_ENDPOINT }}
+        EMBEDDING_API_KEY: ${{ secrets.EMBEDDING_API_KEY }}
+
     - name: 🏗️ 构建静态文件
       run: |
         export NODE_ENV=production
