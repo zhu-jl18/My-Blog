@@ -1,0 +1,35 @@
+<div class="category-all-page">
+  <div class="category-all-title">
+    共 {{ site.categories.length }} 个分类
+  </div>
+
+  <div class="categories-overview">
+    <div class="categories-grid">
+      {# 使用 data 覆盖来定义要展示的顶级分类 #}
+      {% set overrides = site.data.categories or {} %}
+
+      {% for name, meta in overrides %}
+        {# 计算该分类的文章数：在站点所有分类中找到同名分类并读取长度 #}
+        {% set cat_count = 0 %}
+        {% for pair in site.categories %}
+          {% if pair[0] == name %}
+            {% set cat_count = pair[1].length %}
+          {% endif %}
+        {% endfor %}
+
+        {% if cat_count > 0 %}
+        <div class="category-item">
+          <div class="category-header">
+            <span class="category-icon">{{ meta.icon or "📁" }}</span>
+            <h4 class="category-title">{{ meta.title or name }}</h4>
+            <span class="category-count">{{ cat_count }}篇</span>
+          </div>
+          {% if meta.desc %}<p class="category-desc">{{ meta.desc }}</p>{% endif %}
+          <a href="/categories/{{ name | urlencode }}/" class="category-link">进入分类 →</a>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
