@@ -743,8 +743,9 @@ mjx-c {
 .site-nav-right .theme-toggle
   display: inline-flex
   align-items: center
-  margin-right: 12px
+  margin-left: 12px
   cursor: pointer
+  z-index: 1001 // 确保在 GitHub banner 之上
 
 // Ensure icon color contrasts in dark mode
 [data-theme="dark"] .site-nav-right .theme-toggle

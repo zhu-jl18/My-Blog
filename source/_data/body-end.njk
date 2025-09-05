@@ -41,8 +41,8 @@
         applyTheme(next);
         updateToggleIcon(btn);
       });
-      // 放在搜索按钮左侧
-      container.insertBefore(btn, container.firstChild);
+      // 放在搜索按钮右侧（避免被 GitHub banner 遮挡）
+      container.appendChild(btn);
     }
     updateToggleIcon(btn);
   }
