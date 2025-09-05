@@ -827,6 +827,120 @@ html[data-theme="dark"]
   background: rgba(17,24,39,0.92)
 
   background: rgba(0,0,0,0.2) !important
+
+// Chat widget styles
+.chat-floating-btn
+  position: fixed
+  right: 18px
+  bottom: 18px
+  z-index: 2000
+  width: 50px
+  height: 50px
+  border-radius: 9999px
+  background: #6b46c1
+  color: #fff
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 8px 20px rgba(0,0,0,.22)
+  cursor: pointer
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease
+  i
+    font-size: 18px
+  &:hover
+    transform: translateY(-1px)
+    box-shadow: 0 12px 24px rgba(0,0,0,.28)
+
+[data-theme="dark"] .chat-floating-btn
+  background: #7c3aed
+
+.chat-drawer
+  position: fixed
+  top: 0
+  right: -420px
+  width: 420px
+  max-width: 92vw
+  height: 100vh
+  background: var(--content-bg-color)
+  color: var(--text-color)
+  box-shadow: -12px 0 28px rgba(0,0,0,.2)
+  z-index: 1999
+  display: flex
+  flex-direction: column
+  transition: right .22s ease
+  &.open
+    right: 0
+
+.chat-header
+  padding: 12px 14px
+  border-bottom: 1px solid #ddd
+  display: flex
+  align-items: center
+  justify-content: space-between
+  .chat-actions button
+    margin-left: 8px
+
+.chat-body
+  flex: 1
+  overflow: auto
+  padding: 12px 14px
+  .msg
+    padding: 8px 10px
+    margin: 8px 0
+    border-radius: 8px
+  .user
+    background: rgba(124,58,237,.12)
+  .bot
+    background: rgba(99,102,241,.10)
+  .err
+    background: rgba(239,68,68,.12)
+    color: #b91c1c
+  .cites
+    margin-top: 6px
+    font-size: 12px
+
+.chat-input
+  display: flex
+  gap: 8px
+  padding: 10px 12px
+  border-top: 1px solid #ddd
+  input
+    flex: 1
+    border: 1px solid #ccc
+    border-radius: 6px
+    padding: 8px 10px
+  button
+    background: #6b46c1
+    color: #fff
+    border: none
+    border-radius: 6px
+    padding: 8px 14px
+    cursor: pointer
+
+.chat-config
+  padding: 10px 12px
+  border-top: 1px solid #ddd
+  display: grid
+  grid-template-columns: 1fr
+  gap: 8px
+  &.hidden
+    display: none
+  label
+    display: grid
+    grid-template-columns: 100px 1fr
+    align-items: center
+    gap: 8px
+  input
+    border: 1px solid #ccc
+    border-radius: 6px
+    padding: 6px 8px
+  button.save
+    width: 120px
+    justify-self: end
+
+[data-theme="dark"] .chat-drawer
+  border-left: 1px solid rgba(255,255,255,.10)
+
   border-color: rgba(255,255,255,0.1) !important
 
 .site-nav-right .theme-toggle:hover
