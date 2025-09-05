@@ -706,3 +706,34 @@ mjx-c {
     --scale: 0.98
   &:nth-child(4n+3)
     --scale: 1.05
+
+
+// ==========================
+// Dark mode overrides
+// ==========================
+// 全局背景与正文颜色（避免继承浅色值）
+[data-theme="dark"] body
+  background: #0f1116
+  color: #e5e7eb
+
+[data-theme="dark"] .post-body
+  color: #e5e7eb !important
+
+[data-theme="dark"] .post-body h1,
+[data-theme="dark"] .post-body h2,
+[data-theme="dark"] .post-body h3,
+[data-theme="dark"] .post-body h4,
+[data-theme="dark"] .post-body h5,
+[data-theme="dark"] .post-body h6
+  color: #f3f4f6 !important
+
+// Tag cloud pills in dark mode
+[data-theme="dark"] .tag-cloud .tag-cloud-tags a
+  background: rgba(128,100,241,.18)
+  color: #e8e8f0
+  border-color: rgba(128,100,241,.28)
+  box-shadow: none
+
+[data-theme="dark"] .tag-cloud .tag-cloud-tags a:hover
+  background: rgba(128,100,241,.22)
+  box-shadow: 0 6px 14px rgba(0,0,0,.35)
