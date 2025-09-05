@@ -47,7 +47,9 @@
     floatBtn = document.createElement('div');
     floatBtn.className = `theme-floating-toggle pos-${FLOAT_POS}`;
     floatBtn.setAttribute('role', 'button');
+    floatBtn.setAttribute('aria-label', '主题切换');
     floatBtn.innerHTML = '<i class="fa fa-moon fa-fw"></i>';
+
     floatBtn.addEventListener('click', () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       const next = isDark ? 'light' : 'dark';
@@ -55,7 +57,14 @@
       applyTheme(next);
       updateToggleIcon(floatBtn);
     });
+
     document.body.appendChild(floatBtn);
+    console.log('[theme] floating toggle attached', floatBtn);
+    // 若样式尚未编译或被覆盖，确保可见
+    floatBtn.style.display = 'inline-flex';
+    floatBtn.style.position = 'fixed';
+    floatBtn.style.left = '18px';
+    floatBtn.style.bottom = FLOAT_POS === 'left-bottom' ? '18px' : '';
     updateToggleIcon(floatBtn);
   }
 
