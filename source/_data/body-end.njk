@@ -20,14 +20,49 @@
     if (!btn) return;
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const icon = btn.querySelector('i');
-    if (icon) icon.className = isDark ? 'fa fa-sun fa-fw fa-lg' : 'fa fa-moon fa-fw fa-lg';
+    if (icon) {
+      // 检查是否在菜单中（有文字）
+      const hasText = btn.textContent && btn.textContent.includes('主题');
+      if (hasText) {
+        icon.className = isDark ? 'fa fa-sun fa-fw' : 'fa fa-moon fa-fw';
+        btn.innerHTML = `<i class="${icon.className}"></i>${isDark ? '浅色' : '深色'}`;
+      } else {
+        icon.className = isDark ? 'fa fa-sun fa-fw fa-lg' : 'fa fa-moon fa-fw fa-lg';
+      }
+    }
     btn.setAttribute('aria-label', isDark ? '切换为浅色' : '切换为深色');
     btn.title = isDark ? '切换为浅色' : '切换为深色';
   }
 
   function ensureThemeToggle() {
-    const container = document.querySelector('.site-nav-right');
-    if (!container) return;
+    // 尝试多个可能的容器位置
+    let container = document.querySelector('.site-nav-right');
+    if (!container) {
+      // 如果没有 .site-nav-right，尝试在主导航菜单中添加
+      const mainMenu = document.querySelector('.main-menu.menu');
+      if (mainMenu) {
+        const li = document.createElement('li');
+        li.className = 'menu-item menu-item-theme-toggle';
+        const btn = document.createElement('a');
+        btn.setAttribute('role', 'button');
+        btn.className = 'theme-toggle';
+        btn.innerHTML = '<i class="fa fa-moon fa-fw"></i>主题';
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          const next = isDark ? 'light' : 'dark';
+          localStorage.setItem(STORAGE_KEY, next);
+          applyTheme(next);
+          updateToggleIcon(btn);
+        });
+        li.appendChild(btn);
+        mainMenu.appendChild(li);
+        updateToggleIcon(btn);
+        return;
+      }
+      return;
+    }
+
     let btn = container.querySelector('.theme-toggle');
     if (!btn) {
       btn = document.createElement('div');
@@ -41,7 +76,7 @@
         applyTheme(next);
         updateToggleIcon(btn);
       });
-      // 放在搜索按钮右侧（避免被 GitHub banner 遮挡）
+      // 放在搜索按钮右侧
       container.appendChild(btn);
     }
     updateToggleIcon(btn);
