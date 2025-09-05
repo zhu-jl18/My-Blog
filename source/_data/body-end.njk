@@ -35,61 +35,57 @@
   }
 
   function ensureThemeToggle() {
-    console.log('ensureThemeToggle called'); // 调试日志
+    console.log('ensureThemeToggle called');
 
-    // 优先在 .site-nav-right 中添加
-    const container = document.querySelector('.site-nav-right');
-    console.log('site-nav-right container:', container); // 调试日志
-
-    if (container) {
-      let btn = container.querySelector('.theme-toggle');
-      if (!btn) {
-        console.log('Creating theme toggle button in site-nav-right'); // 调试日志
-        btn = document.createElement('div');
-        btn.className = 'toggle theme-toggle';
-        btn.setAttribute('role', 'button');
-        btn.innerHTML = '<i class="fa fa-moon fa-fw fa-lg"></i>';
-        btn.addEventListener('click', () => {
+    // 1) 顶部右侧容器（若存在）
+    const rightContainer = document.querySelector('.site-nav-right');
+    console.log('site-nav-right container:', rightContainer);
+    if (rightContainer) {
+      let rightBtn = rightContainer.querySelector('.theme-toggle');
+      if (!rightBtn) {
+        console.log('Creating theme toggle button in site-nav-right');
+        rightBtn = document.createElement('div');
+        rightBtn.className = 'toggle theme-toggle';
+        rightBtn.setAttribute('role', 'button');
+        rightBtn.innerHTML = '<i class="fa fa-moon fa-fw fa-lg"></i>';
+        rightBtn.addEventListener('click', () => {
           const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
           const next = isDark ? 'light' : 'dark';
           localStorage.setItem(STORAGE_KEY, next);
           applyTheme(next);
-          updateToggleIcon(btn);
+          updateToggleIcon(rightBtn);
         });
-        // 放在搜索按钮右侧
-        container.appendChild(btn);
-        console.log('Theme toggle button added to site-nav-right'); // 调试日志
+        rightContainer.appendChild(rightBtn);
+        console.log('Theme toggle button added to site-nav-right');
       }
-      updateToggleIcon(btn);
-      return;
+      updateToggleIcon(rightBtn);
     }
 
-    // 备选方案：在主导航菜单中添加
+    // 2) 主导航菜单中也添加一个（保证可见）
     const mainMenu = document.querySelector('.main-menu.menu');
-    console.log('main-menu container:', mainMenu); // 调试日志
-
+    console.log('main-menu container:', mainMenu);
     if (mainMenu) {
       let existingItem = mainMenu.querySelector('.menu-item-theme-toggle');
       if (!existingItem) {
-        console.log('Creating theme toggle in main menu'); // 调试日志
+        console.log('Creating theme toggle in main menu');
         const li = document.createElement('li');
         li.className = 'menu-item menu-item-theme-toggle';
-        const btn = document.createElement('a');
-        btn.setAttribute('role', 'button');
-        btn.className = 'theme-toggle';
-        btn.innerHTML = '<i class="fa fa-moon fa-fw"></i>深色';
-        btn.addEventListener('click', (e) => {
+        const menuBtn = document.createElement('a');
+        menuBtn.setAttribute('role', 'button');
+        menuBtn.className = 'theme-toggle';
+        menuBtn.innerHTML = '<i class="fa fa-moon fa-fw"></i>深色';
+        menuBtn.addEventListener('click', (e) => {
           e.preventDefault();
           const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
           const next = isDark ? 'light' : 'dark';
           localStorage.setItem(STORAGE_KEY, next);
           applyTheme(next);
-          updateToggleIcon(btn);
+          updateToggleIcon(menuBtn);
         });
-        li.appendChild(btn);
+        li.appendChild(menuBtn);
         mainMenu.appendChild(li);
-        updateToggleIcon(btn);
-        console.log('Theme toggle button added to main menu'); // 调试日志
+        updateToggleIcon(menuBtn);
+        console.log('Theme toggle button added to main menu');
       }
     }
   }
