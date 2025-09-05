@@ -14,8 +14,8 @@ comments: false
   </div>
 </div>
 
-<script>
-  const categoryCounts = { {% for c in site.categories %}
+<script data-pjax>
+  window.categoryCounts = { {% for c in site.categories %}
     "{{ c[0] }}": {{ c[1].length }}{% if not loop.last %},{% endif %}
   {% endfor %} };
 </script>
@@ -79,7 +79,7 @@ comments: false
     
     let htmlContent = '';
     Object.entries(categoryConfig).forEach(([key, config]) => {
-      const count = categoryCounts[key] || 0;
+      const count = (window.categoryCounts && window.categoryCounts[key]) || 0;
       htmlContent += `
         <div class="category-item" style="opacity: 1; transform: none;">
           <div class="category-header">
@@ -105,10 +105,12 @@ comments: false
     }
   }
 
-  document.addEventListener('pjax:start', function() {
+  document.addEventListener('pjax:send', function() {
     isInitialized = false;
   });
-
+  document.addEventListener('pjax:success', function() {
+    initialize();
+  });
   document.addEventListener('pjax:complete', function() {
     initialize();
   });
