@@ -37,105 +37,6 @@
 
   // 悬浮按钮：位置选项 left-bottom | left-middle | top-left
   const FLOAT_POS = 'left-bottom';
-  const POS_KEY = 'theme-toggle-pos-v1';
-
-  function applyStoredPosition(btn) {
-    try {
-      const raw = localStorage.getItem(POS_KEY);
-      if (!raw) return;
-      const pos = JSON.parse(raw);
-      if (typeof pos.leftPct !== 'number' || typeof pos.topPct !== 'number') return;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const left = Math.max(8, Math.min(vw - btn.offsetWidth - 8, pos.leftPct * vw));
-      const top = Math.max(8, Math.min(vh - btn.offsetHeight - 8, pos.topPct * vh));
-      btn.style.left = left + 'px';
-      btn.style.top = top + 'px';
-      btn.style.bottom = '';
-      btn.classList.remove('pos-left-bottom', 'pos-left-middle', 'pos-top-left');
-      console.log('[theme] restored position', pos);
-    } catch (e) {
-      console.warn('[theme] restore position failed', e);
-    }
-  }
-
-  function saveStoredPosition(btn) {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const rect = btn.getBoundingClientRect();
-    const leftPct = rect.left / vw;
-    const topPct = rect.top / vh;
-    const data = { leftPct: +leftPct.toFixed(4), topPct: +topPct.toFixed(4) };
-    localStorage.setItem(POS_KEY, JSON.stringify(data));
-    console.log('[theme] saved position', data);
-  }
-
-  function enableDrag(btn) {
-    const margin = 8;
-    const getPoint = (ev) => {
-      if (ev.touches && ev.touches[0]) return { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
-      return { x: ev.clientX, y: ev.clientY };
-    };
-    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
-
-    const onStart = (e) => {
-      const p = getPoint(e);
-      dragging = true;
-      sx = p.x; sy = p.y;
-      const r = btn.getBoundingClientRect();
-      sl = r.left; st = r.top;
-      btn.style.transition = 'none';
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('touchmove', onMove, { passive: false });
-      document.addEventListener('mouseup', onEnd);
-      document.addEventListener('touchend', onEnd);
-      e.preventDefault();
-    };
-
-    const onMove = (e) => {
-      if (!dragging) return;
-      const p = getPoint(e);
-      let nl = sl + (p.x - sx);
-      let nt = st + (p.y - sy);
-      const maxL = window.innerWidth - btn.offsetWidth - margin;
-      const maxT = window.innerHeight - btn.offsetHeight - margin;
-      nl = Math.max(margin, Math.min(maxL, nl));
-      nt = Math.max(margin, Math.min(maxT, nt));
-      btn.style.left = nl + 'px';
-      btn.style.top = nt + 'px';
-      btn.style.bottom = '';
-      btn.classList.remove('pos-left-bottom', 'pos-left-middle', 'pos-top-left');
-      e.preventDefault();
-    };
-
-    const onEnd = () => {
-      if (!dragging) return;
-      dragging = false;
-      btn.style.transition = '';
-      saveStoredPosition(btn);
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('touchmove', onMove);
-      document.removeEventListener('mouseup', onEnd);
-      document.removeEventListener('touchend', onEnd);
-    };
-
-    btn.addEventListener('mousedown', onStart);
-    btn.addEventListener('touchstart', onStart, { passive: false });
-
-    // 双击恢复默认位置
-    btn.addEventListener('dblclick', (e) => {
-      e.preventDefault();
-      localStorage.removeItem(POS_KEY);
-      btn.classList.add(`pos-${FLOAT_POS}`);
-      btn.style.top = '';
-      btn.style.left = '18px';
-      btn.style.bottom = FLOAT_POS === 'left-bottom' ? '18px' : '';
-      console.log('[theme] position reset to default');
-    });
-
-    // 窗口缩放保持在视口内
-    window.addEventListener('resize', () => applyStoredPosition(btn));
-  }
 
   function ensureFloatingToggle() {
     // 移除旧的
@@ -165,10 +66,7 @@
     floatBtn.style.left = '18px';
     floatBtn.style.bottom = FLOAT_POS === 'left-bottom' ? '18px' : '';
 
-    // 应用记忆位置 + 启用拖拽
-    applyStoredPosition(floatBtn);
-    enableDrag(floatBtn);
-
+    // 固定位置（不启用拖拽/记忆）
     updateToggleIcon(floatBtn);
   }
 
