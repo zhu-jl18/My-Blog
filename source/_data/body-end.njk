@@ -105,9 +105,55 @@
     });
   }
 
+  // 悬浮按钮：位置选项 left-bottom | left-middle | top-left
+  const FLOAT_POS = 'left-bottom';
+
+  function ensureFloatingToggle() {
+    // 移除旧的
+    let floatBtn = document.querySelector('.theme-floating-toggle');
+    if (floatBtn) floatBtn.remove();
+
+    // 创建新的
+    floatBtn = document.createElement('div');
+    floatBtn.className = `theme-floating-toggle pos-${FLOAT_POS}`;
+    floatBtn.setAttribute('role', 'button');
+    floatBtn.innerHTML = '<i class="fa fa-moon fa-fw"></i>';
+    floatBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
+      updateToggleIcon(floatBtn);
+    });
+    document.body.appendChild(floatBtn);
+    updateToggleIcon(floatBtn);
+  }
+
+  // 不再把按钮插入导航；如存在旧按钮则移除
+  function cleanupNavToggles() {
+    document.querySelectorAll('.site-nav-right .theme-toggle, .main-menu .menu-item-theme-toggle').forEach(el => el.remove());
+  }
+
+  // 初始化
+  applyTheme(getPreferredTheme());
+  cleanupNavToggles();
+  ensureFloatingToggle();
+
+  // 跟随系统变化（仅当没有显式选择时）
+  const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  if (media && media.addEventListener) {
+    media.addEventListener('change', () => {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        applyTheme(getPreferredTheme());
+        updateToggleIcon(document.querySelector('.theme-floating-toggle'));
+      }
+    });
+  }
+
   // PJAX 页面切换后重新挂载按钮
   document.addEventListener('pjax:success', () => {
-    ensureThemeToggle();
+    cleanupNavToggles();
+    ensureFloatingToggle();
   });
 })();
 </script>

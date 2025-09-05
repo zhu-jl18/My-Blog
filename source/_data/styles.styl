@@ -758,6 +758,58 @@ mjx-c {
 // Ensure icon color contrasts in dark mode
 [data-theme="dark"] .site-nav-right .theme-toggle
   color: #e5e7eb !important
+
+// ==========================
+// Floating theme toggle
+// ==========================
+.theme-floating-toggle
+  position: fixed
+  left: 18px
+  bottom: 18px
+  z-index: 2000
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 44px
+  height: 44px
+  border-radius: 9999px
+  background: rgba(255,255,255,0.85)
+  color: #333
+  border: 1px solid rgba(0,0,0,0.1)
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15)
+  cursor: pointer
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease
+  i
+    font-size: 18px
+
+  &:hover
+    transform: translateY(-1px)
+    box-shadow: 0 10px 22px rgba(0,0,0,0.2)
+
+// 位置变体
+.theme-floating-toggle.pos-left-bottom
+  left: 18px
+  bottom: 18px
+
+.theme-floating-toggle.pos-left-middle
+  left: 18px
+  top: 50%
+  transform: translateY(-50%)
+
+.theme-floating-toggle.pos-top-left
+  left: 18px
+  top: 18px
+
+// 暗色适配
+[data-theme="dark"] .theme-floating-toggle
+  background: rgba(17,24,39,0.8)
+  color: #e5e7eb
+  border-color: rgba(255,255,255,0.12)
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45)
+
+[data-theme="dark"] .theme-floating-toggle:hover
+  background: rgba(17,24,39,0.92)
+
   background: rgba(0,0,0,0.2) !important
   border-color: rgba(255,255,255,0.1) !important
 
