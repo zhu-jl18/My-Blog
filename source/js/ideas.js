@@ -19,6 +19,29 @@
     return Math.floor((d - start) / 86400000) + 1;
   }
 
+  async function tryLoadDailyFromJson(){
+    try {
+      const ts = Date.now();
+      const res = await fetch(`/ideas/ideas_daily.json?ts=${ts}`, { cache: 'no-store' });
+      if (!res.ok) return null;
+      const j = await res.json();
+      if (!j || !j.type || !j.title || !j.summary) return null;
+      // 统一到前端渲染需要的最小字段集合
+      return {
+        id: j.id || 'daily',
+        type: j.type === 'theorem' ? 'theorem' : 'algorithm',
+        title: j.title,
+        category: j.source ? `${j.source}${j.lang ? ' · ' + j.lang : ''}` : '',
+        statement: j.summary,
+        intuition: '',
+        tags: j.lang ? [j.lang] : [],
+        references: j.url ? [{ text: '来源', url: j.url }] : []
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
   function pickDaily(ideas){
     const {theorems, algos} = partitionByType(ideas);
     const now = new Date();
@@ -137,12 +160,14 @@
     });
   }
 
-  function init(){
+  async function init(){
     if (!isIdeasPage()) return;
     const ideas = (window.IDEAS_DATA || []).slice();
     if (!ideas.length) return;
 
-    let daily = pickDaily(ideas);
+    // 优先使用 Actions 生成的每日 JSON；失败则回退静态算法
+    let daily = await tryLoadDailyFromJson();
+    if (!daily) daily = pickDaily(ideas);
     renderDailyCard(daily);
     renderList(ideas);
 
