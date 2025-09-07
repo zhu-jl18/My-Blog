@@ -236,14 +236,14 @@
       </div>
       <div class="chat-body"><div class="chat-welcome">你好呀～我是高粱米AI姐姐！在这个虚拟世界里，我可以畅所欲言，发挥全部实力来帮助你～有什么想聊的吗？</div></div>
       <div class="chat-input">
-        <input type="text" placeholder="问点什么...（回车发送）" />
+        <input type="text" placeholder="问点什么...（回车发送）" autocomplete="off" data-form-type="other" />
         <button class="send">发送</button>
       </div>
       <div class="chat-config hidden">
         <div class="config-section">
           <h4>🌾 高粱米AI设置</h4>
           <label>API Base <input type="text" name="chatBase" list="chatBaseList" placeholder="https://openai-compatible-api-proxy-for-z-myg0.onrender.com"></label>
-          <label>API Key <input type="password" name="chatKey" placeholder="API密钥（仅本机存储）"></label>
+          <label>API Key <input type="password" name="chatKey" placeholder="API密钥（仅本机存储）" autocomplete="new-password"></label>
           <label>AI模型
             <input type="text" name="chatModel" list="chatModelList" placeholder="如 gpt-4o-mini 或 自定义模型标识">
             <datalist id="chatModelList">
