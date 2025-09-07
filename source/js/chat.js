@@ -62,13 +62,13 @@
       // 入口小气泡（靠近看板娘头部右上）
       entryBubbleEnabled: true,
       entryBubblePos: 'top-right', // top-right | top-left | right-top | left-top
-      entryBubbleOffsetX: global.ui?.entryBubble?.offsetX || -36,
-      entryBubbleOffsetY: global.ui?.entryBubble?.offsetY || 48,
+      entryBubbleOffsetX: -36,
+      entryBubbleOffsetY: 48,
       entryBubbleCustomLeft: null,
       entryBubbleCustomTop: null,
       // 聊天气泡（大气泡）相对看板娘的位置微调
-      bubbleOffsetX: global.ui?.chatBubble?.offsetX || 0,
-      bubbleOffsetY: global.ui?.chatBubble?.offsetY || 0,
+      bubbleOffsetX: 0,
+      bubbleOffsetY: 0,
       // 流式输出
       streamingEnabled: true
     };
@@ -165,10 +165,11 @@
       left = Math.max(8, Math.min(vw - bw - 8, r.left - bw - 12));
       top  = Math.max(8, Math.min(vh - bh - 8, r.top - 12));
     }
-    const cfg = loadCfg();
-    const bx = Number(cfg.bubbleOffsetX || 0);
-    const by = Number(cfg.bubbleOffsetY || 0);
-    left += bx; top += by;
+    // 注意：bubbleOffset 是针对聊天大气泡的，不应用于入口气泡定位
+    // const cfg = loadCfg();
+    // const bx = Number(cfg.bubbleOffsetX || 0);
+    // const by = Number(cfg.bubbleOffsetY || 0);
+    // left += bx; top += by;
     bubble.style.left = left + 'px';
     bubble.style.top  = top + 'px';
   }
@@ -314,14 +315,14 @@
       </div>
       <div class="chat-body"><div class="chat-welcome">你好呀～我是高粱米AI姐姐！在这个虚拟世界里，我可以畅所欲言，发挥全部实力来帮助你～有什么想聊的吗？</div></div>
       <div class="chat-input">
-        <input type="text" placeholder="问点什么...（回车发送）" />
+        <input type="text" placeholder="问点什么...（回车发送）" autocomplete="off" data-form-type="other" />
         <button class="send">发送</button>
       </div>
       <div class="chat-config hidden">
         <div class="config-section">
           <h4>🌾 高粱米AI设置</h4>
           <label>API Base <input type="text" name="chatBase" list="chatBaseList" placeholder="https://openai-compatible-api-proxy-for-z-myg0.onrender.com"></label>
-          <label>API Key <input type="password" name="chatKey" placeholder="API密钥（仅本机存储）"></label>
+          <label>API Key <input type="password" name="chatKey" placeholder="API密钥（仅本机存储）" autocomplete="new-password"></label>
           <label>AI模型
             <input type="text" name="chatModel" list="chatModelList" placeholder="如 gpt-4o-mini 或 自定义模型标识">
             <datalist id="chatModelList">
