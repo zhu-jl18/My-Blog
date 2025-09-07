@@ -69,7 +69,6 @@
    - Timeline: /
    - Categories: /categories/
    - Schedule: /schedule/ (Google Calendar 集成)
-   - Ideas: /ideas/
    - About: /about/
 
 4. **功能配置**
