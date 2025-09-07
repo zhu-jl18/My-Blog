@@ -32,12 +32,12 @@
       entryBubbleEnabled: true,
       entryBubblePos: 'top-right', // top-right | top-left | right-top | left-top
       entryBubbleOffsetX: -36,
-      entryBubbleOffsetY: 36,
+      entryBubbleOffsetY: 48,
       entryBubbleCustomLeft: null,
       entryBubbleCustomTop: null,
       // 聊天气泡（大气泡）相对看板娘的位置微调
       bubbleOffsetX: 0,
-      bubbleOffsetY: 56,
+      bubbleOffsetY: 68,
       // 流式输出
       streamingEnabled: true
     };
