@@ -300,6 +300,41 @@ node tools/enhance-frontmatter.js --apply
 - 删除了迁移过程中生成的临时备份和报告文件
 - 将所有迁移工具和指南文件整理到 `GUIDE/` 目录下，并添加到 `.gitignore`
 
+## 🛠️ AI 聊天系统部署与运维指南（2025-09-08）
+
+### 1) Cloudflare Workers 部署
+- 新建 Worker，粘贴 `cloudflare-worker/chat-proxy.js` 代码
+- 环境变量：
+  - `CHAT_API_KEY`：真实接口密钥
+  - `ALLOWED_ORIGINS`：`https://zhu-jl18.github.io`
+- 可选：绑定 KV（命名 `CHAT_RATE_LIMIT`）用于速率限制统计
+- 部署后记下域名，例如：`https://chat-proxy.nontrivial2025.workers.dev`
+
+### 2) 前端关键点
+- 代理优先级：代码优先使用内置全局代理 URL，不会被 localStorage 的旧 `chatProxy` 覆盖（见 `source/js/chat.js`）
+- SW 策略：`source/service-worker.js` 为极简透传，不做预缓存，避免 GitHub Pages 路径导致安装失败
+- 强制刷新：在 `source/_data/body-end.njk` 为 `chat.js` 加版本号参数，避免加载旧脚本
+- 可拖拽：入口气泡默认禁用拖拽（`entryBubbleDraggable: false`），需要时可在设置中开启
+
+### 3) 发布与缓存
+- 推送到 `main` 触发 GitHub Actions 自动构建与部署
+- 首次上线或关键改动后，建议：
+  - DevTools → Application → Service Workers → Unregister
+  - Application → Clear storage → Clear site data
+  - Network → Disable cache，Ctrl+F5 硬刷新
+
+### 4) 常见问题速查
+- `ERR_BLOCKED_BY_CLIENT`：被广告拦截插件拦截，非功能性错误
+- `service-worker.js` 404 或安装失败：使用极简 SW，必要时 Unregister 后刷新
+- 仍请求旧域名：确认 `chat.js` 已带版本参数，清理浏览器缓存与 SW
+- `Failed to fetch`：
+  - 检查 Worker 环境变量（`ALLOWED_ORIGINS`、`CHAT_API_KEY`）
+  - 直接探活：`curl -I https://chat-proxy.<your>.workers.dev`
+  - 临时切换非流式模式验证（前端设置中关闭流式）
+
+### 5) 参考与记录
+- 详细实战总结见新博文（`source/_posts/ai-chat-proxy-on-hexo.md`）：“高粱米博客的 AI 聊天系统实战：从零到稳定”（作者：Mako & Cascade）。
+
 ## 相关链接
 
 - 博客地址：https://zhu-jl18.github.io
