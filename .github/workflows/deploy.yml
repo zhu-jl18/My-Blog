@@ -44,12 +44,6 @@ jobs:
         npm list --depth=0
         
 
-    - name: 🔧 注入配置文件
-      run: |
-        # 从模板生成配置文件，注入密钥
-        sed "s/{{CHAT_API_KEY}}/${{ secrets.CHAT_API_KEY }}/g; s/{{SITE_DOMAIN}}/zhu-jl18.github.io/g" source/js/chat-config.template.json > source/js/chat-config.json
-        echo "✅ 配置文件已生成"
-        
     - name: 构建静态文件
       run: |
         export NODE_ENV=production
