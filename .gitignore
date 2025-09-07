@@ -47,3 +47,8 @@ source/js/chat-config.local.json
 
 # Generated config files (will be created by GitHub Actions)
 source/js/chat-config.json
+
+# Cloudflare Workers artifacts
+cloudflare-worker/.wrangler/
+cloudflare-worker/node_modules/
+cloudflare-worker/dist/
