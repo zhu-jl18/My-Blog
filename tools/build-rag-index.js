@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const http = require('http');
 
 const POSTS_DIR = path.join(process.cwd(), 'source', '_posts');
 const OUT_DIR = path.join(process.cwd(), 'source', 'rag');
@@ -32,7 +33,7 @@ function getArg(name, def) {
   return def;
 }
 
-let MODEL = getArg('model', 'text-embedding-3-small');
+let MODEL = getArg('model', 'text-embedding-v1');
 const API_BASE = getArg('base', process.env.EMBEDDING_API_BASE || 'https://api.openai.com');
 const API_KEY = process.env.EMBEDDING_API_KEY || process.env.OPENAI_API_KEY;
 // Allow direct full embedding endpoint override for non-openai-compatible paths
@@ -102,16 +103,21 @@ function chunkText(txt, size = CHUNK, overlap = OVERLAP) {
 
 async function embedBatch(inputs) {
   const payload = JSON.stringify({ model: MODEL, input: inputs });
-  const url = DIRECT_EMBEDDING_ENDPOINT ? new URL(DIRECT_EMBEDDING_ENDPOINT) : new URL('/v1/embeddings', API_BASE);
+  // Prefer a direct endpoint if provided (handles providers with non-standard paths)
+  const url = DIRECT_EMBEDDING_ENDPOINT
+    ? new URL(DIRECT_EMBEDDING_ENDPOINT)
+    : new URL(API_BASE.includes('/compatible-mode') ? '/embeddings' : '/v1/embeddings', API_BASE);
   const opts = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${API_KEY}`,
+      'User-Agent': 'hexo-rag-index/1.0'
     },
   };
+  const client = url.protocol === 'http:' ? http : https;
   return new Promise((resolve, reject) => {
-    const req = https.request(url, opts, (res) => {
+    const req = client.request(url, opts, (res) => {
       let data = '';
       res.on('data', (d) => (data += d));
       res.on('end', () => {
@@ -136,7 +142,10 @@ async function embedBatch(inputs) {
         }
       });
     });
-    req.on('error', reject);
+    req.setTimeout(20000, () => {
+      req.destroy(new Error('Embeddings request timeout'));
+    });
+    req.on('error', (err) => reject(err));
     req.write(payload);
     req.end();
   });

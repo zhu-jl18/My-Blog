@@ -4,12 +4,12 @@ author:
   - mako
   - windsurf
 categories:
-  - 技术记录与分享  
-  - AI & LLM 
-  - Interesting 
+  - 技术记录与分享
+  - AI & LLM
+  - Interesting
 mathjax: false
+abbrlink: a5942354
 date: 2025-09-07 08:50:07
-abbrlink:
 ---
 
 > 深入解析一个将TalkAI API格式转换为OpenAI ChatCompletion API格式的适配器项目，包含完整的代码实现和技术细节。

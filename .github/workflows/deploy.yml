@@ -39,24 +39,13 @@ jobs:
         node-version: '20'  # 使用更稳定的 Node.js 版本
         cache: 'npm'  # 自动缓存npm依赖
         
-    - name: 📦 安装依赖
+    - name: 安装依赖
       run: |
         npm ci --prefer-offline --no-audit --no-fund
         npm list --depth=0
         
-    - name: Build RAG index
-      env:
-        EMBEDDING_ENDPOINT: ${{ secrets.EMBEDDING_ENDPOINT }}
-        EMBEDDING_API_KEY: ${{ secrets.EMBEDDING_API_KEY }}
-      run: |
-        if [ -n "${EMBEDDING_ENDPOINT}" ] && [ -n "${EMBEDDING_API_KEY}" ]; then
-          echo "Building RAG index..."
-          npm run rag:index -- --chunk 600 --overlap 120 --model text-embedding-v3 --batch 10 --batch 10
-        else
-          echo "Skipping RAG index: EMBEDDING_* secrets not set"
-        fi
 
-    - name: 🏗️ 构建静态文件
+    - name: 构建静态文件
       run: |
         export NODE_ENV=production
         export NODE_OPTIONS="--max-old-space-size=4096"

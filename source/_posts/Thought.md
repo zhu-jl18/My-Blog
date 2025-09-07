@@ -3,11 +3,11 @@ title: Thought
 author:
   - mako
 categories:
-  - AI & LLM 
-  - Interesting 
+  - AI & LLM
+  - Interesting
 mathjax: false
+abbrlink: 5e06a6f0
 date: 2025-09-06 09:07:02
-abbrlink:
 ---
 >  
 <!--more-->

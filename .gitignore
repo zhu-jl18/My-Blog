@@ -13,6 +13,12 @@ temp.md
 GUIDE/
 
 
+# 包含密钥的本地调试脚本
+debug-chat.bat
+
+# 前端聊天脚本（不忽略，已确保线上不预填密钥）
+# source/js/chat-rag.js
+
 # Editors
 .idea/
 
@@ -33,3 +39,7 @@ __pycache__/
 
 # Local auxiliary not related to blog
 temp.json
+
+# Local chat overrides (do not commit)
+source/js/chat-local.js
+source/js/chat-local*.js
