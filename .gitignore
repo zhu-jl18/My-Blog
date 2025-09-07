@@ -43,3 +43,7 @@ temp.json
 # Local chat overrides (do not commit)
 source/js/chat-local.js
 source/js/chat-local*.js
+source/js/chat-config.local.json
+
+# Generated config files (will be created by GitHub Actions)
+source/js/chat-config.json

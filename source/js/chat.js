@@ -7,7 +7,29 @@
 
 (function(){
   const CFG_KEY = 'chatcfg.v2';
-  const STATE = { busy:false, messages:[] };
+  const STATE = { busy:false, messages:[], globalConfig: null };
+
+  // 加载全局配置
+  function loadGlobalConfig(){
+    const local = isLocalHost();
+    // 本地开发优先使用本地配置文件
+    const configUrl = local ? '/js/chat-config.local.json' : '/js/chat-config.json';
+    
+    fetch(configUrl)
+      .then(res => res.ok ? res.json() : Promise.reject('Config not found'))
+      .then(config => {
+        STATE.globalConfig = config;
+        // 验证域名限制
+        if (config.allowedDomains && !config.allowedDomains.includes(location.hostname)) {
+          console.warn('AI聊天功能仅在指定域名下可用');
+          return;
+        }
+        console.log('AI聊天配置已加载');
+      })
+      .catch(err => {
+        console.warn('未找到全局配置文件，使用默认配置:', err);
+      });
+  }
 
   function isLocalHost(){
     try { return ['localhost','127.0.0.1'].includes(location.hostname); } catch { return false; }
@@ -15,10 +37,11 @@
 
   function defaultCfg(){
     const local = isLocalHost();
+    const global = STATE.globalConfig || {};
     return {
-      chatBase: 'https://huggingface.qzz.io',
-      chatKey: local && window.CHAT_LOCAL_KEY ? window.CHAT_LOCAL_KEY : '',
-      chatModel: (window.CHAT_LOCAL_MODEL || 'GLM-4.5'),
+      chatBase: global.defaultBase || 'https://huggingface.qzz.io',
+      chatKey: global.apiKey || (local && window.CHAT_LOCAL_KEY ? window.CHAT_LOCAL_KEY : ''),
+      chatModel: global.defaultModel || (window.CHAT_LOCAL_MODEL || '[CLI反代]流式抗截断/gemini-2.5-pro-preview-06-05'),
       avatarEnabled: false,
       avatarImage: '', // 可选自定义头像URL，留空则使用emoji
       avatarSize: 72,
@@ -31,13 +54,13 @@
       // 入口小气泡（靠近看板娘头部右上）
       entryBubbleEnabled: true,
       entryBubblePos: 'top-right', // top-right | top-left | right-top | left-top
-      entryBubbleOffsetX: -36,
-      entryBubbleOffsetY: 36,
+      entryBubbleOffsetX: global.ui?.entryBubble?.offsetX || -36,
+      entryBubbleOffsetY: global.ui?.entryBubble?.offsetY || 48,
       entryBubbleCustomLeft: null,
       entryBubbleCustomTop: null,
       // 聊天气泡（大气泡）相对看板娘的位置微调
-      bubbleOffsetX: 0,
-      bubbleOffsetY: 56,
+      bubbleOffsetX: global.ui?.chatBubble?.offsetX || 0,
+      bubbleOffsetY: global.ui?.chatBubble?.offsetY || 0,
       // 流式输出
       streamingEnabled: true
     };
@@ -45,15 +68,62 @@
 
   function loadCfg(){
     try {
-      return (
-        JSON.parse(localStorage.getItem(CFG_KEY)) ||
-        defaultCfg()
-      );
+      const stored = JSON.parse(localStorage.getItem(CFG_KEY));
+      const defaults = defaultCfg();
+      // 合并存储的配置和默认配置
+      return stored ? Object.assign({}, defaults, stored) : defaults;
     } catch(e){
       return defaultCfg();
     }
   }
-  function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+  
+  // 检查速率限制
+  function checkRateLimit(){
+    const global = STATE.globalConfig;
+    if (!global?.rateLimit) return true;
+    
+    const now = Date.now();
+    const hour = 60 * 60 * 1000;
+    const day = 24 * hour;
+    
+    try {
+      const limits = JSON.parse(localStorage.getItem('chat-rate-limit') || '{}');
+      const hourlyCount = limits.hourly?.filter(t => now - t < hour).length || 0;
+      const dailyCount = limits.daily?.filter(t => now - t < day).length || 0;
+      
+      if (hourlyCount >= global.rateLimit.maxPerHour) {
+        alert('每小时请求次数已达上限，请稍后再试');
+        return false;
+      }
+      if (dailyCount >= global.rateLimit.maxPerDay) {
+        alert('每日请求次数已达上限，请明天再试');
+        return false;
+      }
+      
+      // 记录本次请求
+      limits.hourly = (limits.hourly || []).filter(t => now - t < hour);
+      limits.daily = (limits.daily || []).filter(t => now - t < day);
+      limits.hourly.push(now);
+      limits.daily.push(now);
+      localStorage.setItem('chat-rate-limit', JSON.stringify(limits));
+      
+      return true;
+    } catch(e) {
+      console.warn('速率限制检查失败:', e);
+      return true;
+    }
+  }
+  function saveCfg(cfg){ 
+    // 如果是共享模式，不保存API Key到本地存储
+    const global = STATE.globalConfig;
+    if (global?.sharedMode && global?.apiKey) {
+      const toSave = Object.assign({}, cfg);
+      delete toSave.chatKey; // 不保存共享的API Key
+      localStorage.setItem(CFG_KEY, JSON.stringify(toSave));
+    } else {
+      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+    }
+  }
 
   function getUIRoot(){
     return document.querySelector('#chat-bubble');
@@ -497,6 +567,10 @@
     const input = root.querySelector('.chat-input input');
     const q = input.value.trim();
     if (!q || STATE.busy) return;
+    
+    // 检查速率限制
+    if (!checkRateLimit()) return;
+    
     input.value='';
     const body = root.querySelector('.chat-body');
     body.insertAdjacentHTML('beforeend', `<div class="msg user">${escapeHtml(q)}</div>`);
@@ -527,12 +601,19 @@
   async function chatCompleteWithHistory(system, userText){
     const cfg = loadCfg();
     const modelParams = getModelParams();
-    if (!cfg.chatKey || !cfg.chatKey.trim()) throw new Error('请在设置中填入 API Key');
+    const global = STATE.globalConfig;
+    
+    // 共享模式下使用全局密钥，否则要求用户输入
+    const apiKey = (global?.sharedMode && global?.apiKey) ? global.apiKey : cfg.chatKey;
+    if (!apiKey || !apiKey.trim()) {
+      const notice = global?.notice || '请在设置中填入 API Key';
+      throw new Error(notice);
+    }
     const url = new URL('/v1/chat/completions', cfg.chatBase).toString();
     const messages = [{ role: 'system', content: system }, ...STATE.messages, { role:'user', content: userText }];
     const resp = await fetch(url, {
       method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${cfg.chatKey}` },
+      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}` },
       body: JSON.stringify({ model: cfg.chatModel, messages, temperature: modelParams.temperature, max_tokens: modelParams.max_tokens, stream: false, stop: ["让我们一步一步思考","思考过程","用户询问"] })
     });
     if (!resp.ok) throw new Error('对话失败：' + await resp.text());
@@ -548,7 +629,14 @@
   async function chatCompleteStream(system, userText){
     const cfg = loadCfg();
     const modelParams = getModelParams();
-    if (!cfg.chatKey || !cfg.chatKey.trim()) throw new Error('请在设置中填入 API Key');
+    const global = STATE.globalConfig;
+    
+    // 共享模式下使用全局密钥，否则要求用户输入
+    const apiKey = (global?.sharedMode && global?.apiKey) ? global.apiKey : cfg.chatKey;
+    if (!apiKey || !apiKey.trim()) {
+      const notice = global?.notice || '请在设置中填入 API Key';
+      throw new Error(notice);
+    }
     const url = new URL('/v1/chat/completions', cfg.chatBase).toString();
     const messages = [{ role: 'system', content: system }, ...STATE.messages, { role:'user', content: userText }];
     const root = getUIRoot();
@@ -560,7 +648,7 @@
 
     const resp = await fetch(url, {
       method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${cfg.chatKey}` },
+      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}` },
       body: JSON.stringify({ model: cfg.chatModel, messages, temperature: modelParams.temperature, max_tokens: modelParams.max_tokens, stream: true, stop: ["让我们一步一步思考","思考过程","用户询问"] })
     });
     if (!resp.ok || !resp.body) {
@@ -702,6 +790,7 @@
   }
 
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', ()=>{ 
+    loadGlobalConfig(); // 首先加载全局配置
     loadScript('/js/chat-admin.js', ()=>{}); 
     ensureLocalInject(); 
     ensureUI(); 
@@ -710,6 +799,7 @@
     positionEntryBubble(); 
   });
   else { 
+    loadGlobalConfig(); // 首先加载全局配置
     loadScript('/js/chat-admin.js', ()=>{}); 
     ensureLocalInject(); 
     ensureUI(); 
