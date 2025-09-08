@@ -5,9 +5,13 @@
  *
  * Env Vars (set in Cloudflare Dashboard):
  * - GEMINI_API_KEY    (or GOOGLE_TTS_API_KEY)
+ * - GEMINI_API_KEYS   Comma/newline/semicolon separated list of keys (optional)
+ * - GEMINI_API_KEYS_JSON JSON array of keys (optional, recommended for 100+ keys)
  * - ALLOWED_ORIGINS   e.g. "https://zhu-jl18.github.io,http://localhost:4000"
  * - Optional: TTS_DEFAULT_MODEL = "gemini-2.5-flash-preview-tts"
- * - Optional: TTS_DEFAULT_VOICE = ""  // leave empty to let model pick
+ * - Optional: TTS_DEFAULT_VOICE = "Leda"
+ * - Optional: TTS_STYLE = "普通话，温柔少女音色，可爱"
+ * - Optional: TEMPERATURE = "0.7"
  *
  * Bindings:
  * - R2 bucket binding: TTS_AUDIO  (for caching)
@@ -20,6 +24,7 @@ const CFG = {
   SAMPLE_RATE: 24000,
   CHANNELS: 1,
   RATE_LIMIT: { HOURLY: 20, DAILY: 100 },
+  KEY_ROTATION_MAX: 5,
 };
 
 const KV_KEYS = {
@@ -42,9 +47,17 @@ export default {
       const rl = await checkRateLimit(ip, env);
       if (!rl.allowed) return json({ error: rl.message, resetTime: rl.resetTime }, 429);
 
+      if (url.pathname === '/tts/health' && request.method === 'GET') {
+        return json({ ok: true, time: new Date().toISOString() }, 200);
+      }
+
       if (url.pathname === '/tts' && request.method === 'GET') {
         const text = url.searchParams.get('text') || '你好，这是一个语音合成测试。';
-        const res = await synthAndCache(text, { voiceName: env.TTS_DEFAULT_VOICE }, env);
+        const voiceName = url.searchParams.get('voiceName') || env.TTS_DEFAULT_VOICE || '';
+        const style = url.searchParams.get('style') || env.TTS_STYLE || '';
+        const model = url.searchParams.get('model') || env.TTS_DEFAULT_MODEL || CFG.DEFAULT_MODEL;
+        const temperature = parseFloat(url.searchParams.get('temperature') || env.TEMPERATURE || '0.7') || 0.7;
+        const res = await synthAndCache(text, { voiceName, style, model, temperature, ip }, env);
         await recordRequest(ip, env);
         return streamAudio(res.wav, origin);
       }
@@ -54,8 +67,12 @@ export default {
         const text = (body.text || '').toString();
         if (!text || text.length < 4) return json({ error: 'Text is required' }, 400);
         const voiceName = (body.voiceName || env.TTS_DEFAULT_VOICE || '').toString();
-        const style = (body.style || '').toString();
-        const res = await synthAndCache(text, { voiceName, style }, env);
+        const style = (body.style || env.TTS_STYLE || '').toString();
+        const model = (body.model || env.TTS_DEFAULT_MODEL || CFG.DEFAULT_MODEL).toString();
+        const temperature = typeof body.temperature !== 'undefined'
+          ? (parseFloat(body.temperature) || 0.7)
+          : (parseFloat(env.TEMPERATURE || '0.7') || 0.7);
+        const res = await synthAndCache(text, { voiceName, style, model, temperature, ip }, env);
         await recordRequest(ip, env);
         return streamAudio(res.wav, origin);
       }
@@ -69,11 +86,12 @@ export default {
 };
 
 async function synthAndCache(text, opts, env) {
-  const model = env.TTS_DEFAULT_MODEL || CFG.DEFAULT_MODEL;
+  const model = (opts.model || env.TTS_DEFAULT_MODEL || CFG.DEFAULT_MODEL).toString();
   const voiceName = (opts.voiceName || '').trim();
   const style = (opts.style || '').trim();
+  const temperature = typeof opts.temperature === 'number' ? opts.temperature : (parseFloat(env.TEMPERATURE || '0.7') || 0.7);
 
-  const hash = await sha256(`${model}|${voiceName}|${style}|${text}`);
+  const hash = await sha256(`${model}|${voiceName}|${style}|${temperature}|${text}`);
   const key = `tts/${model}/${voiceName || 'auto'}/${hash}.wav`;
 
   if (env.TTS_AUDIO) {
@@ -84,10 +102,10 @@ async function synthAndCache(text, opts, env) {
     }
   }
 
-  const apiKey = env.GEMINI_API_KEY || env.GOOGLE_TTS_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+  const keys = parseApiKeys(env);
+  if (!keys.length) throw new Error('No GEMINI API keys configured');
 
-  const synthRes = await callGeminiTTS({ apiKey, text, model, voiceName, style });
+  const synthRes = await callGeminiWithRotation(keys, { text, model, voiceName, style, temperature, ip: opts.ip || '' });
   const wav = pcmS16ToWav(synthRes.pcm, CFG.SAMPLE_RATE, CFG.CHANNELS);
 
   if (env.TTS_AUDIO) {
@@ -98,11 +116,11 @@ async function synthAndCache(text, opts, env) {
   return { wav, cached: false };
 }
 
-async function callGeminiTTS({ apiKey, text, model, voiceName, style }) {
+async function callGeminiTTS({ apiKey, text, model, voiceName, style, temperature }) {
   const endpoint = `${CFG.API}/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   const parts = [];
-  if (style) parts.push({ text: `请使用温柔、成熟、亲切的中文女声朗读以下内容：` });
+  if (style) parts.push({ text: style });
   parts.push({ text });
 
   const speechCfg = voiceName
@@ -114,6 +132,7 @@ async function callGeminiTTS({ apiKey, text, model, voiceName, style }) {
     contents: [{ parts }],
     generationConfig: {
       responseModalities: ['AUDIO'],
+      temperature: typeof temperature === 'number' ? temperature : 0.7,
       ...(speechCfg ? { speechConfig: speechCfg } : {})
     }
   };
@@ -126,7 +145,10 @@ async function callGeminiTTS({ apiKey, text, model, voiceName, style }) {
 
   if (!resp.ok) {
     const t = await resp.text();
-    throw new Error(`Gemini TTS error ${resp.status}: ${t}`);
+    const err = new Error(`Gemini TTS error ${resp.status}: ${t}`);
+    err.status = resp.status;
+    err.body = t;
+    throw err;
   }
 
   const data = await resp.json();
@@ -134,6 +156,55 @@ async function callGeminiTTS({ apiKey, text, model, voiceName, style }) {
   if (!inline?.data) throw new Error('No audio data returned');
   const pcm = base64ToArrayBuffer(inline.data);
   return { pcm, mime: inline.mimeType || 'audio/pcm' };
+}
+
+// Rotate through multiple keys with stable starting index and retry on quota/auth errors
+async function callGeminiWithRotation(keys, params) {
+  if (!keys.length) throw new Error('No API keys');
+  const start = stableIndex(params.text + '|' + (params.ip || '')) % keys.length;
+  let lastErr = null;
+  const attempts = Math.min(CFG.KEY_ROTATION_MAX, keys.length);
+  for (let i = 0; i < attempts; i++) {
+    const key = keys[(start + i) % keys.length];
+    try {
+      return await callGeminiTTS({ apiKey: key, ...params });
+    } catch (e) {
+      lastErr = e;
+      const status = e && (e.status || 0);
+      if (status === 401 || status === 403 || status === 429 || status >= 500) {
+        // try next key
+        continue;
+      }
+      // non-retryable
+      break;
+    }
+  }
+  throw lastErr || new Error('All API keys failed');
+}
+
+function parseApiKeys(env) {
+  const keys = [];
+  if (env.GEMINI_API_KEYS) {
+    keys.push(...String(env.GEMINI_API_KEYS).split(/[\s,;]+/).map(s => s.trim()).filter(Boolean));
+  }
+  if (env.GEMINI_API_KEYS_JSON) {
+    try {
+      const arr = JSON.parse(env.GEMINI_API_KEYS_JSON);
+      if (Array.isArray(arr)) keys.push(...arr.map(s => String(s).trim()).filter(Boolean));
+    } catch (_) {}
+  }
+  if (env.GEMINI_API_KEY) keys.push(String(env.GEMINI_API_KEY).trim());
+  if (env.GOOGLE_TTS_API_KEY) keys.push(String(env.GOOGLE_TTS_API_KEY).trim());
+  // de-duplicate
+  return [...new Set(keys.filter(Boolean))];
+}
+
+function stableIndex(s) {
+  let h = 0 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  }
+  return h;
 }
 
 function streamAudio(wavArrayBuffer, origin) {

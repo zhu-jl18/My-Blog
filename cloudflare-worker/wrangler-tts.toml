@@ -1,0 +1,27 @@
+name = "ttf-proxy"
+main = "tts-proxy.js"
+compatibility_date = "2024-01-01"
+
+# Vars (non-sensitive)
+[vars]
+ALLOWED_ORIGINS = "https://zhu-jl18.github.io,http://localhost:4000,http://127.0.0.1:4000"
+TTS_DEFAULT_MODEL = "gemini-2.5-flash-preview-tts"
+TTS_DEFAULT_VOICE = "Leda"
+TTS_STYLE = "普通话，温柔少女音色，可爱"
+TEMPERATURE = "0.7"
+
+# Secrets (set via `wrangler secret put` in Dashboard/CLI, DO NOT place in repo):
+# - GEMINI_API_KEY
+# - GEMINI_API_KEYS (comma/newline/semicolon separated list)
+# - GEMINI_API_KEYS_JSON (JSON array of 1..100+ keys)
+
+# R2 bucket for caching synthesized audio
+[[r2_buckets]]
+binding = "TTS_AUDIO"
+bucket_name = "tts-audio"
+
+# Optional KV for rate limit reuse (create then fill the IDs)
+# [[kv_namespaces]]
+# binding = "CHAT_RATE_LIMIT"
+# id = "<your-kv-id>"
+# preview_id = "<your-kv-preview-id>"

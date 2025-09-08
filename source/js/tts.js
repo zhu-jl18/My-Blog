@@ -197,8 +197,11 @@
       setBtnIcon(toggle, 'pause');
       const body = {
         text,
-        voiceName: '',
-        style: '请使用温柔、成熟、亲切的中文女声朗读以下内容：'
+        // 按你的偏好提供默认参数；后端也会有 env 默认值作为兜底
+        model: 'gemini-2.5-flash-preview-tts',
+        voiceName: 'Leda',
+        style: '普通话，温柔少女音色，可爱',
+        temperature: 0.7
       };
       const resp = await fetch(TTS_PROXY_URL.replace(/\/$/, '') + '/tts', {
         method: 'POST',
