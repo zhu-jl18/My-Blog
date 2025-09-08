@@ -1,7 +1,12 @@
 name: Deploy TTS Worker
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      set_secrets:
+        description: 'Put GEMINI_* secrets to Cloudflare (overwrite existing)'
+        required: false
+        default: 'false'
   push:
     paths:
       - "cloudflare-worker/**"
@@ -16,8 +21,8 @@ jobs:
       - name: Install Wrangler v4
         run: npm i -g wrangler@4
 
-      - name: Set Secrets (optional, first-time or rotation)
-        if: ${{ env.GEMINI_API_KEYS_JSON != '' || env.GEMINI_API_KEYS != '' || env.GEMINI_API_KEY != '' }}
+      - name: Set Secrets (optional, only when manually requested)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.set_secrets == 'true' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GEMINI_API_KEYS_JSON: ${{ secrets.GEMINI_API_KEYS_JSON }}
@@ -27,15 +32,15 @@ jobs:
           set -e
           if [ -n "${GEMINI_API_KEYS_JSON}" ]; then
             echo "Setting GEMINI_API_KEYS_JSON"
-            echo -n "$GEMINI_API_KEYS_JSON" | wrangler secret put GEMINI_API_KEYS_JSON --config cloudflare-worker/wrangler-tts.toml --quiet
+            echo -n "$GEMINI_API_KEYS_JSON" | wrangler secret put GEMINI_API_KEYS_JSON --config cloudflare-worker/wrangler-tts.toml
           fi
           if [ -n "${GEMINI_API_KEYS}" ]; then
             echo "Setting GEMINI_API_KEYS"
-            echo -n "$GEMINI_API_KEYS" | wrangler secret put GEMINI_API_KEYS --config cloudflare-worker/wrangler-tts.toml --quiet
+            echo -n "$GEMINI_API_KEYS" | wrangler secret put GEMINI_API_KEYS --config cloudflare-worker/wrangler-tts.toml
           fi
           if [ -n "${GEMINI_API_KEY}" ]; then
             echo "Setting GEMINI_API_KEY"
-            echo -n "$GEMINI_API_KEY" | wrangler secret put GEMINI_API_KEY --config cloudflare-worker/wrangler-tts.toml --quiet
+            echo -n "$GEMINI_API_KEY" | wrangler secret put GEMINI_API_KEY --config cloudflare-worker/wrangler-tts.toml
           fi
 
       - name: Check Cloudflare token
