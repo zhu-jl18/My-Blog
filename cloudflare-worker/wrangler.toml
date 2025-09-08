@@ -6,9 +6,16 @@ compatibility_date = "2024-01-01"
 [env.production.vars]
 # CHAT_API_KEY = "your-api-key-here"  # 在Dashboard中设置，不要写在这里
 # ALLOWED_ORIGINS = "https://zhu-jl18.github.io"  # 在Dashboard中设置
+# GOOGLE_TTS_API_KEY = "your-google-tts-api-key"  # 在Dashboard中设置（用于 /tts 接口）
+# TTS_DEFAULT_VOICE = "zh-CN"  # 语言代码；可在 Dashboard 中覆盖为具体 voice name
 
 # KV存储（用于速率限制，可选）
 [[kv_namespaces]]
 binding = "CHAT_RATE_LIMIT"
 id = "your-kv-namespace-id"  # 创建KV namespace后填入ID
 preview_id = "your-preview-kv-namespace-id"  # 预览环境的KV ID
+
+# R2 存储（用于缓存合成后的音频，可选但强烈推荐）
+[[r2_buckets]]
+binding = "TTS_AUDIO"
+bucket_name = "tts-audio"
