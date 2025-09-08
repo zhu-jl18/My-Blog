@@ -1,5 +1,5 @@
 ---
-title: Thought
+title: Thoughts
 author:
   - mako
 categories:
@@ -7,7 +7,7 @@ categories:
   - Interesting
 mathjax: false
 abbrlink: 5e06a6f0
-date: 2025-09-06 09:07:02
+date: 2099-09-06 09:07:02
 ---
 >  
 <!--more-->

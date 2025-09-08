@@ -100,7 +100,6 @@ menu:
   Timeline: / || fa fa-bookmark # 时间线首页
   Categories: /categories/ || fa fa-th # 内容分类
   Schedule: /schedule/ || fa fa-calendar
-  Milestones: /milestones/ || fa fa-trophy
   About: /about/ || fa fa-user
   #Archives: /archives/ || fa fa-archive # 隐藏Archives页面
   #Navigation: /navigation/ || fa fa-compass # 用Categories替代

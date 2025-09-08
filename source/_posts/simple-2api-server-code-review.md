@@ -1,5 +1,5 @@
 ---
-title: 构建一个简单的AI API适配器：TalkAI到OpenAI格式转换服务
+title: Simple 2API for TalkAI
 author:
   - mako
   - windsurf

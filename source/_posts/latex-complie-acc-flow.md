@@ -1,5 +1,5 @@
 ---
-title: LaTeX工作流优化指南
+title: LaTeX Compile Accelerate Workflow
 author: mako
 categories:
   - AI & LLM

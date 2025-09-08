@@ -1,5 +1,5 @@
 ---
-title: Hexo博客构建专业级图片加速与自动化工作流：一份面向未来的实践指南
+title: Image Acc Workflow with cloudflare and PicList
 author:
   - gemini deep research
   - mako
@@ -21,7 +21,7 @@ tags:
   - proxy
 updated: "2025-09-05 12:56:04"
 ---
->  使用gemini-2.5-pro 的deep research 功能生成的指南
+>  使用gemini-2.5-pro 的deep research 功能生成的指南，已按照指南成功迁移
 
 <!--more-->
 ----
