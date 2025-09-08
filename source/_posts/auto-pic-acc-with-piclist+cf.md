@@ -21,7 +21,7 @@ tags:
   - proxy
 updated: "2025-09-05 12:56:04"
 ---
->  使用gemini-2.5-pro 的deep research 功能生成的指南
+>  使用gemini-2.5-pro 的deep research 功能生成的指南，已按照指南成功迁移
 
 <!--more-->
 ----
