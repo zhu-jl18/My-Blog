@@ -7,20 +7,6 @@
 本博客使用了 Hexo 7.3.0 作为静态站点生成器，NexT 8.23.2 作为主题。在官方配置基础上进行了一些个性化调整。
 
 
-## 主题切换与显示（2025-09-05 更新）
-
-- 默认配色：浅色（白天）。
-- 切换方式：屏幕贴边的“浮动主题按钮”（默认位于左下角），点击可在浅色/深色间切换，并记忆到浏览器的 localStorage。
-- 悬挂位置可选：
-  - left-bottom（默认，左下）
-  - left-middle（左中）
-  - top-left（贴上边稍靠左）
-- 修改位置：编辑文件 source/_data/body-end.njk，找到常量 `FLOAT_POS`，改为上面任一值；随后执行 `hexo clean && hexo generate`。
-- 深色适配：当用户点击切换时，HTML 根元素会设置 `data-theme="dark"`。自定义样式在 `source/_data/styles.styl` 中通过 `html[data-theme="dark"]` 覆盖 CSS 变量（如 `--content-bg-color`），并同步应用到 `.main-inner` / `.sidebar-inner` / `header.header`，确保正文包裹区与侧栏背景正确变暗。
-
-开发小贴士：
-- 若页面使用 PJAX，切页后按钮会自动重新挂载。
-- 如遇样式冲突导致按钮不可见，控制台会打印 `[theme] floating toggle attached` 日志；也可在控制台直接搜索 `.theme-floating-toggle` 元素进行排查。
 
 ## 自定义修改记录
 
@@ -224,6 +210,64 @@ hexo deploy
 3. 构建完成后自动部署到 GitHub Pages
 4. 网站自动更新
 
+
+
+------------------------------------------
+
+## 🛠️ AI 聊天系统部署与运维指南（2025-09-08）
+
+### 1) Cloudflare Workers 部署
+- 新建 Worker，粘贴 `cloudflare-worker/chat-proxy.js` 代码
+- 环境变量：
+  - `CHAT_API_KEY`：真实接口密钥
+  - `ALLOWED_ORIGINS`：`https://zhu-jl18.github.io`
+- 可选：绑定 KV（命名 `CHAT_RATE_LIMIT`）用于速率限制统计
+- 部署后记下域名，例如：`https://chat-proxy.nontrivial2025.workers.dev`
+
+### 2) 前端关键点
+- 代理优先级：代码优先使用内置全局代理 URL，不会被 localStorage 的旧 `chatProxy` 覆盖（见 `source/js/chat.js`）
+- SW 策略：`source/service-worker.js` 为极简透传，不做预缓存，避免 GitHub Pages 路径导致安装失败
+- 强制刷新：在 `source/_data/body-end.njk` 为 `chat.js` 加版本号参数，避免加载旧脚本
+- 可拖拽：入口气泡默认禁用拖拽（`entryBubbleDraggable: false`），需要时可在设置中开启
+
+### 3) 发布与缓存
+- 推送到 `main` 触发 GitHub Actions 自动构建与部署
+- 首次上线或关键改动后，建议：
+  - DevTools → Application → Service Workers → Unregister
+  - Application → Clear storage → Clear site data
+  - Network → Disable cache，Ctrl+F5 硬刷新
+
+### 4) 常见问题速查
+- `ERR_BLOCKED_BY_CLIENT`：被广告拦截插件拦截，非功能性错误
+- `service-worker.js` 404 或安装失败：使用极简 SW，必要时 Unregister 后刷新
+- 仍请求旧域名：确认 `chat.js` 已带版本参数，清理浏览器缓存与 SW
+- `Failed to fetch`：
+  - 检查 Worker 环境变量（`ALLOWED_ORIGINS`、`CHAT_API_KEY`）
+  - 直接探活：`curl -I https://chat-proxy.<your>.workers.dev`
+  - 临时切换非流式模式验证（前端设置中关闭流式）
+
+### 5) 参考与记录
+- （`source/_posts/ai-chat-proxy-on-hexo.md`）：
+
+
+
+## 主题切换与显示（2025-09-05 更新）
+
+- 默认配色：浅色（白天）。
+- 切换方式：屏幕贴边的“浮动主题按钮”（默认位于左下角），点击可在浅色/深色间切换，并记忆到浏览器的 localStorage。
+- 悬挂位置可选：
+  - left-bottom（默认，左下）
+  - left-middle（左中）
+  - top-left（贴上边稍靠左）
+- 修改位置：编辑文件 source/_data/body-end.njk，找到常量 `FLOAT_POS`，改为上面任一值；随后执行 `hexo clean && hexo generate`。
+- 深色适配：当用户点击切换时，HTML 根元素会设置 `data-theme="dark"`。自定义样式在 `source/_data/styles.styl` 中通过 `html[data-theme="dark"]` 覆盖 CSS 变量（如 `--content-bg-color`），并同步应用到 `.main-inner` / `.sidebar-inner` / `header.header`，确保正文包裹区与侧栏背景正确变暗。
+
+开发小贴士：
+- 若页面使用 PJAX，切页后按钮会自动重新挂载。
+- 如遇样式冲突导致按钮不可见，控制台会打印 `[theme] floating toggle attached` 日志；也可在控制台直接搜索 `.theme-floating-toggle` 元素进行排查。
+
+
+
 ## 🚀 Cloudflare R2 迁移 (2025-09-05)
 
 高粱米姐姐已协助mako完成从 jsDelivr 到 Cloudflare R2 的图片迁移工作。这显著提升了博客图片加载速度和控制能力。
@@ -298,41 +342,6 @@ node tools/enhance-frontmatter.js --apply
 - 删除了旧 CDN 本地仓库及所有遗留文件 (包括音频/音乐)
 - 删除了迁移过程中生成的临时备份和报告文件
 - 将所有迁移工具和指南文件整理到 `GUIDE/` 目录下，并添加到 `.gitignore`
-
-## 🛠️ AI 聊天系统部署与运维指南（2025-09-08）
-
-### 1) Cloudflare Workers 部署
-- 新建 Worker，粘贴 `cloudflare-worker/chat-proxy.js` 代码
-- 环境变量：
-  - `CHAT_API_KEY`：真实接口密钥
-  - `ALLOWED_ORIGINS`：`https://zhu-jl18.github.io`
-- 可选：绑定 KV（命名 `CHAT_RATE_LIMIT`）用于速率限制统计
-- 部署后记下域名，例如：`https://chat-proxy.nontrivial2025.workers.dev`
-
-### 2) 前端关键点
-- 代理优先级：代码优先使用内置全局代理 URL，不会被 localStorage 的旧 `chatProxy` 覆盖（见 `source/js/chat.js`）
-- SW 策略：`source/service-worker.js` 为极简透传，不做预缓存，避免 GitHub Pages 路径导致安装失败
-- 强制刷新：在 `source/_data/body-end.njk` 为 `chat.js` 加版本号参数，避免加载旧脚本
-- 可拖拽：入口气泡默认禁用拖拽（`entryBubbleDraggable: false`），需要时可在设置中开启
-
-### 3) 发布与缓存
-- 推送到 `main` 触发 GitHub Actions 自动构建与部署
-- 首次上线或关键改动后，建议：
-  - DevTools → Application → Service Workers → Unregister
-  - Application → Clear storage → Clear site data
-  - Network → Disable cache，Ctrl+F5 硬刷新
-
-### 4) 常见问题速查
-- `ERR_BLOCKED_BY_CLIENT`：被广告拦截插件拦截，非功能性错误
-- `service-worker.js` 404 或安装失败：使用极简 SW，必要时 Unregister 后刷新
-- 仍请求旧域名：确认 `chat.js` 已带版本参数，清理浏览器缓存与 SW
-- `Failed to fetch`：
-  - 检查 Worker 环境变量（`ALLOWED_ORIGINS`、`CHAT_API_KEY`）
-  - 直接探活：`curl -I https://chat-proxy.<your>.workers.dev`
-  - 临时切换非流式模式验证（前端设置中关闭流式）
-
-### 5) 参考与记录
-- 详细实战总结见新博文（`source/_posts/ai-chat-proxy-on-hexo.md`）：“高粱米博客的 AI 聊天系统实战：从零到稳定”（作者：Mako & Cascade）。
 
 ## 相关链接
 
