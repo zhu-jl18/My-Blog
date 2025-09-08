@@ -1,5 +1,5 @@
 ---
-title: Hexo博客构建专业级图片加速与自动化工作流：一份面向未来的实践指南
+title: Image Acc Workflow with cloudflare and PicList
 author:
   - gemini deep research
   - mako

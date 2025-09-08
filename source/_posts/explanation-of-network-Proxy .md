@@ -1,5 +1,5 @@
 ---
-title: 网络代理全解析：从入门到精通
+title: Simple Explanation of Network Proxy principles
 author:
   - fish
   - mako

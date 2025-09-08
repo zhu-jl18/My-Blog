@@ -1,5 +1,5 @@
 ---
-title: 高粱米博客的 AI 聊天系统实战：从零到稳定
+title: Simple AI Chat with Cloudflare Workers 
 categories:
   - 技术记录与分享
   - AI && LLM
