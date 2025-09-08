@@ -13,8 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Wrangler
-        run: npm i -g wrangler@3
+      - name: Install Wrangler v4
+        run: npm i -g wrangler@4
 
       - name: Set Secrets (optional, first-time or rotation)
         if: ${{ env.GEMINI_API_KEYS_JSON != '' || env.GEMINI_API_KEYS != '' || env.GEMINI_API_KEY != '' }}
@@ -38,8 +38,16 @@ jobs:
             echo -n "$GEMINI_API_KEY" | wrangler secret put GEMINI_API_KEY --config cloudflare-worker/wrangler-tts.toml --quiet
           fi
 
+      - name: Check Cloudflare token
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "Missing CLOUDFLARE_API_TOKEN GitHub secret. Create a token with Workers Scripts:Edit and R2:Edit permissions, then set it at Settings → Secrets and variables → Actions." >&2
+            exit 1
+          fi
+
       - name: Deploy Worker (wrangler)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           wrangler deploy --config cloudflare-worker/wrangler-tts.toml
