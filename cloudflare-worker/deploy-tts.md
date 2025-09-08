@@ -74,3 +74,5 @@ curl -X POST "https://ttf-proxy.nontrivial2025.workers.dev/tts" \
 - 首次合成：调用 Gemini API → 存储到 R2
 - 后续请求：直接从 R2 返回（永久缓存）
 - 缓存键：`tts/{model}/{voice}/{hash}.wav`
+
+\n<!-- CI trigger 2025-09-09 07:08:07 -->
