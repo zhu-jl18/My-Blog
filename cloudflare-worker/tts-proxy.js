@@ -24,7 +24,8 @@ const CFG = {
   SAMPLE_RATE: 24000,
   CHANNELS: 1,
   RATE_LIMIT: { HOURLY: 20, DAILY: 100 },
-  KEY_ROTATION_MAX: 5,
+  KEY_ROTATION_MAX: 12,
+  TIMEOUT_MS: 12000,
 };
 
 const KV_KEYS = {
@@ -34,7 +35,7 @@ const KV_KEYS = {
 
 export default {
   async fetch(request, env) {
-    if (request.method === 'OPTIONS') return handleCORS();
+    if (request.method === 'OPTIONS') return handleCORS(request.headers.get('Origin'));
 
     try {
       const url = new URL(request.url);
@@ -51,6 +52,33 @@ export default {
         return json({ ok: true, time: new Date().toISOString() }, 200);
       }
 
+      // Check CDN URL for an already-synthesized audio in R2
+      if (url.pathname === '/tts/url' && request.method === 'GET') {
+        const text = (url.searchParams.get('text') || '').toString();
+        if (!text || text.length < 4) return json({ error: 'Text is required' }, 400);
+        const voiceName = (url.searchParams.get('voiceName') || env.TTS_DEFAULT_VOICE || '').toString();
+        const style = (url.searchParams.get('style') || env.TTS_STYLE || '').toString();
+        const model = (url.searchParams.get('model') || env.TTS_DEFAULT_MODEL || CFG.DEFAULT_MODEL).toString();
+        const temperature = (() => {
+          const v = url.searchParams.get('temperature');
+          return v !== null ? (parseFloat(v) || 0.7) : (parseFloat(env.TEMPERATURE || '0.7') || 0.7);
+        })();
+
+        const hash = await sha256(`${model}|${voiceName.trim()}|${style.trim()}|${temperature}|${text}`);
+        const key = `tts/${model}/${voiceName.trim() || 'auto'}/${hash}`;
+        if (!env.TTS_AUDIO) return json({ cached: false }, 404);
+        const obj = await env.TTS_AUDIO.get(key);
+        if (!obj) return json({ cached: false }, 404);
+
+        const base = (env.PUBLIC_R2_BASE || '').toString().trim();
+        if (!base) {
+          // PUBLIC_R2_BASE 未配置时，避免暴露账号信息，直接返回 404，前端将走合成
+          return json({ cached: true, url: null, key, mime: obj.httpMetadata?.contentType || 'audio/wav', size: obj.size || null }, 200);
+        }
+        const urlStr = base.replace(/\/$/, '') + '/' + key;
+        return json({ cached: true, url: urlStr, key, mime: obj.httpMetadata?.contentType || 'audio/wav', size: obj.size || null }, 200);
+      }
+
       if (url.pathname === '/tts' && request.method === 'GET') {
         const text = url.searchParams.get('text') || '你好，这是一个语音合成测试。';
         const voiceName = url.searchParams.get('voiceName') || env.TTS_DEFAULT_VOICE || '';
@@ -59,7 +87,7 @@ export default {
         const temperature = parseFloat(url.searchParams.get('temperature') || env.TEMPERATURE || '0.7') || 0.7;
         const res = await synthAndCache(text, { voiceName, style, model, temperature, ip }, env);
         await recordRequest(ip, env);
-        return streamAudio(res.wav, origin);
+        return streamAudio(res.bytes, origin, res.mime);
       }
 
       if (url.pathname === '/tts' && request.method === 'POST') {
@@ -74,7 +102,7 @@ export default {
           : (parseFloat(env.TEMPERATURE || '0.7') || 0.7);
         const res = await synthAndCache(text, { voiceName, style, model, temperature, ip }, env);
         await recordRequest(ip, env);
-        return streamAudio(res.wav, origin);
+        return streamAudio(res.bytes, origin, res.mime);
       }
 
       return json({ error: 'Not found' }, 404);
@@ -92,13 +120,14 @@ async function synthAndCache(text, opts, env) {
   const temperature = typeof opts.temperature === 'number' ? opts.temperature : (parseFloat(env.TEMPERATURE || '0.7') || 0.7);
 
   const hash = await sha256(`${model}|${voiceName}|${style}|${temperature}|${text}`);
-  const key = `tts/${model}/${voiceName || 'auto'}/${hash}.wav`;
+  const key = `tts/${model}/${voiceName || 'auto'}/${hash}`;
 
   if (env.TTS_AUDIO) {
     const obj = await env.TTS_AUDIO.get(key);
     if (obj) {
-      const wav = await obj.arrayBuffer();
-      return { wav, cached: true };
+      const bytes = await obj.arrayBuffer();
+      const mime = obj.httpMetadata?.contentType || 'audio/wav';
+      return { bytes, mime, cached: true };
     }
   }
 
@@ -106,14 +135,26 @@ async function synthAndCache(text, opts, env) {
   if (!keys.length) throw new Error('No GEMINI API keys configured');
 
   const synthRes = await callGeminiWithRotation(keys, { text, model, voiceName, style, temperature, ip: opts.ip || '' });
-  const wav = pcmS16ToWav(synthRes.pcm, CFG.SAMPLE_RATE, CFG.CHANNELS);
+  let outBytes;
+  let outMime;
+  if (/audio\/wav/i.test(synthRes.mime || '')) {
+    outBytes = synthRes.bytes;
+    outMime = 'audio/wav';
+  } else if (/audio\/(mp3|mpeg)/i.test(synthRes.mime || '')) {
+    outBytes = synthRes.bytes;
+    outMime = 'audio/mpeg';
+  } else {
+    // Assume PCM S16LE
+    outBytes = pcmS16ToWav(synthRes.bytes, CFG.SAMPLE_RATE, CFG.CHANNELS);
+    outMime = 'audio/wav';
+  }
 
   if (env.TTS_AUDIO) {
-    await env.TTS_AUDIO.put(key, wav, {
-      httpMetadata: { contentType: 'audio/wav', cacheControl: 'public, max-age=31536000, immutable' }
+    await env.TTS_AUDIO.put(key, outBytes, {
+      httpMetadata: { contentType: outMime, cacheControl: 'public, max-age=31536000, immutable' }
     });
   }
-  return { wav, cached: false };
+  return { bytes: outBytes, mime: outMime, cached: false };
 }
 
 async function callGeminiTTS({ apiKey, text, model, voiceName, style, temperature }) {
@@ -137,11 +178,15 @@ async function callGeminiTTS({ apiKey, text, model, voiceName, style, temperatur
     }
   };
 
+  const controller = new AbortController();
+  const to = setTimeout(() => controller.abort('timeout'), CFG.TIMEOUT_MS);
   const resp = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
+    signal: controller.signal
   });
+  clearTimeout(to);
 
   if (!resp.ok) {
     const t = await resp.text();
@@ -152,10 +197,10 @@ async function callGeminiTTS({ apiKey, text, model, voiceName, style, temperatur
   }
 
   const data = await resp.json();
-  const inline = data?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+  const inline = data?.candidates?.[0]?.content?.parts?.[0]?.inlineData || data?.candidates?.[0]?.content?.parts?.[0]?.inline_data;
   if (!inline?.data) throw new Error('No audio data returned');
-  const pcm = base64ToArrayBuffer(inline.data);
-  return { pcm, mime: inline.mimeType || 'audio/pcm' };
+  const bytes = base64ToArrayBuffer(inline.data);
+  return { bytes, mime: inline.mimeType || inline.mime_type || 'audio/pcm' };
 }
 
 // Rotate through multiple keys with stable starting index and retry on quota/auth errors
@@ -171,7 +216,7 @@ async function callGeminiWithRotation(keys, params) {
     } catch (e) {
       lastErr = e;
       const status = e && (e.status || 0);
-      if (status === 401 || status === 403 || status === 429 || status >= 500) {
+      if (e === 'timeout' || status === 401 || status === 403 || status === 429 || status >= 500) {
         // try next key
         continue;
       }
@@ -207,12 +252,12 @@ function stableIndex(s) {
   return h;
 }
 
-function streamAudio(wavArrayBuffer, origin) {
-  return new Response(wavArrayBuffer, {
+function streamAudio(bytes, origin, mime = 'audio/wav') {
+  return new Response(bytes, {
     status: 200,
     headers: {
       ...corsHeaders(origin),
-      'Content-Type': 'audio/wav',
+      'Content-Type': mime,
       'Cache-Control': 'public, max-age=31536000, immutable'
     }
   });
@@ -272,16 +317,19 @@ function corsHeaders(origin = '*') {
   };
 }
 
-function handleCORS() {
-  return new Response(null, { status: 200, headers: corsHeaders() });
+function handleCORS(origin) {
+  return new Response(null, { status: 200, headers: corsHeaders(origin) });
 }
 
 function isAllowedOrigin(origin, allowedOrigins) {
   if (!origin) return false;
-  const allowed = allowedOrigins ? allowedOrigins.split(',') : [
+  const norm = (s) => String(s || '').trim().replace(/\/$/, '').toLowerCase();
+  const o = norm(origin);
+  const allowed = (allowedOrigins ? allowedOrigins.split(',') : [
     'https://zhu-jl18.github.io', 'http://localhost:4000', 'http://127.0.0.1:4000'
-  ];
-  return allowed.some(o => origin === o.trim() || origin.includes('localhost') || origin.includes('127.0.0.1'));
+  ]).map(norm);
+  if (o.includes('localhost') || o.includes('127.0.0.1')) return true;
+  return allowed.some(a => a === o);
 }
 
 async function sha256(input) {

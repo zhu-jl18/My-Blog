@@ -22,13 +22,15 @@
 
   // --------------- Core Mount ---------------
   function mountForPage() {
-    const { player, toggle, speed, status } = getPlayerElems();
+    const { player, toggle, retry, speed, status, source, progress } = getPlayerElems();
 
     // No player on this page
     if (!player || !toggle || !speed || !status) return;
 
     // Always reset UI on new page
     setStatus('待机', status);
+    setSource('—', source);
+    setProgress(0, progress);
     setBtnIcon(toggle, 'play');
     toggle.disabled = false;
 
@@ -45,7 +47,33 @@
     window.__ttsCurrentState = state;
 
     // Bind handlers (avoid duplicate by re-binding per page)
-    toggle.addEventListener('click', () => onToggleClick(state, { toggle, speed, status }));
+    toggle.addEventListener('click', () => onToggleClick(state, { toggle, retry, speed, status, source, progress }));
+    if (retry) {
+      retry.addEventListener('click', () => {
+        // 重新尝试云端（不再抽取文本，直接使用全文）
+        const text = extractArticleText();
+        if (!text || text.trim().length < 20) {
+          setStatus('本篇内容过短或不可朗读', status);
+          return;
+        }
+        state.useRemote = true;
+        setSource('来源：云端（尝试中）', source);
+        setProgress(0, progress);
+        remoteStart(state, { toggle, retry, speed, status, source, progress }, text);
+      });
+    }
+
+    // 页面隐藏/切换时暂停
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        try { synth.pause(); } catch (_) {}
+        if (state.audio) { try { state.audio.pause(); } catch (_) {} }
+        state.isPaused = true;
+        setBtnIcon(toggle, 'play');
+        setStatus('已暂停', status);
+      }
+    });
+
     speed.addEventListener('change', () => {
       const v = parseFloat(speed.value) || 1.0;
       state.rate = Math.min(Math.max(v, 0.5), 2.0);
@@ -84,13 +112,26 @@
     return {
       player,
       toggle: player.querySelector('#tts-toggle'),
+      retry: player.querySelector('#tts-retry'),
       speed: player.querySelector('#tts-speed'),
-      status: player.querySelector('#tts-status')
+      status: player.querySelector('#tts-status'),
+      source: player.querySelector('#tts-source'),
+      progress: player.querySelector('#tts-progress')
     };
   }
 
   function setStatus(text, statusEl) {
     if (statusEl) statusEl.textContent = text;
+  }
+
+  function setSource(text, sourceEl) {
+    if (sourceEl) sourceEl.textContent = text;
+  }
+
+  function setProgress(val, progressEl) {
+    if (!progressEl) return;
+    const v = Math.max(0, Math.min(100, Math.round(val)));
+    progressEl.value = v;
   }
 
   function setBtnIcon(btn, type) {
@@ -117,7 +158,7 @@
 
   // --------------- Toggle Handler ---------------
   function onToggleClick(state, ui) {
-    const { toggle, speed, status } = ui;
+    const { toggle, speed, status, source, progress } = ui;
 
     // Initial start
     if (!state.isSpeaking && !state.isPaused) {
@@ -127,7 +168,10 @@
         return;
       }
       state.rate = parseFloat(speed.value) || 1.0;
+      ensureAudioUnlocked();
       if (state.useRemote) {
+        setSource('来源：云端（尝试中）', source);
+        setProgress(0, progress);
         remoteStart(state, ui, text);
       } else {
         state.chunks = splitIntoChunks(text, 180);
@@ -172,9 +216,10 @@
 
   // --------------- Remote TTS (Gemini via Worker) ---------------
   async function remoteStart(state, ui, text) {
-    const { toggle, speed, status } = ui;
+    const { toggle, speed, status, source, progress, retry } = ui;
     if (!TTS_PROXY_URL) {
       setStatus('未配置云端 TTS，改用浏览器语音', status);
+      setSource('来源：浏览器语音', source);
       state.useRemote = false;
       // Fallback to Web Speech
       state.chunks = splitIntoChunks(text, 180);
@@ -193,55 +238,23 @@
     }
 
     try {
-      setStatus('正在生成高质量语音…', status);
+      // 远端文本分段，避免一次性超长导致超时/失败
+      const remoteMaxLen = 260;
+      const chunks = splitIntoChunks(text, remoteMaxLen);
+      if (!chunks.length) throw new Error('No readable text');
+
+      state.remoteChunks = chunks;
+      state.remoteIndex = 0;
+      state.cancelled = false;
       setBtnIcon(toggle, 'pause');
-      const body = {
-        text,
-        // 按你的偏好提供默认参数；后端也会有 env 默认值作为兜底
-        model: 'gemini-2.5-flash-preview-tts',
-        voiceName: 'Leda',
-        style: '普通话，温柔少女音色，可爱',
-        temperature: 0.7
-      };
-      const resp = await fetch(TTS_PROXY_URL.replace(/\/$/, '') + '/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      if (!resp.ok) {
-        const t = await resp.text();
-        throw new Error(`TTS ${resp.status}: ${t}`);
-      }
-      const buf = await resp.arrayBuffer();
-      const blob = new Blob([buf], { type: 'audio/wav' });
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audio.playbackRate = state.rate;
-
-      audio.onplay = () => {
-        state.isSpeaking = true;
-        state.isPaused = false;
-        setBtnIcon(toggle, 'pause');
-        setStatus(`朗读中 · ${state.rate.toFixed(1)}x`, status);
-      };
-      audio.onpause = () => {
-        if (!state.isPaused) return; // toggled pause
-      };
-      audio.onended = () => {
-        state.isSpeaking = false;
-        state.isPaused = false;
-        setBtnIcon(toggle, 'play');
-        setStatus('完成', status);
-        try { URL.revokeObjectURL(url); } catch (_) {}
-        state.blobUrl = null;
-      };
-
-      state.audio = audio;
-      state.blobUrl = url;
-      await audio.play();
+      setProgress(0, progress);
+      if (retry) retry.style.display = 'none';
+      await playNextRemoteChunk(state, ui);
     } catch (e) {
       console.error('[tts] remote start failed', e);
       setStatus('云端合成失败，改用浏览器语音', status);
+      setSource('来源：浏览器语音', source);
+      if (retry) retry.style.display = '';
       state.useRemote = false;
       // Fallback to Web Speech
       state.chunks = splitIntoChunks(text, 180);
@@ -249,6 +262,138 @@
       state.cancelled = false;
       ensurePreferredVoice(state, () => { speakNext(state, ui); });
     }
+  }
+
+  async function playNextRemoteChunk(state, ui) {
+    const { toggle, status, source, progress, retry } = ui;
+    if (!state.remoteChunks || state.remoteIndex >= state.remoteChunks.length) {
+      // finished all
+      state.isSpeaking = false;
+      state.isPaused = false;
+      setBtnIcon(toggle, 'play');
+      setStatus('完成', status);
+      setProgress(100, progress);
+      return;
+    }
+    const i = state.remoteIndex + 1;
+    const n = state.remoteChunks.length;
+    setStatus(`正在生成高质量语音…（${i}/${n}）`, status);
+
+    try {
+      const controller = new AbortController();
+      const to = setTimeout(() => controller.abort(), 15000);
+      const chunkText = state.remoteChunks[state.remoteIndex];
+      const body = {
+        text: chunkText,
+        model: 'gemini-2.5-flash-preview-tts',
+        voiceName: 'Leda',
+        style: '普通话，温柔少女音色，可爱',
+        temperature: 0.7
+      };
+      const base = TTS_PROXY_URL.replace(/\/$/, '')
+
+      // 先尝试 CDN 命中（需要后端配置 PUBLIC_R2_BASE）
+      let urlToPlay = '';
+      try {
+        const qs = new URLSearchParams({
+          text: chunkText,
+          model: body.model,
+          voiceName: body.voiceName,
+          style: body.style,
+          temperature: String(body.temperature)
+        }).toString();
+        const urlCheck = `${base}/tts/url?${qs}`;
+        const r = await fetch(urlCheck, { signal: controller.signal });
+        if (r.ok) {
+          const j = await r.json();
+          if (j && j.cached && j.url) {
+            urlToPlay = j.url;
+            setSource('来源：云端（CDN）', source);
+          }
+        }
+      } catch (_) {}
+
+      let audio;
+      if (!urlToPlay) {
+        // 未命中 CDN，走实时合成
+        const resp = await fetch(base + '/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          signal: controller.signal
+        });
+        clearTimeout(to);
+        if (!resp.ok) {
+          const t = await resp.text();
+          throw new Error(`TTS ${resp.status}: ${t}`);
+        }
+        const blob = await resp.blob();
+        const url = URL.createObjectURL(blob);
+        audio = new Audio(url);
+        setSource('来源：云端（代理）', source);
+        state.blobUrl = url;
+      } else {
+        clearTimeout(to);
+        audio = new Audio(urlToPlay);
+        audio.crossOrigin = 'anonymous';
+      }
+      audio.playbackRate = state.rate;
+
+      audio.onplay = () => {
+        state.isSpeaking = true;
+        state.isPaused = false;
+        setBtnIcon(toggle, 'pause');
+        setStatus(`朗读中（${i}/${n}）· ${state.rate.toFixed(1)}x`, status);
+      };
+      audio.onerror = (ev) => {
+        console.warn('[tts] audio error on chunk', i, ev);
+      };
+      audio.onended = async () => {
+        if (state.blobUrl) {
+          try { URL.revokeObjectURL(state.blobUrl); } catch (_) {}
+          state.blobUrl = null;
+        }
+        state.remoteIndex++;
+        setProgress((state.remoteIndex / n) * 100, progress);
+        await playNextRemoteChunk(state, ui);
+      };
+
+      state.audio = audio;
+      await audio.play();
+    } catch (err) {
+      console.error('[tts] fetch/play remote chunk failed', err);
+      // 若首段失败，立即回退；否则尝试跳过该段继续
+      if (state.remoteIndex === 0) {
+        setStatus('云端合成失败，改用浏览器语音', status);
+        setSource('来源：浏览器语音', source);
+        if (retry) retry.style.display = '';
+        state.useRemote = false;
+        const full = state.remoteChunks.join('');
+        state.chunks = splitIntoChunks(full, 180);
+        state.index = 0;
+        state.cancelled = false;
+        ensurePreferredVoice(state, () => { speakNext(state, ui); });
+      } else {
+        state.remoteIndex++;
+        setProgress((state.remoteIndex / (state.remoteChunks.length || 1)) * 100, progress);
+        await playNextRemoteChunk(state, ui);
+      }
+    }
+  }
+
+  // Unlock audio on first user gesture to avoid autoplay policies
+  let __audioUnlocked = false;
+  function ensureAudioUnlocked() {
+    if (__audioUnlocked) return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      src.connect(ctx.destination);
+      src.start(0);
+      __audioUnlocked = true;
+    } catch (_) {}
   }
 
   // --------------- Voice Selection ---------------
