@@ -1009,9 +1009,7 @@ html[data-theme="dark"]
   border-color: rgba(255,255,255,0.12)
   box-shadow: 0 12px 26px rgba(0,0,0,.45)
 
-// Live2D widget container z-index (below chat drawer)
-#live2d-widget
-  z-index: 1500 !important
+// [removed] Live2D widget styles were here
 
 [data-theme="dark"] .chat-drawer
   border-left: 1px solid rgba(255,255,255,.10)
@@ -1259,81 +1257,4 @@ html[data-theme="dark"]
     gap: 8px
     flex-wrap: wrap
 
-// ==========================
-// TTS Player styles
-// ==========================
-.tts-player
-  margin-top: 1.2rem
-  padding: 12px 14px
-  border: 1px solid #e5e7eb
-  border-radius: 8px
-  background: #fff
-  display: flex
-  align-items: center
-  gap: 10px
-  flex-wrap: wrap
-
-.tts-btn
-  display: inline-flex
-  align-items: center
-  gap: 8px
-  padding: 8px 14px
-  border: 1px solid rgba(0,0,0,.08)
-  background: linear-gradient(180deg, rgba(196,181,253,.16), rgba(196,181,253,.08))
-  color: #333
-  border-radius: 8px
-  cursor: pointer
-  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease
-  i
-    font-size: 14px
-  &:hover
-    transform: translateY(-1px)
-    box-shadow: 0 8px 20px rgba(128,100,241,.12)
-  &:active
-    transform: translateY(0)
-
-.tts-speed-label
-  display: inline-flex
-  align-items: center
-  gap: 6px
-  font-size: 0.9rem
-  color: #6b7280
-
-.tts-speed
-  border: 1px solid #d1d5db
-  border-radius: 6px
-  padding: 6px 8px
-  background: #fff
-  color: #374151
-
-.tts-status
-  font-size: 0.9rem
-  color: #6b7280
-  margin-left: auto
-
-.tts-hint
-  font-size: 0.85rem
-  color: #9ca3af
-
-[data-theme="dark"] .tts-player
-  border-color: #374151
-  background: #1f2937
-
-[data-theme="dark"] .tts-btn
-  background: linear-gradient(180deg, rgba(124,58,237,.18), rgba(124,58,237,.10))
-  color: #e5e7eb
-  border-color: rgba(255,255,255,.10)
-
-[data-theme="dark"] .tts-speed
-  background: #111827
-  color: #e5e7eb
-  border-color: #374151
-
-[data-theme="dark"] .tts-status
-  color: #9ca3af
-
-+tablet-mobile()
-  .tts-status
-    flex: 1 0 100%
-    margin-left: 0
-
+// [removed] TTS player styles were here
