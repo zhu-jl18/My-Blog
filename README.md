@@ -1,354 +1,124 @@
-# 个人博客记录
+# 个人博客源码（Hexo + NexT）
 
-基于 Hexo + NexT 主题搭建的个人博客，记录了一些自定义修改和配置。
+本仓库是一个使用 Hexo 7 与 NexT 主题搭建的个人博客源码，包含主题定制、分类页卡片化展示、少量构建脚本与工具。根目录下的 `cloudflare-worker/` 是独立的 Cloudflare Workers 代理示例，与博客构建无强依赖。
 
-## 项目说明
+当前主栈
+- Hexo: 7.3.0
+- NexT: 8.23.2（Pisces 方案 + 深色模式）
 
-本博客使用了 Hexo 7.3.0 作为静态站点生成器，NexT 8.23.2 作为主题。在官方配置基础上进行了一些个性化调整。
+注意：旧版 README 中存在大量过时与错误信息（如“AI 聊天系统前端”“GitHub Actions CI/CD”等）。本版已清理与更正。
 
+## 快速开始
 
-
-## 自定义修改记录
-
-### Hexo 配置修改 (_config.yml)
-
-1. **站点信息**
-   - 标题：Dirac Sea
-   - 副标题：🦖::😼::🧐
-   - 描述：love math and dinosaurs
-   - 支持中英双语：zh-CN, en
-
-2. **链接配置**
-   - 使用 abbrlink 插件生成短链接
-   - permalink 格式：posts/:abbrlink/
-   - archive_dir 设置为根路径 /
-
-3. **功能插件**
-   - 启用字数统计
-   - 配置 RSS 订阅 (atom.xml)
-   - 本地搜索支持
-   - 站点地图生成
-
-4. **部署配置**
-   - 部署到 zhu-jl18.github.io 仓库
-   - Giscus 评论系统（当前未启用）
-
-### NexT 主题配置修改 (_config.next.yml)
-
-1. **主题设置**
-   - 使用 Pisces 主题风格
-   - 启用暗黑模式
-   - 侧边栏右侧显示，始终展开
-   - 增加侧边栏宽度：expanded (320→350px), dual_column (240→280px)
-
-2. **自定义文件配置**
-   ```
-   head: source/_data/head.njk
-   sidebar: source/_data/sidebar.njk
-   postBodyEnd: source/_data/post-body-end.njk
-   bodyEnd: source/_data/body-end.njk
-   variable: source/_data/variables.styl
-   style: source/_data/styles.styl
-   ```
-
-3. **菜单配置**
-   - Timeline: /
-   - Categories: /categories/
-   - Schedule: /schedule/ (Google Calendar 集成)
-   - About: /about/
-
-4. **功能配置**
-   - PJAX 无刷新切换：启用
-   - Medium Zoom 图片缩放：启用
-   - 懒加载：启用
-   - Quicklink 预加载：启用
-   - 数学公式：MathJax，启用单美元符号
-   - 评论：Utterances
-   - 访客统计：不蒜子
-   - Google Analytics：G-MGG5BFG7WZ
-
-### 自定义文件
-
-#### source/_data/head.njk
-- 字体预加载优化
-- 关键 CSS 内联
-- 减少 FOUC (无样式内容闪烁)
-
-#### source/_data/sidebar.njk
-- 添加侧边栏背景融合图片
-- 链接到 nLab
-
-#### source/_data/post-body-end.njk
-- Giscus 评论系统配置（已禁用）
-- 评论容器样式
-
-#### source/_data/styles.styl
-自定义样式包括：
-- 主题色变量 ($mycolor: #ff4757, $mycolor1: #c4b5fd)
-- 文章内容优化（字体大小、行距、最大宽度）
-- 标题样式（波浪下划线装饰）
-- 代码块样式优化
-- 引用块样式（左侧边框）
-- 侧边栏样式美化
-- 响应式调整
-
-#### source/_data/variables.styl
-- 页面宽度调整
-- 字体大小设置
-- 行间距优化
-- 内容最大宽度限制
-
-### 自定义脚本
-
-#### source/js/sidebar-modules.js
-- 侧边栏模块收缩功能
-- 状态保存到 localStorage
-- 点击反馈效果
-
-#### source/js/simple-music-player.js
-- 音乐播放器功能（当前为空文件）
-
-=======
-## 🤖 AI 聊天系统（2025-09-07 稳定版）
-
-项目内置完整的前端 AI 聊天系统，采用 OpenAI 兼容接口，支持流式输出、管理员控制、防滥用机制。
-
-### 核心功能
-// 已移除看板娘相关描述
-// **智能入口**: Live2D 看板娘 + 可拖拽气泡入口，自然融入页面（已下线）
-- **角色设定**: 高粱米 AI 姐姐（温柔、可靠、可爱风格）
-- **流式对话**: 支持 SSE 流式输出，实时显示 AI 回复
-- **管理员面板**: 完整的后台控制系统（仅 localhost 可访问）
-- **防滥用**: 速率限制、权限控制、请求频次跟踪
-
-### 管理员控制面板
-访问方式：`Ctrl+Shift+A`（仅本地环境）
-
-功能包括：
-- 🎛️ **基础控制**: 开关 AI 聊天功能
-- ⏱️ **速率限制**: 每小时/每日请求数限制
-- 🤖 **模型参数**: Temperature、Max Tokens 调节
-- 📝 **系统提示词**: 自定义 AI 角色和行为
-- 📤📥 **配置管理**: 导入/导出配置文件
-
-### 用户体验优化
-// **气泡定位**: 智能跟随 Live2D 看板娘位置，支持拖拽自定义（已下线）
-- **消息样式**: AI 纯白背景，用户淡紫背景，清晰区分
-- **思考提示**: "💭 努力思索中..." 增强交互反馈
-- **无密码弹窗**: 优化输入框属性，避免浏览器误判
-
-### 技术架构
-- **前端纯净**: 无后端依赖，所有配置存储在 localStorage
-- **安全设计**: 本地配置文件 (`chat-local.js`) 已加入 `.gitignore`
-- **模块化**: 主聊天逻辑 + 独立管理员模块
-- **兼容性**: 支持各种 OpenAI 兼容 API（GLM、GPT、Qwen 等）
-
-### 关键文件
-- `source/js/chat.js` - 主聊天系统
-- `source/js/chat-admin.js` - 管理员面板
-- `source/js/chat-local.js` - 本地配置（gitignored）
-- `source/_data/styles.styl` - UI 样式定义
-
-### 使用指南
-1. **本地开发**: `hexo clean && hexo g && hexo s`
-2. **配置 API**: 点击齿轮图标，填写 API Base、Key、模型
-3. **管理功能**: `Ctrl+Shift+A` 打开管理面板
-4. **位置调整**: 直接拖拽 💬 气泡到理想位置
-
-### 安全特性
-- **权限隔离**: 管理面板仅 localhost 可访问
-- **速率保护**: 可配置的请求频次限制
-- **密钥安全**: 本地存储，不会提交到仓库
-- **输出净化**: 自动过滤模型的元叙述和思考过程
-
-### 文章模板 (scaffolds/post.md)
-自定义数学笔记模板：
-- 预设分类
-- 默认启用数学公式
-- 包含文章分割符
-- 添加头像图片
-
-### CI/CD 配置 (.github/workflows/deploy.yml)
-Github Actions 自动部署：
-- 推送到 main 分支自动触发
-- Node.js 20 环境
-- npm 依赖缓存
-- 自动部署到 zhu-jl18.github.io
-- 构建统计和部署报告
-
-## 开发和部署
-
-### 环境要求
-- Node.js 18+
+前置要求
+- Node.js 18+（建议）
 - npm
 
-### 常用命令
+安装与本地预览
 ```bash
-# 安装依赖
 npm install
 
-# 创建新文章
-hexo new "文章标题"
+# 新建文章
+npx hexo new "我的新文章"
 
-# 清理并生成
-hexo clean && hexo generate
-
-# 本地预览
-hexo server
-
-# 部署（目前通过 GitHub Actions 自动进行）
-hexo deploy
+# 清理、生成与本地预览
+npx hexo clean && npx hexo generate
+npx hexo server   # 访问 http://localhost:4000
 ```
 
-### 分支策略
-- main：生产分支，自动部署
-- develop：开发分支
-
-## 部署流程
-
-1. 在 GitHub 上编辑内容或提交代码到 main 分支
-2. GitHub Actions 自动触发构建
-3. 构建完成后自动部署到 GitHub Pages
-4. 网站自动更新
-
-
-
-------------------------------------------
-
-## 🛠️ AI 聊天系统部署与运维指南（2025-09-08）
-
-### 1) Cloudflare Workers 部署
-- 新建 Worker，粘贴 `cloudflare-worker/chat-proxy.js` 代码
-- 环境变量：
-  - `CHAT_API_KEY`：真实接口密钥
-  - `ALLOWED_ORIGINS`：`https://zhu-jl18.github.io`
-- 可选：绑定 KV（命名 `CHAT_RATE_LIMIT`）用于速率限制统计
-- 部署后记下域名，例如：`https://chat-proxy.nontrivial2025.workers.dev`
-
-### 2) 前端关键点
-- 代理优先级：代码优先使用内置全局代理 URL，不会被 localStorage 的旧 `chatProxy` 覆盖（见 `source/js/chat.js`）
-- SW 策略：`source/service-worker.js` 为极简透传，不做预缓存，避免 GitHub Pages 路径导致安装失败
-- 强制刷新：在 `source/_data/body-end.njk` 为 `chat.js` 加版本号参数，避免加载旧脚本
-- 可拖拽：入口气泡默认禁用拖拽（`entryBubbleDraggable: false`），需要时可在设置中开启
-
-### 3) 发布与缓存
-- 推送到 `main` 触发 GitHub Actions 自动构建与部署
-- 首次上线或关键改动后，建议：
-  - DevTools → Application → Service Workers → Unregister
-  - Application → Clear storage → Clear site data
-  - Network → Disable cache，Ctrl+F5 硬刷新
-
-### 4) 常见问题速查
-- `ERR_BLOCKED_BY_CLIENT`：被广告拦截插件拦截，非功能性错误
-- `service-worker.js` 404 或安装失败：使用极简 SW，必要时 Unregister 后刷新
-- 仍请求旧域名：确认 `chat.js` 已带版本参数，清理浏览器缓存与 SW
-- `Failed to fetch`：
-  - 检查 Worker 环境变量（`ALLOWED_ORIGINS`、`CHAT_API_KEY`）
-  - 直接探活：`curl -I https://chat-proxy.<your>.workers.dev`
-  - 临时切换非流式模式验证（前端设置中关闭流式）
-
-### 5) 参考与记录
-- （`source/_posts/ai-chat-proxy-on-hexo.md`）：
-
-
-
-## 主题切换与显示（2025-09-05 更新）
-
-- 默认配色：浅色（白天）。
-- 切换方式：屏幕贴边的“浮动主题按钮”（默认位于左下角），点击可在浅色/深色间切换，并记忆到浏览器的 localStorage。
-- 悬挂位置可选：
-  - left-bottom（默认，左下）
-  - left-middle（左中）
-  - top-left（贴上边稍靠左）
-- 修改位置：编辑文件 source/_data/body-end.njk，找到常量 `FLOAT_POS`，改为上面任一值；随后执行 `hexo clean && hexo generate`。
-- 深色适配：当用户点击切换时，HTML 根元素会设置 `data-theme="dark"`。自定义样式在 `source/_data/styles.styl` 中通过 `html[data-theme="dark"]` 覆盖 CSS 变量（如 `--content-bg-color`），并同步应用到 `.main-inner` / `.sidebar-inner` / `header.header`，确保正文包裹区与侧栏背景正确变暗。
-
-开发小贴士：
-- 若页面使用 PJAX，切页后按钮会自动重新挂载。
-- 如遇样式冲突导致按钮不可见，控制台会打印 `[theme] floating toggle attached` 日志；也可在控制台直接搜索 `.theme-floating-toggle` 元素进行排查。
-
-
-
-## 🚀 Cloudflare R2 迁移 (2025-09-05)
-
-高粱米姐姐已协助mako完成从 jsDelivr 到 Cloudflare R2 的图片迁移工作。这显著提升了博客图片加载速度和控制能力。
-
-### 迁移成果
-- **图片数量**: 13 个文件
-- **总大小**: 1.61 MB
-- **链接替换**: 14 处链接在 10 篇文章中更新
-- **新域名**: `https://media.makomako.dpdns.org`
-
-## 🏷️ Front-matter 增强脚本 (2025-09-05)
-
-新增自动化脚本，用于批量增强博客文章的 front-matter 元数据。
-
-### 功能特性
-- **智能标签生成**: 基于标题和内容自动生成相关标签
-- **更新时间补全**: 为缺失 `updated` 字段的文章添加时间戳
-- **多分类系统保持**: 完全保留现有的多分类结构
-- **安全预览**: 提供 dry-run 模式预览所有改动
-- **批量处理**: 一次性处理所有文章
-
-### 使用方法
+部署到 GitHub Pages（两种方式）
 ```bash
-# 预览将要进行的更改（推荐先执行）
-node tools/enhance-frontmatter.js --dry-run
-
-# 应用更改到所有文章
-node tools/enhance-frontmatter.js --apply
+## 方式 A：本地构建并推送（hexo-deployer-git）
+npx hexo deploy
 ```
+部署目标在 `/_config.yml: deploy.repo` 指向的仓库：`zhu-jl18/zhu-jl18.github.io` 的 `main` 分支。
 
-### 标签生成规则
-- **技术相关**: `hexo`, `git`, `javascript`, `css`, `workflow`, `automation`
-- **AI相关**: `AI-LLM`, `gemini`, `ai`
-- **学科相关**: `数学`, `math`, `语言学习`, `english`, `grammar`
-- **分类映射**: 根据现有分类自动添加对应标签
-- **内容分析**: 智能识别文章中的技术术语和关键词
+- 方式 B：推送触发 GitHub Actions 在线构建与发布
+  - 如需使用，请确保仓库中存在有效的工作流（如 `.github/workflows/*.yml`）以在 push 后自动生成并推送 `public/` 到 Pages 仓库。
+  - 两种方式可并存；按需选择。
 
-### 处理统计
-- **文章总数**: 30篇
-- **添加标签**: 27篇文章
-- **补全时间**: 30篇文章
-- **错误率**: 0%
+## 目录结构（要点）
 
-### 优势
-- **极速加载**: 利用 Cloudflare 全球 CDN，平均加载时间从 ~350ms 降至 ~120ms
-- **完全控制**: 图片存储和分发完全自主管理
-- **成本效益**: 免费额度充足，远低于 10GB/月
-- **自动化工作流**: 建立了 PicGo + R2 自动化上传和管理流程
+- `/_config.yml`：Hexo 站点配置（站点信息、链接结构、部署、Feed/Sitemap 等）
+- `/_config.next.yml`：NexT 主题配置；通过 custom_file_path 引入自定义片段与样式
+- `/source/`：内容目录
+  - `/_posts/`：文章 Markdown
+  - `/_data/`：主题自定义片段与样式
+    - `head.njk`、`sidebar.njk`、`post-body-start.njk`、`post-body-end.njk`、`body-end.njk`
+    - `variables.styl`、`styles.styl`（自定义样式与变量）
+  - 其他：`about/`、`tags/`、`categories/`、`archives/` 等页面
+- `/layout/`：自定义页面模板
+  - `categories-cards.njk` 与 `_partials/page/categories.njk`：分类页卡片化展示
+- `/scaffolds/`：Hexo 新建内容时的模板（post/page/draft）
+- `/scripts/`：Hexo 构建期扩展脚本
+  - `inject-category-counts.js`：在生成阶段为分类卡片注入文章数量（PJAX 安全）
+- `/tools/`：本地辅助工具
+  - `enhance-frontmatter.js`：自动补全 Front‑matter（tags/updated）；用法见“自定义工具”
+  - `scan-relative-images.js`：扫描相对图片引用，避免部署后 404
+- `/hexo-offline.config.cjs`：PWA 缓存策略（workbox 生成 sw.js）
+- `/cloudflare-worker/`：Cloudflare Workers 代理示例（可选，独立于博客）
 
-### 清理工作
-- 删除了旧 CDN 本地仓库及所有遗留文件 (包括音频/音乐)
-- 删除了迁移过程中生成的临时备份和报告文件
-- 将所有迁移工具和指南文件整理到 `GUIDE/` 目录下，并添加到 `.gitignore`
+## 关键配置说明
 
-## 🚀 Cloudflare R2 迁移 (2025-09-05)
+- 站点信息与多语言：见 `/_config.yml`（`title/subtitle/description/language`）
+- 永久链接：使用 `hexo-abbrlink`，`permalink: posts/:abbrlink/`
+- 归档目录：`archive_dir: /`（首页即归档聚合，`per_page` 调大）
+- Feed/Sitemap：已启用 `hexo-generator-feed` 与 `hexo-generator-sitemap`
+- 部署：`hexo-deployer-git` 推送到 `zhu-jl18/zhu-jl18.github.io:main`
+- 主题定制：`/_config.next.yml` 中启用以下自定义片段
+  ```
+  custom_file_path:
+    head: source/_data/head.njk
+    sidebar: source/_data/sidebar.njk
+    postBodyStart: source/_data/post-body-start.njk
+    postBodyEnd: source/_data/post-body-end.njk
+    bodyEnd: source/_data/body-end.njk
+    variable: source/_data/variables.styl
+    style: source/_data/styles.styl
+  ```
+- 分类页：元数据在 `source/_data/categories.yml`，模板在 `layout/categories-cards.njk`
 
-高粱米姐姐已协助mako完成从 jsDelivr 到 Cloudflare R2 的图片迁移工作。这显著提升了博客图片加载速度和控制能力。
+## 自定义脚本与工具
 
-### 迁移成果
-- **图片数量**: 13 个文件
-- **总大小**: 1.61 MB
-- **链接替换**: 14 处链接在 10 篇文章中更新
-- **新域名**: `https://media.makomako.dpdns.org`
+- 构建期注入分类数量：`/scripts/inject-category-counts.js`
+  - 自动统计各分类第一层的文章数，并注入到分类卡片，避免前端再计算
 
-### 优势
-- **极速加载**: 利用 Cloudflare 全球 CDN，平均加载时间从 ~350ms 降至 ~120ms
-- **完全控制**: 图片存储和分发完全自主管理
-- **成本效益**: 免费额度充足，远低于 10GB/月
-- **自动化工作流**: 建立了 PicGo + R2 自动化上传和管理流程
+- Front‑matter 增强：`/tools/enhance-frontmatter.js`
+  ```bash
+  # 预览将要修改的字段（不写入）
+  node tools/enhance-frontmatter.js --dry-run
+  # 实际写入 tags/updated（有需要时再运行）
+  node tools/enhance-frontmatter.js --apply
+  ```
 
-### 清理工作
-- 删除了旧 CDN 本地仓库及所有遗留文件 (包括音频/音乐)
-- 删除了迁移过程中生成的临时备份和报告文件
-- 将所有迁移工具和指南文件整理到 `GUIDE/` 目录下，并添加到 `.gitignore`
+- 扫描相对图片：`/tools/scan-relative-images.js`
+  ```bash
+  node tools/scan-relative-images.js
+  ```
 
-## 相关链接
+## PWA 与 Service Worker
 
-- 博客地址：https://zhu-jl18.github.io
-- GitHub 仓库：https://github.com/zhu-jl18/My-Blog
+- 推荐方式：使用 `hexo-offline` 按 `hexo-offline.config.cjs` 生成 `public/sw.js`
+- 仓库中还包含一个示例 `source/service-worker.js`（简单缓存示例）。如启用 `hexo-offline`，请勿同时让该示例 SW 生效，以免冲突。保持一种方案即可。
 
-## 许可证
+## Cloudflare Worker（可选）
 
-MIT License
+`/cloudflare-worker/` 目录提供“AI Chat Proxy” 的独立示例，便于将第三方大模型 API 代理到前端使用。
+- 它不参与 Hexo 构建流程，也不是本博客运行的前置条件
+- 如需使用，请按 `cloudflare-worker/README.md` 与 `DEPLOY_GUIDE.md` 部署与配置
+
+## 纠错与清理（相对旧版 README）
+
+- 移除：不存在于本仓库的前端文件 `source/js/chat.js`、`chat-admin.js`、`chat-local.js`
+- 更正：当前仓库不包含 `.github/workflows`；部署默认通过 `hexo-deployer-git` 本地执行
+- 更正：评论系统 Giscus 在 `/_config.yml:giscus.enable` 默认为 false，如需启用请正确填入 repo_id 等参数
+
+## 常见问题
+
+- 生成后页面没更新：尝试 `npx hexo clean && npx hexo g -d`；浏览器强刷或清空站点数据
+- 分类数量不对：确保 `scripts/inject-category-counts.js` 存在且分类名称与 `source/_data/categories.yml` 的键一致
+- 文字乱码（编辑器显示 `???`）：请使用 UTF‑8 编码保存与查看文件
+
+## 许可协议
+
+MIT License，详见 `LICENSE`。
