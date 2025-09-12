@@ -4,7 +4,7 @@
 
 当前主栈
 - Hexo: 7.3.0
-- NexT: 8.23.2（Pisces 方案 + 深色模式）
+- NexT: 8.23.2（Pisces 方案 + 按钮切换神深浅色模式）
 
 注意：旧版 README 中存在大量过时与错误信息（如“AI 聊天系统前端”“GitHub Actions CI/CD”等）。本版已清理与更正。
 
@@ -19,23 +19,22 @@
 npm install
 
 # 新建文章
-npx hexo new "我的新文章"
+hexo new "我的新文章"
 
 # 清理、生成与本地预览
-npx hexo clean && npx hexo generate
-npx hexo server   # 访问 http://localhost:4000
+hexo clean && npx hexo generate
+hexo server   # 访问 http://localhost:4000
 ```
 
 部署到 GitHub Pages（两种方式）
-```bash
-## 方式 A：本地构建并推送（hexo-deployer-git）
-npx hexo deploy
-```
+
+- 方式 A：本地构建并推送（hexo-deployer-git）。`hexo deploy`
 部署目标在 `/_config.yml: deploy.repo` 指向的仓库：`zhu-jl18/zhu-jl18.github.io` 的 `main` 分支。
 
-- 方式 B：推送触发 GitHub Actions 在线构建与发布
-  - 如需使用，请确保仓库中存在有效的工作流（如 `.github/workflows/*.yml`）以在 push 后自动生成并推送 `public/` 到 Pages 仓库。
-  - 两种方式可并存；按需选择。
+- 方式 B：推送触发 GitHub Actions 在线构建与发布。
+如需使用，请确保仓库中存在有效的工作流（如 `.github/workflows/*.yml`）以在 push 后自动生成并推送 `public/` 到 Pages 仓库。
+
+- 两种方式可并存；按需选择。
 
 ## 目录结构（要点）
 
